@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Aula 02}
+\section{Introdução a análise e complexidade de algoritmos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,7 +77,7 @@ Depois, para ordenar os $10^7$ números no computador B com mergesort custa
 \end{equation*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Função de complexidade}
+\subsection{Função de complexidade}
 
 O custo de um algoritmo é definido em geral por uma função de complexidade $f$. Sendo assim,
 $f(n)$ é a medida de tempo de execução de um algoritmo para uma instância do problema de tamanho $n$.
@@ -91,8 +91,12 @@ com entrada $n$.
 Caso nada for mencionado, estamos falando sobre complexidade de tempo em grande parte do material.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Analise simples - maior elemento}
+\subsection{Analise simples - maior elemento}
 
+A figura~\ref{aula02:algo:max} mostra o algoritmo que encontra o maior elemento em um vetor.
+Seja $f(n)$ a função de complexidade que determina o número de comparações entre elementos de $A$.
+Logo, $f(n) = n - 1$, para $n > 0$.
+%
 \begin{figure}[!htb]
 \centering
 \begin{framed}
@@ -109,16 +113,14 @@ int Max( int *A, int n ){
 \end{lstlisting}
 \end{framed}
 \caption{Algoritmo que encontra o maior elemento.}
+\label{aula02:algo:max}
 \end{figure}
-
-Seja $f(n)$ a função de complexidade que determina o número de comparações entre elementos de $A$.
-Logo, $f(n) = n - 1$, para $n > 0$.
 
 No caso do algoritmo de maior elemento, o custo de execução é uniforme sobre todos os problemas 
 de tamanho $n$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Analise da ordenação por inserção}
+\subsection{Analise da ordenação por inserção}
 
 O código da figura~\ref{aula02:algo:insertion} mostra o algoritmo da ordenação
 por inserção, enquanto a figura~\ref{aula02:fig:insertion} apresenta os passos
@@ -165,7 +167,7 @@ $an^2 + bn +c$ para constantes $a$, $b$ e $c$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Melhor caso, caso médio e pior caso}
+\subsection{Melhor caso, caso médio e pior caso}
 
 Em alguns algoritmos, o custo de execução também é uma função da entrada de dados, não somente
 do tamanho $n$ da entrada.
@@ -188,7 +190,7 @@ tal como o pior caso.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Ordem de crescimento}
+\subsection{Ordem de crescimento}
 
 A {\bf ordem de crescimento} é uma forma de simplificar a analise de algoritmos.
 Nesse caso, consideramos apenas os termos maiores (como $an^2$) sendo que
@@ -213,7 +215,7 @@ exponencial      & $2^n$  & $2^n$ & $2^{9n}$ & nunca & nunca  \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Notação assintótica}
+\subsection{Notação assintótica}
 
 A notação assintótica é uma forma de denotar o crescimento de uma função,
 e uma notação para comparar algoritmos.
@@ -250,7 +252,7 @@ No caso da ordenação por inserção, podemos afirmar que o tempo de execução
 $\Omega(n)$ (melhor caso) e $O(n^2)$ (pior caso).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Eficiência}
+\subsection{Eficiência}
 
 \begin{framed}
 \centering
