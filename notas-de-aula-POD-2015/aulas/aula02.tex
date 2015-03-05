@@ -36,6 +36,7 @@ Exemplos de problemas:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Análise de algoritmos}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Eficiência}
 
 \begin{itemize}
@@ -57,26 +58,42 @@ Um algoritmo é eficiente quando seu tempo de execução é polinomial.
 
 Vamos considerar dois exemplos de algoritmos de ordenação com $n$ elementos de entrada:
 \begin{itemize}
-\item {\bf Inserção} com custo $c_1 n^2$ sendo $c_1$ uma constante que não depende de $n$.
-\item {\bf Merge sort} com custo $c_2 n \log n$. 
+\item {\bf Ordenação por inserção} com custo $c_1 n^2$ sendo $c_1$ uma constante que não depende de $n$.
+\item {\bf Ordenação merge sort} com custo $c_2 n \log n$ sendo $c_2$ outra constante que não depende de $n$.
 \end{itemize}
 
+Considere um exemplo onde vamos executar a ordenação por inserção em uma máquina mais rápida (A)
+e a ordenação por mergesort em uma máquina mais lenta (B).
+A entrada será de 10 milhões de números ($10^7$ ou equivalente a $80$ MB).
+Suponha que a máquina A executa $10^10$ instruções por segundo, enquanto que a máquina B executa
+somente $10^7$ instruções por segundo. 
+Ainda, o código da inserção tem custo $2n^2$ enquanto que o mergesort tem $50n \log n$ de custo.
 
+Para ordenar $10^7$ números, o computador A com ordenação por inserção demora
+\begin{equation*}
+\frac{2\dot (10^7)\; instrucoes}{10^{10}\; instrucoes/segundo} - 20.000 \; segundos.
+\end{equation*}
+
+Depois, para ordenar os $10^7$ números no computador B com mergesort custa
+\begin{equation*}
+\frac{50 \dot (10^7)\; instrucoes}{10^{7}\; instrucoes/segundo} - 1.163 \; segundos \;(20\; minutos).
+\end{equation*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Ordem de crescimento}
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{cc}
+\begin{tabular}{cccccc}
 \hline
-{\bf Descrição} & {\bf Ordem} \\ 
+{\bf descrição} & {\bf função} & {\bf 2x} & {\bf 10x} & {\bf tempo$10n$} & {\bf tempo $10n$ ($10\times$ rápido)} \\ 
 \hline
-constante        & $1$ \\
-logaritmo        & $\log n$ \\
-linear           & $n$ \\
-linear-logaritmo & $n \log n$ \\
-quadratico       & $n^2$ \\
-cúbico           & $n^3$ \\
-exponencial      & $2^n$ \\
+constante        & $1$ & & & &  \\
+linear           & $n$        & $2$ & $10$ & um dia & algumas horas \\
+linear-logaritmo & $n \log n$ & $2$ & $10$ & um dia & algumas horas \\
+quadratico       & $n^2$      & $4$  & $100$ & algumas semanas & um dia  \\
+cúbico           & $n^3$ & $8$ & $1.000$ & meses & algumas semanas  \\
+exponencial      & $2^n$  & $2^n$ & $2^{9n}$ & nunca & nunca  \\
 \hline
 \end{tabular}
 \end{table}
