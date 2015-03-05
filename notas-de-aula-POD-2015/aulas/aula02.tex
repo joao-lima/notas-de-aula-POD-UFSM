@@ -36,4 +36,48 @@ Exemplos de problemas:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Análise de algoritmos}
 
-Pergunta fund
+\subsubsection{Eficiência}
+
+\begin{itemize}
+\item Medida de custo de execução de um programa.
+\item Importante separar entre uma medida {\bf real}  e {\bf generalizada}.
+	\begin{itemize}
+	\item real depende do compilador, hardware, memória, etc.
+	\item generalizada pode usar um computador abstrato para análise.
+		\begin{itemize}
+		\item Ex: máquina teóricas (Turing, lambda).
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\begin{framed}
+\centering
+Um algoritmo é eficiente quando seu tempo de execução é polinomial.
+\end{framed}
+
+Vamos considerar dois exemplos de algoritmos de ordenação com $n$ elementos de entrada:
+\begin{itemize}
+\item {\bf Inserção} com custo $c_1 n^2$ sendo $c_1$ uma constante que não depende de $n$.
+\item {\bf Merge sort} com custo $c_2 n \log n$. 
+\end{itemize}
+
+
+\subsubsection{Ordem de crescimento}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cc}
+\hline
+{\bf Descrição} & {\bf Ordem} \\ 
+\hline
+constante        & $1$ \\
+logaritmo        & $\log n$ \\
+linear           & $n$ \\
+linear-logaritmo & $n \log n$ \\
+quadratico       & $n^2$ \\
+cúbico           & $n^3$ \\
+exponencial      & $2^n$ \\
+\hline
+\end{tabular}
+\end{table}
+
