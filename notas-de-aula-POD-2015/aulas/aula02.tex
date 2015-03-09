@@ -347,3 +347,41 @@ Um algoritmo é eficiente quando seu tempo de execução é polinomial.
 %\end{framed}
 
 Um problema é dito \textbf{intratável} se não existe um algoritmo polinomial para resolvê-lo.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Exercícios}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{enumerate}
+\item Dê o conceito de algoritmo.
+
+\item O que significa dizer que uma função $g(n)$ é $O(f(n))$ ?
+
+\item Qual algoritmo você prefere: um algoritmo que requer $n^5$ passos ou um que requer $2^n$ passos ?
+
+\item Suponha que um algoritmo A e um algoritmo B com funções de complexidade de tempo 
+$a(n) = n^2 + n + 549$ e $b(n) = 49n + 49$, respectivamente. Determine quais são os valores
+de $n$ pertencentes ao conjunto dos números naturais para os quais A leva menos tempo para
+executar do que B.
+
+\item Qual é o menor valor de $n$ tal que um algoritmo cujo tempo de execução é $100n^2$ funciona 
+mais rápido que um algoritmo cujo tempo de execução é $2^n$ na mesma máquina ?
+
+\item Indique, para cada par de expressões ($A$, $B$) na tabela a seguir, se A é $O$, $\Omega$ ou $\Theta$ 
+de B. Suponha que $k \geq 1$, $\epsilon > 0$ e $c > 1$ são constantes. Sua resposta deve estar na forma da tabela, com
+``sim'' ou ``não'' escrito em cada espaço.
+%
+\begin{table}[ht]
+\begin{tabular}{cc|c|c|c|}
+\hline
+A & B & $O$ 				& $\Omega$ & $\Theta$ \\ \hline
+$\log^k(n)$ & $n^\epsilon$ 		& \hspace{1cm} &  \hspace{1cm} &  \hspace{1cm} \\ \hline
+$n^k$ & $c^n$ 				&  &  &  \\ \hline
+$\sqrt{n}$ & $^{sin(n)}$  		&  &  &  \\ \hline
+$2^n$ & $2^{n/2}$  			&  &  &  \\ \hline
+$n^{\log (c)}$ & $c^{\log (n)}$  	&  &  &  \\ \hline
+$\log (n!)$ & $\log (n^n)$ 		&  &  &  \\ \hline
+\end{tabular}
+\end{table}
+
+\end{enumerate}
