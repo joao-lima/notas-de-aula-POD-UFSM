@@ -259,6 +259,46 @@ para todo $n \geq n_0\}$.
 No caso da ordenação por inserção, podemos afirmar que o tempo de execução fica entre
 $\Omega(n)$ (melhor caso) e $O(n^2)$ (pior caso).
 
+
+Nesse curso vamos focar na notação $O$, ou seja, onde $f(n) = O(g(n))$ tal que
+$f(n) \leq cg(n)$ para $n \geq n_0$.
+Exemplos:
+\begin{itemize}
+\item $2n + 10$ é $O(n)$:
+	\begin{itemize}
+	\item $2n + 10 \leq cn$
+	\item $(c - 2)n \geq 10$
+	\item $n \geq 10/(c - 2)$
+	\item Vale para $c = 3$ e $n_0 = 10$.
+	\end{itemize}
+\item $n^2$ não é $O(n)$:
+	\begin{itemize}
+	\item $n^2 \leq cn$
+	\item $n \leq c$
+	\item Não pode ser satisfeito porque $c$ precisa ser constante.
+	\end{itemize}
+\item $7n - 2$ é $O(n)$.
+\item $3n^3 + 20n^2 + 5$ é $O(n^3)$.
+\item $3 \log (n) + 5$ é $O(\log (n))$.
+\end{itemize}
+
+Alguma regras para a notação $O$:
+\begin{itemize}
+\item Se $f(n)$ tem grau $d$ então $f(n)$ é $O(n^d)$, ou seja:
+	\begin{itemize}
+	\item Ignora items de ordem menor.
+	\item Ignora constantes.
+	\end{itemize}
+\item Use a menor ordem possível.
+	\begin{itemize}
+	\item ``$2n$ é $O(n)$'' invés de ``$2n$ é $O(n^2)$''.
+	\end{itemize}
+\item Use a expressão mais simples da ordem.
+	\begin{itemize}
+	\item ``$3n + 5$ é $O(n)$'' invés de ``$3n+5$ é $O(3n)$''.
+	\end{itemize}
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Principais classes de problemas}
 
@@ -291,7 +331,7 @@ de $O(n!)$ ser muito pior que $O(2^n)$. Também ocorrem em casos de força bruta
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Algoritmos polinomiais exponenciais}
+\subsection{Algoritmos polinomiais e exponenciais}
 
 \begin{itemize}
 \item {\bf Algoritmo polinomial} em tempo de execução tem complexidade $O(c^n), c > 1$.
