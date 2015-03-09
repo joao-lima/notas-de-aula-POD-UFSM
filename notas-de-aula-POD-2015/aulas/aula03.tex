@@ -2,9 +2,57 @@
 \chapter{Classificação de dados}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Os algoritmos deste capítulo resolvem o {\bf problema de ordenação}:
+\begin{itemize}
+\item {\bf Entrada}: uma sequência de $n$ números $\langle a_1, a_2, ..., a_n \rangle$.
+
+\item {\bf Saída}:  Uma permutação $\langle {a'}_1, {a'}_2, ..., {a'}_n \rangle$ da
+entrada tal que ${a'}_1 \leq {a'}_2 \leq ... \leq {a'}_n$.
+\end{itemize}
+Ordenação pode ser usado em diversos outros algoritmos.
+Ela pode ser necessária devido a requisitos do usuário, ou para a otimização de pesquisa 
+como na pesquisa binária.
+
+Em geral os dados são mantidos em um vetor onde cada objeto possui um
+atributo \textbf{chave} que deve ser mantido ordenado.
+Para fins de exemplo, utiliza-se números inteiros como elementos.
+
+Um algoritmo de ordenação possui duas características principais:
+\begin{itemize}
+\item {\bf Estabilidade} -- relativo a manutenção da ordem original dos itens 
+com chaves iguais.
+	\begin{itemize}
+	\item Um algoritmo de ordenação é {\bf estável} se a ordem relativa dos itens
+		com chaves iguais não se altera durante a ordenação.
+	\end{itemize}
+\item {\bf Uso de memória} -- quanto ao uso de memória pelo algoritmo.
+	\begin{itemize}
+	\item {\bf Com cópia de dados} -- utiliza um vetor temporário para realizar a ordenação. As trocas são feitas entre o vetor original e o temporário.
+	\item {\bf In-place} -- as trocas são feitas dentro do próprio vetor original.
+	\end{itemize}
+\end{itemize}
+
+Os métodos de ordenação podem ser {\bf interno} (em memória primária) ou {\bf externo} (em memória secundária).
+Na {\bf interna} o arquivo de entrada cabe todo na memória principal, enquanto
+que na {\bf externa} o arquivo não cabe na memória principal. 
+
+A maioria dos métodos de ordenação é baseada em {\bf comparações} de chaves.
+Porém, existem outros métodos que utilizam o principio da {\bf distribuição}. 
+Um exemplo é ordenar um baralho com 52 cartas na ordem numérica e ordem de naipes.
+O algoritmo seria:
+\begin{enumerate}
+\item Distribuir cartas em treze montes: ases, dois, três, ...., reis.
+\item Coletar os montes na ordem especificada.
+\item Distribuir novamente as cartas em quatro montes: paus, ouros, copas e espadas.
+\item Coletar os montes na ordem especificada.
+\end{enumerate}
+Alguns desses métodos são o {\bf radixsort} e o {\bf bucketsort}.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Classificação em memória primária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Bolha (\emph{bubble sort})}
