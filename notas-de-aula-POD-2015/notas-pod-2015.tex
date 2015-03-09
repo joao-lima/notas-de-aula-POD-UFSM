@@ -1,4 +1,5 @@
-\documentclass[a4paper,12pt,oneside]{article}
+%\documentclass[a4paper,12pt,oneside]{article}
+\documentclass[a4paper,12pt,twoside]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 %\usepackage{times}
@@ -69,14 +70,19 @@
   \renewcommand{\headrulewidth}{0pt}
   \renewcommand{\footrulewidth}{0pt}
 }
-\fancyfoot[C]{\footnotesize Pesquisa e Ordenação de Dados ``A''~--~UFSM \hfill \thepage}
+%\fancyfoot[C]{\footnotesize Pesquisa e Ordenação de Dados ``A''~--~UFSM \hfill \thepage}
+\fancyfoot[LE,RO]{\footnotesize\thepage}
+\fancyfoot[RE]{\footnotesize \nouppercase{\leftmark}}
+\fancyfoot[LO]{\footnotesize \nouppercase{\rightmark}}
 
 \title{Notas de aula\\
 Pesquisa e Ordenação de Dados ``A''}
 
-\author{João Vicente Ferreira Lima\\
+\author{
+João Vicente Ferreira Lima\\
 Departamento de Linguagens e Sistemas de Computação\\
-Universidade Federal de Santa Maria}
+Universidade Federal de Santa Maria
+}
 
 \date{Versão de \today}
 

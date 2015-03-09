@@ -1,9 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introdução a análise e complexidade de algoritmos}
+\chapter{Introdução a análise e complexidade de algoritmos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Definição de algoritmo}
+\section{Definição de algoritmo}
 
 \begin{itemize}
 \item Procedimento bem definido que:
@@ -36,7 +36,7 @@ Exemplos de problemas:
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Análise de algoritmos}
+\section{Análise de algoritmos}
 
 \begin{itemize}
 \item Medida de custo de execução de um programa.
@@ -83,7 +83,7 @@ Depois, para ordenar os $10^7$ números no computador B com mergesort custa
 \end{equation*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Função de complexidade}
+\section{Função de complexidade}
 
 O custo de um algoritmo é definido em geral por uma função de complexidade $f$. Sendo assim,
 $f(n)$ é a medida de tempo de execução de um algoritmo para uma instância do problema de tamanho $n$.
@@ -97,7 +97,7 @@ com entrada $n$.
 Caso nada for mencionado, estamos falando sobre complexidade de tempo em grande parte do material.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Analise simples - maior elemento}
+\section{Analise simples - maior elemento}
 
 A figura~\ref{aula02:algo:max} mostra o algoritmo que encontra o maior elemento em um vetor.
 Seja $f(n)$ a função de complexidade que determina o número de comparações entre elementos de $A$.
@@ -126,7 +126,7 @@ No caso do algoritmo de maior elemento, o custo de execução é uniforme sobre 
 de tamanho $n$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Analise da ordenação por inserção}
+\section{Analise da ordenação por inserção}
 
 O código da figura~\ref{aula02:algo:insertion} mostra o algoritmo da ordenação
 por inserção.
@@ -172,7 +172,7 @@ $an^2 + bn +c$ para constantes $a$, $b$ e $c$.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Melhor caso, caso médio e pior caso}
+\section{Melhor caso, caso médio e pior caso}
 
 Em alguns algoritmos, o custo de execução também é uma função da entrada de dados, não somente
 do tamanho $n$ da entrada.
@@ -195,7 +195,7 @@ tal como no pior caso.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Ordem de crescimento}
+\section{Ordem de crescimento}
 
 A {\bf ordem de crescimento} é uma forma de simplificar a analise de algoritmos
 e desconsiderar detalhes de custo.
@@ -222,7 +222,7 @@ exponencial      & $2^n$  & $2^n$ & $2^{9n}$ & nunca & nunca  \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Notação assintótica}
+\section{Notação assintótica}
 
 A notação assintótica é uma forma de denotar o crescimento de uma função,
 e uma notação para comparar algoritmos.
@@ -299,7 +299,7 @@ Alguma regras para a notação $O$:
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Principais classes de problemas}
+\section{Principais classes de problemas}
 
 \begin{itemize}
 \item $f(n) = O(1)$ são algoritmos de {\bf complexidade constante}
@@ -330,7 +330,7 @@ de $O(n!)$ ser muito pior que $O(2^n)$. Também ocorrem em casos de força bruta
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Algoritmos polinomiais e exponenciais}
+\section{Algoritmos polinomiais e exponenciais}
 
 \begin{itemize}
 \item {\bf Algoritmo polinomial} em tempo de execução tem complexidade $O(c^n), c > 1$.
@@ -338,10 +338,12 @@ de $O(n!)$ ser muito pior que $O(2^n)$. Também ocorrem em casos de força bruta
 $p(n)$ é um polinômio.
 \end{itemize}
 
-
-\begin{framed}
-\centering
+\begin{quote}
 Um algoritmo é eficiente quando seu tempo de execução é polinomial.
-\end{framed}
+\end{quote}
+
+%\begin{framed}
+%\centering
+%\end{framed}
 
 Um problema é dito \textbf{intratável} se não existe um algoritmo polinomial para resolvê-lo.
