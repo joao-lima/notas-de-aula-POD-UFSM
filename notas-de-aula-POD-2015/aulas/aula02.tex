@@ -12,18 +12,20 @@
 	\item produz como saída um valor ou conjunto de valores
 	\end{itemize}
 \item Conjunto de passos que transforma a entrada na saída.
-\item Exemplo do {\bf problema de ordenação}:
 \end{itemize}
 
-{\bf Entrada}: uma sequência de $n$ números $\langle a_1, a_2, ..., a_n \rangle$.
+Exemplo do {\bf problema de ordenação}:
+\begin{itemize}
+\item {\bf Entrada}: uma sequência de $n$ números $\langle a_1, a_2, ..., a_n \rangle$.
 
-{\bf Saída}:  Uma permutação $\langle {a'}_1, {a'}_2, ..., {a'}_n \rangle$ da
+\item {\bf Saída}:  Uma permutação $\langle {a'}_1, {a'}_2, ..., {a'}_n \rangle$ da
 entrada tal que ${a'}_1 \leq {a'}_2 \leq ... \leq {a'}_n \rangle$.
+\end{itemize}
 
 \begin{itemize}
 \item Essa entrada do algoritmo é uma {\bf instância} do problema.
 \item Para um algoritmo estar {\bf correto}, para cada instância, ele termina com saída 
-correta. Um algoritmo correto \textsf{resolve} um problema. 
+correta. Um algoritmo correto \textit{resolve} um problema. 
 \end{itemize}
 
 Exemplos de problemas:
@@ -48,7 +50,8 @@ Exemplos de problemas:
 	\end{itemize}
 \item Grande parte dos casos utiliza-se o número de {\bf elementos de entrada}, denotado $n$, para
 determinar o tempo de um algoritmo.
-\item Se fosse um grafo, poderia-se usar como $n$ o número de vértices.
+\item Se fosse um grafo $G = (V, E)$, poderia-se usar na análise $|V|$, ou seja, o número de vértices ou
+o número de arestas $|E|$.
 \item O {\bf tempo de execução} é o número de passos executados, sendo o mais independente de 
 máquina possível.
 \end{itemize}
@@ -59,21 +62,24 @@ Vamos considerar dois exemplos de algoritmos de ordenação com $n$ elementos de
 \item {\bf Ordenação merge sort} com custo $c_2 n \log n$ sendo $c_2$ outra constante que não depende de $n$.
 \end{itemize}
 
-Considere um exemplo onde vamos executar a ordenação por inserção em uma máquina mais rápida (A)
-e a ordenação por mergesort em uma máquina mais lenta (B).
+Considere um exemplo onde vamos executar a ordenação por inserção em uma
+máquina mais rápida (A) e a ordenação por mergesort em uma máquina mais lenta
+(B).
 A entrada será de 10 milhões de números ($10^7$ ou equivalente a $80$ MB).
-Suponha que a máquina A executa $10^10$ instruções por segundo, enquanto que a máquina B executa
+Suponha que a máquina A executa $10^{10}$ instruções por segundo, enquanto que a máquina B executa
 somente $10^7$ instruções por segundo. 
-Ainda, o código da inserção tem custo $2n^2$ enquanto que o mergesort tem $50n \log n$ de custo.
+
+Ainda, dadas as implementações dos algoritmos, o código da inserção tem custo
+$2n^2$ enquanto que o mergesort tem $50n \log n$ de custo.
 
 Para ordenar $10^7$ números, o computador A com ordenação por inserção demora
 \begin{equation*}
-\frac{2\dot (10^7)\; instrucoes}{10^{10}\; instrucoes/segundo} = 20.000 \; segundos.
+\frac{2 \dot (10^7)^2\; instrucoes}{10^{10}\; instrucoes/segundo} = 20.000 \; segundos.
 \end{equation*}
 
 Depois, para ordenar os $10^7$ números no computador B com mergesort custa
 \begin{equation*}
-\frac{50 \dot (10^7)\; instrucoes}{10^{7}\; instrucoes/segundo} = 1.163 \; segundos \;(20\; minutos).
+\frac{50 \dot (10^7) \log 10^7\; instrucoes}{10^{7}\; instrucoes/segundo} = 1.163 \; segundos \;(20\; minutos).
 \end{equation*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -162,7 +168,7 @@ Além disso, o tempo de execução pode variar conforme a ordem dos elementos.
 O tempo de execução depende da soma dos tempos de execução de cada passo do algoritmo
 executado: se o passo tem custo $c_i$ e executa $n$ vezes contribui $c_i n$ para o tempo
 total.
-Assumind o pior caso, quando a entrada está em ordem reversa, o custo de execução é 
+Assumindo o pior caso, quando a entrada está em ordem reversa, o custo de execução é 
 $an^2 + bn +c$ para constantes $a$, $b$ e $c$.
 
 
@@ -174,27 +180,29 @@ do tamanho $n$ da entrada.
 No exemplo anterior, demostramos apenas o pior caso. 
 Os possíveis casos para análise são:
 \begin{itemize}
-\item Pior caso quando os elementos estão em ordem inversa e todos os elementos 
+\item {\bf Pior caso} -- quando os elementos estão em ordem inversa e todos os elementos 
 são trocados.
 Sabendo o pior caso, o custo do algoritmo nunca é maior que $f(n)$.
 O custo seria $an^2 + bn +c$ para constantes $a$, $b$ e $c$.
 
-\item Melhor caso onde os elementos já estão ordenados e nenhuma troca é necessária.
+\item {\bf Melhor caso} -- onde os elementos já estão ordenados e nenhuma troca é necessária.
 O custo é $an + b$ para constantes $a$ e $b$.
 
-\item Caso médio pode ser tanto quanto o pior caso. Supondo que aplicamos 
+\item {\bf Caso médio} -- pode ser tanto quanto o pior caso. Supondo que aplicamos 
 a ordenação por inserção para elementos em ordem aleatória $n$. 
 O resultado de uma execução de caso médio será quadratica ($an^2 + bn +c$)
-tal como o pior caso.
+tal como no pior caso.
 \end{itemize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Ordem de crescimento}
 
-A {\bf ordem de crescimento} é uma forma de simplificar a analise de algoritmos.
-Nesse caso, consideramos apenas os termos maiores (como $an^2$) sendo que
-valores grandes de $n$ são termos relativamente insignificantes.
+A {\bf ordem de crescimento} é uma forma de simplificar a analise de algoritmos
+e desconsiderar detalhes de custo.
+Na ordernação por inserção, consideramos apenas o termo maior ($an^2$) e desconsideramos
+sua constante ($a$) e os termos menores ($n$). 
+Para grandes valores de $n$, os termos menores são relativamente insignificantes.
 
 Na tabela abaixo, é possível comparar as diferentes funções de crescimento e 
 o tempo de execução de acordo com a entrada.
@@ -252,10 +260,49 @@ No caso da ordenação por inserção, podemos afirmar que o tempo de execução
 $\Omega(n)$ (melhor caso) e $O(n^2)$ (pior caso).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Eficiência}
+\subsection{Principais classes de problemas}
+
+\begin{itemize}
+\item $f(n) = O(1)$ são algoritmos de {\bf complexidade constante}
+independentes de $n$ com número de instruções fixas.
+
+\item $f(n) = O(\log n)$ são algoritmos de {\bf complexidade logarítmica}.
+Classe típica de problemas que dividem um problema em outros menores (divisão e conquista).
+
+\item $f(n) = O(n)$ são algoritmos de {\bf complexidade linear}. Em geral 
+um pequeno trabalho é realizado sobre cada elemento.
+
+\item $f(n) = O(n \log n)$ são algoritmos que em geral quebram um problema maior em outros
+menores, resolvem cada um deles e juntam as soluções depois.
+
+\item $f(n) = O(n^2)$ são algoritmos de {\bf complexidade quadrática}. 
+Ocorrem quando os dados são processados aos pares, muitas vezes em laços aninhados.
+
+\item $f(n) = O(n^3)$ são algoritmos de \textbf{complexidade cúbica}. Um exemplo
+desses algoritmos é o caso de três laços aninhados.
+
+\item $f(n) = O(2^n)$ são algoritmos de \textbf{complexidade exponencial}. Eles
+não são úteis do ponto de vista prático (problemas \textbf{NP-complete}.
+Em geral ocorrem em soluções que usam \textit{força bruta}. Exemplo: quando $n$ é 20,
+o tempo de execução chega a $1$ milhão.
+
+\item $f(n) = O(n!)$ são algoritmos de complexidade exponencial, apesar
+de $O(n!)$ ser muito pior que $O(2^n)$. Também ocorrem em casos de força bruta.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Algoritmos polinomiais exponenciais}
+
+\begin{itemize}
+\item {\bf Algoritmo polinomial} em tempo de execução tem complexidade $O(c^n), c > 1$.
+\item {\bf Algoritmo exponencial} em tempo de execução tem complexidade $O(p(n))$, onde
+$p(n)$ é um polinômio.
+\end{itemize}
+
 
 \begin{framed}
 \centering
 Um algoritmo é eficiente quando seu tempo de execução é polinomial.
 \end{framed}
 
+Um problema é dito \textbf{intratável} se não existe um algoritmo polinomial para resolvê-lo.
