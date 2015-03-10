@@ -71,6 +71,7 @@ Ex.: quicksort, mergesort, heapsort.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Bolha (\emph{bubble sort})}
 
+O bubblesort ordena os elementos ao colocar o maior sempre no fim do vetor.
 O algoritmo é ilustrado na figura~\ref{aula03:algo:bubblesort}.
 \begin{figure}[!htb]
 \centering
@@ -115,6 +116,7 @@ Desvantagens:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Seleção (\emph{selection sort})}
 
+O selectionsort coloca o menor elemento sempre no começo do vetor.
 O algoritmo é ilustrado na figura~\ref{aula03:algo:selection}.
 \begin{figure}[!htb]
 \centering
@@ -125,7 +127,8 @@ void Selecao( int *A, int n ){
 	for( i = 0; i < n; i++){
 		min = i;
 		for(j= i+1; j < n; j++)
-			if( A[j] < A[min] )	min = j;
+			if( A[j] < A[min] )
+				min = j;
 		troca( A[min], A[i] );
 	}
 }
