@@ -95,6 +95,8 @@ void Bubblesort( int *A, int n ){
 \label{aula03:algo:bubblesort}
 \end{figure}
 
+\todo[inline]{Exemplo com $4, 9, 2, 1, 5$.}
+
 O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (para qualquer caso)
 \begin{equation*}
 C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
@@ -133,6 +135,8 @@ void Selecao( int *A, int n ){
 \label{aula03:algo:selection}
 \end{figure}
 
+\todo[inline]{Exemplo com $4, 9, 2, 1, 5$.}
+
 O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (qualquer caso)
 \begin{equation*}
 C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
@@ -164,6 +168,8 @@ $1 + 1 + 1 + 1+ .... + 1 = n-1$ com complexidade
 \begin{equation*}
 C(n) = n - 1  = O(n).
 \end{equation*}
+
+\todo[inline]{Exemplo com $4, 9, 2, 1, 5$.}
 
 Vantagens:
 \begin{itemize}
@@ -210,6 +216,8 @@ void Shellsort( int *A, int n ){
 \label{aula03:algo:shellsort}
 \end{figure}
 
+\todo[inline]{Exemplo com $4, 9, 2, 1, 5$, para $i= 3$, $i = 2$, e $i = 1$.}
+
 A eficiência depende do intervalo (gap) usado. Exemplos:
 \begin{itemize}
 \item $gap = \frac{n}{2^k} = \frac{n}{2}, \frac{n}{4}, ...., 1 = O(n^2)$ .
@@ -224,6 +232,7 @@ Desvantagens:
 \begin{itemize}
 \item {\bf não é estável}.
 \end{itemize}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Comparação dos métodos básicos}
@@ -266,3 +275,8 @@ Shellsort & $O(n)$ & $O(n^{\frac{3}{2}})$ & $O(n^{\frac{3}{2}})$ &  $1$ & não \
 \section{Exercícios}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{enumerate}
+\item Ordene os elementos $3, 7, 1, 4, 9, 2$ usando os métodos: bolha, seleção,
+inserção, shellsort (com gaps $3, 2, 1$). Não esqueça de exibir o estado do vetor a cada troca
+de elementos.
+\end{enumerate}

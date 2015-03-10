@@ -1,10 +1,9 @@
-%\documentclass[a4paper,12pt,oneside]{article}
 \documentclass[a4paper,12pt,twoside]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 %\usepackage{times}
 %\usepackage[margin=1cm,left=1cm,right=1cm]{geometry}
-\usepackage[margin=2cm]{geometry}
+\usepackage[a4paper]{geometry}
 \usepackage[brazilian]{babel} %french
 \usepackage{colortbl}
 \usepackage{fancyhdr}
@@ -27,6 +26,8 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[long,dayofweek]{datetime}
+\usepackage{todonotes}
+%\usepackage{titlesec}
 
 \graphicspath{{.}{figs/}}
 
@@ -48,6 +49,9 @@
 %  citecolor=citecol,
 %  urlcolor=linkcol
 }
+
+%\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
+%\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
 \lstset{%
 	language=C,
@@ -76,8 +80,8 @@
 \fancyfoot[RE]{\footnotesize \nouppercase{\leftmark}}
 \fancyfoot[LO]{\footnotesize \nouppercase{\rightmark}}
 
-\title{Notas de aula\\
-Pesquisa e Ordenação de Dados ``A''}
+\title{{\bf Notas de aula\\
+Pesquisa e Ordenação de Dados ``A''}}
 
 \author{
 João Vicente Ferreira Lima\\
