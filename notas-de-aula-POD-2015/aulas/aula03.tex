@@ -129,7 +129,7 @@ void Selecao( int *A, int n ){
 }
 \end{lstlisting}
 \end{framed}
-\caption{Algoritmo por seleção.}
+\caption{Algoritmo de ordenação por seleção.}
 \label{aula03:algo:selection}
 \end{figure}
 
@@ -178,6 +178,52 @@ Desvantagens:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Shellsort}
+
+Proposto por Shell em 1959, o algoritmo é uma extensão do insertion sort.
+Ele é eficiente quando a entrada está parcialmente ordenado.
+Porém, ele é  ineficiente no caso geral pois troca os valores apenas uma posição por vez.
+
+A proposta geral do shellsort é trocar elementos de posições distantes para vetores muito
+desordenados, e trocar elementos próximos para entradas parcialmente ordenados.
+O algoritmo é ilustrado na figura~\ref{aula03:algo:shellsort}.
+Quando $h = 1$ shellsort corresponde ao algoritmo de inserção.
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Shellsort( int *A, int n ){
+	int i, j;
+	int h = 1;
+	while( h < n/3 )
+		h = 3*h + 1;
+	while( h >= 1 ) {
+		for( i = h; i < n; i++ ){
+			for( j = i; j >= h && A[j] < A[j-h]; j -= h )
+				troca( A[j], A[j-h] );
+		}
+		h = h/3;
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo de ordenação Shellsort.}
+\label{aula03:algo:shellsort}
+\end{figure}
+
+A eficiência depende do intervalo (gap) usado. Exemplos:
+\begin{itemize}
+\item $gap = \frac{n}{2^k} = \frac{n}{2}, \frac{n}{4}, ...., 1 = O(n^2)$ .
+\item $gap = 2^k - 1 = 1,3,7,15,31,.... = O(n^{\frac{3}{2}})$.
+\end{itemize}
+
+Vantagens:
+\begin{itemize}
+\item podem ser mais eficiente que os demais algoritmos de ordem quadrática.
+\end{itemize}
+Desvantagens:
+\begin{itemize}
+\item {\bf não é estável}.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Comparação dos métodos básicos}
