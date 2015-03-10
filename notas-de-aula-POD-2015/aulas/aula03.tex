@@ -32,11 +32,18 @@ com chaves iguais.
 	\end{itemize}
 \end{itemize}
 
+O critério de avaliação, sendo $n$ o número de registros, pode ser por:
+\begin{itemize}
+\item $C(n)$ -- número de comparações.
+\item $M(n)$ -- número de movimentações de elementos.
+\end{itemize}
+Em grande parte dos casos, nos concentramos no número de comparações.
+
 Os métodos de ordenação podem ser {\bf interno} (em memória primária) ou {\bf externo} (em memória secundária).
 Na {\bf interna} o arquivo de entrada cabe todo na memória principal, enquanto
 que na {\bf externa} o arquivo não cabe na memória principal. 
 
-A maioria dos métodos de ordenação é baseada em {\bf comparações} de chaves.
+A maioria dos métodos é baseada em {\bf comparações} de chaves.
 Porém, existem outros métodos que utilizam o principio da {\bf distribuição}. 
 Um exemplo é ordenar um baralho com 52 cartas na ordem numérica e ordem de naipes.
 O algoritmo seria:
@@ -52,19 +59,140 @@ Alguns desses métodos são o {\bf radixsort} e o {\bf bucketsort}.
 \section{Classificação em memória primária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+Podem ser classificados como:
+\begin{itemize}
+\item {\bf Métodos simples} -- adequado para vetores pequenos, requerem $O(n^2)$ comparações.
+Ex.: bolha, inserção, seleção, shellsort.
+\item {\bf Métodos eficientes} -- adequados para vetores grandes, requerem $O(n \log n)$ comparações.
+Ex.: quicksort, mergesort, heapsort.
+\item {\bf Métodos mais eficientes} -- requerem $O(n)$ atribuições. Ex.: radixsort.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Bolha (\emph{bubble sort})}
 
+O algoritmo é ilustrado na figura~\ref{aula03:algo:bubblesort}.
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Bubblesort( int *A, int n ){
+	int i;
+	bool trocado;
+	do{
+		trocado = false;
+		for( i = 1; i < n; i++){
+			if( A[i-1] > A[i] ){
+				troca( A[i-1], A[i] );
+				trocado = true;
+			}
+		}
+	} while(trocado);
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo do bubblesort.}
+\label{aula03:algo:bubblesort}
+\end{figure}
+
+O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (para qualquer caso)
+\begin{equation*}
+C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
+\end{equation*}
+
+As principais vantagens:
+\begin{itemize}
+\item Algoritmo simples.
+\item Algoritmo estável.
+\end{itemize}
+Desvantagens:
+\begin{itemize}
+\item Se o vetor estiver ordenado, não melhora o tempo pois continua quadrático.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Seleção (\emph{selection sort})}
+
+O algoritmo é ilustrado na figura~\ref{aula03:algo:selection}.
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Selecao( int *A, int n ){
+	int i, j, min;
+	for( i = 0; i < n; i++){
+		min = i;
+		for(j= i+1; j < n; j++)
+			if( A[j] < A[min] )	min = j;
+		troca( A[min], A[i] );
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo por seleção.}
+\label{aula03:algo:selection}
+\end{figure}
+
+O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (qualquer caso)
+\begin{equation*}
+C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
+\end{equation*}
+
+Vantagens:
+\begin{itemize}
+\item custo linear para movimentações.
+\item interessante para vetores pequenos.
+\end{itemize}
+Desvantagens:
+\begin{itemize}
+\item vetor ordenado não ajuda, pois o custo continua quadrático.
+\item algoritmo {\bf não é estável}.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inserção (\emph{insertion sort})}
 
+A figura~\ref{aula02:algo:insertion} da seção~\ref{aula02:sec:insertion} ilustra
+o algoritmo.
+%
+O número de comparações é $(n-1)+(n-2)+....+2+1$ no pior caso (ordem reversa), com complexidade
+\begin{equation*}
+C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
+\end{equation*}
+Por outro lado, o número de comparações no melhor caso (vetor ordenado) é 
+$1 + 1 + 1 + 1+ .... + 1 = n-1$ com complexidade
+\begin{equation*}
+C(n) = n - 1  = O(n).
+\end{equation*}
+
+Vantagens:
+\begin{itemize}
+\item ideal quando o vetor está ``quase'' ordenado.
+\item ordenação estável.
+\end{itemize}
+Desvantagens:
+\begin{itemize}
+\item custo médio é quadratico.
+\item alto custo para inserir elemento na posição correta.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Shellsort}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação dos métodos básicos}
+
+\begin{table}[!ht]
+\centering
+\begin{tabular}{lccccc}
+\hline
+          & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
+Bubble    & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $1$ & sim \\ \hline
+Selection & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & $1$ & não  \\ \hline
+Insertion & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $1$ &  sim \\ \hline
+Shellsort & $O(n)$ & $O(n^{\frac{3}{2}})$ & $O(n^{\frac{3}{2}})$ &  $1$ & não \\ \hline
+\end{tabular}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Quicksort}
