@@ -234,9 +234,9 @@ Desvantagens:
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Comparação dos métodos básicos}
+\subsection{Comparação dos métodos simples}
 
-A tabela~\ref{aula03:tab:caso01} sumariza os métodos básicos e suas complexidades.
+A tabela~\ref{aula03:tab:caso01} sumariza os métodos simples e suas complexidades.
 %
 \begin{table}[!ht]
 \centering
@@ -248,13 +248,94 @@ Selection & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & $1$ & não  \\ \hline
 Insertion & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $1$ &  sim \\ \hline
 Shellsort & $O(n)$ & $O(n^{\frac{3}{2}})$ & $O(n^{\frac{3}{2}})$ &  $1$ & não \\ \hline
 \end{tabular}
-\caption{Comparação dos métodos básicos.}
+\caption{Comparação dos métodos simples.}
 \label{aula03:tab:caso01}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Métodos eficientes}
+
+Os métodos eficientes são baseados na estratégia de {\bf divisão e conquista} (D\&C)
+onde:
+\begin{itemize}
+\item {\bf divisão} -- divide um problema maior em problemas menores (subproblemas) 
+recursivamente até que não seja mais possível dividir (caso base).
+
+\item {\bf conquista} -- a solução dos problemas menores leva a solução do problema maior.
+\end{itemize}
+
+Diversos métodos de ordenação aplicam divisão e conquista. Os algoritmos detalhados
+aqui são o \emph{quicksort} e o \emph{mergesort}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Quicksort}
 
+Proposto em 1960 e publicado em 1962, a ideia básica é dividir o problema de
+ordenar um conjunto com $n$ itens em dois problemas menores.
+Os problemas menores são ordenados independentemente, e combinados para
+produzir a solução final.
+
+O quick funciona da seguinte forma:
+\begin{enumerate}
+\item selecionar um elemento como {\bf pivô}.
+\item particionar os elementos em dois subvetores:
+	\begin{enumerate}
+	\item elementos menores que o pivô.
+	\item elementos maiores que o pivô.
+	\end{enumerate}
+\item executar o quicksort recursivamente em cada subvetor.
+\end{enumerate}
+
+Os passos do {\bf particionamento} são:
+\begin{enumerate}
+\item escolher um {\bf pivô} $pivo$.
+\item percorrer o vetor a partir da esquerda até que $A[i] \geq pivo$.
+\item percorrer o vetor a partir da direita até que $[j] \leq pivo$.
+\item trocar $A[i]$ com $A[j]$.
+\item continuar até que $i$ e $j$ se cruzem, ou seja, enquanto $i < j$.
+\end{enumerate}
+
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Quicksort( int *A, int esq, int dir ){
+	int i;
+	if( esq < dir ){
+		i = Partition( A, esq, dir );
+		Quicksort( A, esq, i - 1 );
+		Quicksort( A, i + 1, dir );
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo de ordenação Quicksort.}
+\label{aula03:algo:quicksort}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+int Partition( int *A, int esq, int dir ){
+	int i = esq;
+	int j = dir;
+	int pivo = A[esq];
+	do {
+		while( pivo > A[i] )  i++;
+		while( pivo < A[j] )  j--;
+		if( i <= j ) {
+			troca( A[i], A[j] );
+			i++;
+			j--;
+		}
+	} while( i <= j  );
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo de partição do Quicksort.}
+\label{aula03:algo:quicksort}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mergesort}
 
