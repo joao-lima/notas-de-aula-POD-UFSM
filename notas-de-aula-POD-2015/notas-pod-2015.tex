@@ -26,8 +26,9 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[long,dayofweek]{datetime}
-\usepackage{todonotes}
-%\usepackage{titlesec}
+%\usepackage{todonotes}
+\usepackage[disable]{todonotes}
+\usepackage{titlesec}
 
 \graphicspath{{.}{figs/}}
 
@@ -50,8 +51,8 @@
 %  urlcolor=linkcol
 }
 
-%\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
-%\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titleformat{\chapter}{\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
 \lstset{%
 	language=C,

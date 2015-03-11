@@ -98,7 +98,7 @@ void Bubblesort( int *A, int n ){
 
 \todo[inline]{Exemplo com $4, 9, 2, 1, 5$.}
 
-O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (para qualquer caso)
+O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (para pior caso)
 \begin{equation*}
 C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
 \end{equation*}
@@ -107,10 +107,6 @@ As principais vantagens:
 \begin{itemize}
 \item Algoritmo simples.
 \item Algoritmo estável.
-\end{itemize}
-Desvantagens:
-\begin{itemize}
-\item Se o vetor estiver ordenado, não melhora o tempo pois continua quadrático.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
