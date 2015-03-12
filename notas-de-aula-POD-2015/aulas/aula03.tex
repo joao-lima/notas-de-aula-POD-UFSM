@@ -275,7 +275,7 @@ ordenar um conjunto com $n$ itens em dois problemas menores.
 Os problemas menores são ordenados independentemente, e combinados para
 produzir a solução final.
 
-O quick funciona da seguinte forma:
+O Quicksort funciona da seguinte forma:
 \begin{enumerate}
 \item selecionar um elemento como {\bf pivô}.
 \item particionar os elementos em dois subvetores:
@@ -290,11 +290,16 @@ Os passos do {\bf particionamento} são:
 \begin{enumerate}
 \item escolher um {\bf pivô} $pivo$.
 \item percorrer o vetor a partir da esquerda até que $A[i] \geq pivo$.
-\item percorrer o vetor a partir da direita até que $[j] \leq pivo$.
+\item percorrer o vetor a partir da direita até que $A[j] \leq pivo$.
 \item trocar $A[i]$ com $A[j]$.
 \item continuar até que $i$ e $j$ se cruzem, ou seja, enquanto $i < j$.
 \end{enumerate}
 
+O algoritmo do Quicksort é ilustrado na figura~\ref{aula03:algo:quicksort}
+enquanto que o particionamento na figura~\ref{aula03:algo:partition}.
+Nota-se que o pivô escolhido em cada particionamento é o número 
+na primeira posição do subvetor (linha 4).
+%
 \begin{figure}[!htb]
 \centering
 \begin{framed}
@@ -317,25 +322,49 @@ void Quicksort( int *A, int esq, int dir ){
 \centering
 \begin{framed}
 \begin{lstlisting}
-int Partition( int *A, int esq, int dir ){
-	int i = esq;
-	int j = dir;
-	int pivo = A[esq];
+int Partition( int *A, int inicio, int fim ){
+	int esq = inicio;
+	int dir = fim + 1;
+	int pivo = A[inicio];
 	do {
-		while( pivo > A[i] )  i++;
-		while( pivo < A[j] )  j--;
-		if( i <= j ) {
-			troca( A[i], A[j] );
-			i++;
-			j--;
-		}
-	} while( i <= j  );
+		while( pivo > A[++esq] )
+			if( esq == fim ) break;
+		while( pivo < A[--dir] )
+			if( dir == inicio ) break;
+		if( esq < dir )
+			troca( &A[esq], &A[dir] );
+	} while( esq < dir  );
+	troca( &A[inicio], &A[dir] );
+	return dir;
 }
 \end{lstlisting}
 \end{framed}
 \caption{Algoritmo de partição do Quicksort.}
-\label{aula03:algo:quicksort}
+\label{aula03:algo:partition}
 \end{figure}
+
+A análise do Quicksort depende da {\bf escolha do pivô} para balanceamento do
+particionamento, essencial na eficiencia do algoritmo.
+
+O melhor caso do Quicksort acontece quando os dois subvetores possuem tamanho
+$n/2$ e aplica-se Quicksort recursivamente.
+Dado sua estrutura de árvore, a altura da árvore será $O(\log n)$ e o número
+de comparações em cada nível da árvore é $O(n)$. 
+Logo, o custo no {\bf melhor caso} é $O(n \log n)$.
+
+Para o pior caso, vamos supor que o pivô é o primeiro elemento e que o vetor já esta 
+ordenado.  
+O particionamento resulta em subvetores de tamanho $1$ e $n-1$ onde executa-se Quicksort
+em ambos recursivamente.
+Dessa forma, a altura da árvore é $O(n)$ (pode-se imaginar todos os nós com 1 filho)
+e comparações por nível de $O(n)$.
+O custo no {\bf pior caso} será $O(n^2)$.
+
+O problema do pior caso no Quicksort pode ser contornado ao escolher o ponto médio
+de três elementos do vetor.
+Por exemplo, das posições $A[0]$, $A[n/2]$ e $A[n-1]$, escolhe-se o que tem
+valor médio entre eles.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mergesort}
 
