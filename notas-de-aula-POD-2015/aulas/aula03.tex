@@ -368,6 +368,75 @@ valor médio entre eles.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Mergesort}
 
+A ideia do Mergesort é dividir um conjunto com $n$ itens em duas partes iguais.
+Os problemas menores são ordenados independentemente, e mesclados para
+produzir a solução final.
+
+O algoritmo do Mergesort é ilustrado na figura~\ref{aula03:algo:mergesort}
+enquanto que a mescla na figura~\ref{aula03:algo:merge}.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Mergesort( int *A, int inicio, int fim, int *aux ){
+	int meio;
+	if( inicio < fim ){
+		meio = (inicio + fim - 1)/2;
+		Mergesort( A, inicio, meio, aux );
+		Mergesort( A, meio + 1, fim, aux );
+		Merge( A, inicio, meio, fim, aux );
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo de ordenação Mergesort.}
+\label{aula03:algo:mergesort}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Merge( int *A, int inicio, int meio, int fim, int *aux ){
+	int i = inicio, j = meio + 1, k;
+	for(k = inicio; k <= fim; k++ )
+		aux[k] = A[k];
+	for(k = inicio; k <= fim; k++ ){
+		if(i > meio)		 A[k] = aux[j++];
+		else if(j > fim)	 A[k] = aux[i++];
+		else if(aux[j] < aux[i]) A[k] = aux[j++];
+		else 			 A[k] = aux[i++];
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo para mesclar subvetores do Mergesort.}
+\label{aula03:algo:merge}
+\end{figure}
+
+O algoritmo de Mergesort ilustrado {\bf não é in-place} e utiliza um vetor
+temporário (ou auxiliar) para a operação de mescla.
+Dessa forma, pode-se mesclar os elementos no vetor temporário e depois copiar
+de volta ao vetor original.
+O uso do vetor auxiliar simplifica o algoritmo, mas necessita do dobro de
+espaço para fazer a ordenação.
+
+A análise do Mergesort deve considerar que ele divide o problema em dois
+subvetores de tamanho $n/2$ e aplica Mergesort recursivamente.
+O custo de comparações em cada nível é $cn$ sendo o primeiro nível
+$c(n/2)+c(n/2)$, o segundo $c(n/4)+c(n/4)+c(n/4)+c(n/4)$, etc.
+A árvore de recursão terá $\log n + 1$ níveis, cada um com custo $cn$.
+Portanto, o custo total será $cn(\log n + 1) = cn \log n + cn$.
+O custo no {\bf pior caso} do algoritmo é $O(n \log n)$.
+
+No melhor caso, o vetor de entrada já está ordenado. 
+Uma forma eficiente de descobrir é testar o último elemento do primeiro subvetor
+e o primeiro elemento do segundo subvetor.
+As chamadas recursivas ainda são necessárias mas não será preciso fazer chamadas
+ao Merge.
+O custo no {\bf melhor caso} é $O(n)$.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Heapsort}
 
