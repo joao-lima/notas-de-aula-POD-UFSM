@@ -203,8 +203,8 @@ void Shellsort( int *A, int n ){
 		h = 3*h + 1;
 	while( h >= 1 ) {
 		for( i = h; i < n; i++ ){
-			for( j = i; j >= h && A[j] < A[j-h]; j -= h )
-				troca( A[j], A[j-h] );
+		  for( j = i; j >= h && A[j] < A[j-h]; j -= h )
+	  		  troca( A[j], A[j-h] );
 		}
 		h = h/3;
 	}
@@ -289,11 +289,13 @@ O Quicksort funciona da seguinte forma:
 Os passos do {\bf particionamento} são:
 \begin{enumerate}
 \item escolher um {\bf pivô} $pivo$.
-\item percorrer o vetor a partir da esquerda até que $A[i] \geq pivo$.
-\item percorrer o vetor a partir da direita até que $A[j] \leq pivo$.
-\item trocar $A[i]$ com $A[j]$.
-\item continuar até que $i$ e $j$ se cruzem, ou seja, enquanto $i < j$.
+\item percorrer o vetor a partir da esquerda até que $A[esq] \geq pivo$.
+\item percorrer o vetor a partir da direita até que $A[dir] \leq pivo$.
+\item trocar $A[esq]$ com $A[dir]$.
+\item continuar até que $esq$ e $dir$ se cruzem, ou seja, enquanto $esq >= dir$.
 \end{enumerate}
+
+\todo[inline]{Exemplo com $40, 20, 10, 80, 60, 50, 7, 30, 100$.}
 
 O algoritmo do Quicksort é ilustrado na figura~\ref{aula03:algo:quicksort}
 enquanto que o particionamento na figura~\ref{aula03:algo:partition}.
@@ -440,6 +442,170 @@ O custo no {\bf melhor caso} é $O(n)$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Heapsort}
 
+Heapsort possue o mesmo princípio da ordenação por seleção onde:
+\begin{enumerate}
+\item selecionar o maior item do vetor.
+\item trocar com o item da primeira posição do vetor.
+\item repetir essa operação para os $n-1$ elementos, os $n-2$, e assim sucessivamente.
+\end{enumerate}
+O custo de encontrar o menor elemento é de $n-1$ comparações, porém esse custo pode ser reduzido
+com uma estrutura de dados {\bf heap}.
+
+\subsubsection*{Definição de heap}
+
+O heap é uma árvore binária balanceada e justificada a esquerda onde todos os
+nós satisfazem a {\bf propriedade do heap}: seu valor é menor ou igual ao valor
+do nó pai.
+Uma árvore balanceada significa que todos os níveis estão completos com exceção
+do nível folha.
+Uma árvore justificada a esquerda significa que os nós do último nível
+estão mais a esquerda possível.
+A partir da propriedade do heap, conclui-se que o maior elemento de todos
+na árvore está no topo.
+
+A inserção no heap sempre ocorre no último nível, a direita do último nó.
+Se o último nível estiver cheio, começa um novo nível. 
+Na remoção o elemento removido é trocado pelo mais a direita da árvore.
+As operações de inserção e remoção podem fazer com que a árvore perca a
+propriedade do heap.  A correção é feita por transformações locais, com a troca
+do nó pai pelo nó filho de maior valor.
+
+Heaps podem ser mapeados para vetores com operações sobre vetores.
+No caso de um nó de indice $i$:
+\begin{itemize}
+\item o filho à {\bf esquerda} está em $2*i+1$.
+\item o filho à {\bf direita} está em $2*i+2$.
+\end{itemize}
+A {\bf raiz} é o primeiro elemento do vetor e o nó mais à direita é o último
+elemento do vetor.
+A figura~\ref{aula03:fig:heap} ilustra um exemplo de vetor e seu heap correspondente.
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{heap}
+\caption{Exemplo de vetor e representação como um heap.}
+\label{aula03:fig:heap}
+\end{figure}
+
+\subsubsection*{Heap para ordenação}
+
+O primeiro algoritmo (figura~\ref{aula03:algo:heap:refaz}) garante a principal
+propriedade do heap a partir de uma posição $i$ do vetor.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Refaz( int *A, int i, int n ){
+	int esq = 2 * i + 1;
+	int dir = 2 * i + 2;
+	int maior;
+
+	if( esq < n && A[esq] > A[i] )     maior = esq;
+	else                               maior = i;
+	if( dir < n && A[dir] > A[maior] ) maior = dir;
+
+	if( maior != i ){
+		troca( &A[i], &A[maior] );
+		Refaz( A, maior, n );
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo que transforma a árvore em um heap de uma posição $i$ do vetor.}
+\label{aula03:algo:heap:refaz}
+\end{figure}
+
+O segundo algoritmo (figura~\ref{aula03:algo:heap:constroi}) constroi
+um heap a partir de um vetor. 
+Para cada posição do vetor, ele usa a função \lstinline{Refaz()} e transforma
+o vetor em um heap.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Constroi( int *A, int n ){
+	int k;
+	for(k = n/2; k >= 0; k-- ){
+		Refaz( A, k, n );
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo que constroi o heap de um vetor $n$.}
+\label{aula03:algo:heap:constroi}
+\end{figure}
+
+O algoritmo Heapsort (figura~\ref{aula03:algo:heapsort}) inicia com a construção
+de um heap com o vetor de entrada.
+Como o maior elemento do heap fica na posição $A[0]$,
+o algoritmo coloca o elemento no final do vetor ao trocar com $A[n-1]$.
+Em seguida ele ignora o último elemento (o maior) e usa \lstinline{Refaz()} para
+reconstruir o heap.
+O algoritmo repete esses dois passos $n-1$ vezes.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Heapsort( int *A, int n ){
+	int i;
+	Constroi( A, n );
+	for( i = n-1; i > 0; i-- ) {
+		troca( &A[0], &A[i] );
+		Refaz( A, 0, i );
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo do Heapsort: passa o maior elemento para o fim e refaz o heap.}
+\label{aula03:algo:heapsort}
+\end{figure}
+
+\subsubsection*{Análise}
+
+A análise envolve o custo da construção do heap e da leitura dos elementos em ordem.
+A construção do heap adiciona um elemento ao final e pode ser deslocado até a raiz.
+Como a árvore é balanceada, o deslocamento tem custo $O(\log n)$ e 
+isso é feito $n$ vezes.
+O curso de construir o heap é $O(n \log n)$. 
+
+A leitura em ordem a troca do primeiro com o último com custo $O(1)$. Após a troca,
+o elemento pode precisar ser deslocado até o nível folha.
+Em uma árvore balanceada o custo de mover é $O(\log n)$.
+Como isso é feito $n$ vezes, o custo de leitura em ordem é $O(n \log n)$.
+
+O custo total é $2n \log n = O(n \log n)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação entre métodos eficientes}
+
+A tabela~\ref{aula03:tab:caso02} sumariza o Mergesort e Quicksort com suas complexidades.
+%
+\begin{table}[!ht]
+\centering
+\begin{tabular}{lccccc}
+\hline
+          & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
+Quicksort & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $1$ & não \\ \hline
+Mergesort & $O(n)$ & $O(n \log n)$ & $O(n \log n)$ & $n$ & sim \\ \hline
+Heapsort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $1$ & não \\ \hline
+%
+\end{tabular}
+\caption{Comparação dos métodos simples.}
+\label{aula03:tab:caso02}
+\end{table}
+
+Em casos típicos o Quicksort tem melhor desempenho que Heapsort,
+que é melhor que Mergesort.
+O Heapsort é melhor para aplicações de tempo crítico, ou ordenações parciais
+(apenas 10 elementos por exemplo).
+
+Há implementações estáveis
+do Quicksort, porém o desempenho pode ser afetado.  Existem algoritmos do
+Mergesort com memória in-place, mas o desempenho pode ser afetado.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Counting sort}
 
@@ -461,4 +627,12 @@ O custo no {\bf melhor caso} é $O(n)$.
 \item Ordene os elementos $3, 7, 1, 4, 9, 2$ usando os métodos: bolha, seleção,
 inserção, shellsort (com gaps $3, 2, 1$). Não esqueça de exibir o estado do vetor a cada troca
 de elementos.
+
+\item Demonstre as etapas do Quicksort para ordenar a 
+
+\item Ordene os elementos do vetor $3, 10, 8, 9, 5, 4, 1, 2$ usando os métodos: 
+Quicksort (primeiro elemento como pivô) e Mergesort. Exibir o estado do vetor toda vez que ocorrer 
+uma troca.
+
+\item Ordene o vetor $5, 3, 17, 10, 8, 9$ usando Heapsort.
 \end{enumerate}
