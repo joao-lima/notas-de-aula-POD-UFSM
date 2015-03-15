@@ -666,7 +666,58 @@ em comparação.  Ele usa o valor dos elementos para indexar o vetor.
 O algoritmo é estável e não é in-place, assim como só funciona com inteiros.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Bucket sort}
+\subsection{Bucketsort}
+
+O Bucketsort assume que a entrada está uniformemente distribuída e que tem um
+tempo de execução médio de $O(n)$.
+Ele assume que os números de entrada são distribuídos em um intervalo $[0,1)$ (por exemplo)
+e são dividos em $r$ grupos chamados {\bf buckets}.
+
+O algoritmo distribui os $n$ elementos entre os buckets.
+Para gerar a saída, ele ordena cada bucket e depois copia para saída 
+cada elemento dos buckets em ordem.
+
+O algoritmo da figura~\ref{aula03:algo:bucket} mostra a implementação do
+Bucketsort.
+Ele usa $r$ como o número de buckets usados e $B[r]$ um vetor de listas para
+cada bucket.
+Ao distribuir os números, ele ordena cada bucket com uma função
+que ordena a lista. A ordenação da lista pode ser feita por
+Insertionsort.
+Por fim, ele percorre cada lista para copiar os elementos na saída $A$.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Bucketsort( float *A, int n, int r ){
+	lista_t* B[r];
+	int i, j;
+	for( j = 0; j < r; j++ )    B[i] = lista_cria();
+	for( i = 0; i < n; i++ ){
+		int j = (int)floor(A[i]*10);
+		lista_insere( B[j], A[j] );
+	}
+	for( j = 0; j < r; j++)    OrdenaLista(B[j]);
+	i = 0;
+	for( j = 0; j < r; j++){
+		while(!lista_vazia(B[j]))
+			A[i++] = lista_remove(B[i]);
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo do Bucketsort para $n$ com $k$ buckets.}
+\label{aula03:algo:bucket}
+\end{figure}
+
+O custo depende do número de buckets usados. 
+A distribuição é mais uniforme se os buckets serem equivalente ao número de possíveis valores.
+Para uma entrada $n$ e $r$ buckets, o custo em espaço é $O(n+r)$.
+Em custo, assumindo uma distribuição uniforme, tem-se $n$ cópias para os buckets, $r$ passagens pelos buckets e
+$n$ cópias de volta para o vetor original.
+A ordenação de cada bucket é desprezível pois contem $1$ ou poucos elementos.
+O custo será $O(2n+r) = O(n+r)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Radix sort}
