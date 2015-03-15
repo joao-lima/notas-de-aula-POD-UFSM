@@ -734,12 +734,12 @@ A tabela~\ref{aula03:tab:cmp:dist} ilustra a comparação entre os métodos onde
 %
 \begin{table}[!ht]
 \centering
-\caption{Comparação dos métodos simples.}
+\caption{Comparação dos métodos por distribuição.}
 \begin{tabular}{lccccc}
 \hline
           & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
 Countingsort & $O(n+k)$ & $O(n+k)$ & $O(n+k)$ & $n+k$ & sim \\ \hline
-Bucketsort   & $O(n+k)$ & $O(n+k)$ & $O(n^2+k)$ & $n+k$ & sim \\ \hline
+Bucketsort   & $O(n+r)$ & $O(n+r)$ & $O(n^2+r)$ & $n+r$ & sim \\ \hline
 Radixsort   & $O(k n)$ & $O(k n)$ & $O(k n)$ & $n+s$ & sim \\ \hline
 %
 \end{tabular}
@@ -755,7 +755,7 @@ de ordenação.
 %
 \begin{table}[!ht]
 \centering
-\caption{Comparação dos métodos simples.}
+\caption{Comparação geral dos métodos de ordenação.}
 \begin{tabular}{lccccc}
 \hline
           & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
