@@ -244,6 +244,7 @@ A tabela~\ref{aula03:tab:caso01} sumariza os métodos simples e suas complexidad
 %
 \begin{table}[!ht]
 \centering
+\caption{Comparação dos métodos simples.}
 \begin{tabular}{lccccc}
 \hline
           & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
@@ -252,7 +253,6 @@ Selection & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & $1$ & não  \\ \hline
 Insertion & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $1$ &  sim \\ \hline
 Shellsort & $O(n)$ & $O(n^{\frac{3}{2}})$ & $O(n^{\frac{3}{2}})$ &  $1$ & não \\ \hline
 \end{tabular}
-\caption{Comparação dos métodos simples.}
 \label{aula03:tab:caso01}
 \end{table}
 
@@ -589,6 +589,7 @@ A tabela~\ref{aula03:tab:caso02} sumariza o Mergesort e Quicksort com suas compl
 %
 \begin{table}[!ht]
 \centering
+\caption{Comparação dos métodos simples.}
 \begin{tabular}{lccccc}
 \hline
           & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
@@ -597,7 +598,6 @@ Mergesort & $O(n)$ & $O(n \log n)$ & $O(n \log n)$ & $n$ & sim \\ \hline
 Heapsort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $1$ & não \\ \hline
 %
 \end{tabular}
-\caption{Comparação dos métodos simples.}
 \label{aula03:tab:caso02}
 \end{table}
 
@@ -614,14 +614,108 @@ Mergesort com memória in-place, mas o desempenho pode ser afetado.
 \section{Métodos de ordenação por distribuição}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Os algoritmos discutidos até agora tem custo $O(n \log n)$ em casos
+médios.
+Porém, caso o custo de espaço não é problema e somente a comparação
+lexicográfica é necessária, é possível usar estratégias sem comparação.
+
+Os algoritmos de ordenação por distribuição distribuem os elementos de entrada
+em estruturas intermediárias com base nos seus valores.
+Essas estruturas, por si só, já auxiliam na ordenação dos elementos.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Counting sort}
+\subsection{Countingsort}
+
+Countingsort assume que os elementos de entrada $n$ são inteiros e
+os valores (chaves) estão no intervalo de $0$ até $k$ para um inteiro $k$.
+Esse algoritmo requer um vetor de entrada $A$, um vetor de saída $B$ e um
+temporário $C$ de tamanho $k$ sendo $k$ o maior valor armazenado.
+O algoritmo da figura~\ref{aula03:algo:counting} mostra a implementação do
+Countingsort.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Countingsort( int *A, int* B, int n, int k ){
+	int C[k];
+	int i;
+
+	for( i = 0; i < k; i++)    C[i] = 0;
+	for( i = 0; i < n; i++)    C[A[i]]++;
+	for( i = 1; i < k; i++)    C[i] = C[i] + C[i-1];
+	for( i = n-1; i >= 0; i-- ){
+		B[C[A[i]] - 1] = A[i];
+		C[A[i]]--;
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo do Countingsort para $n$ elementos de valor até $k$.}
+\label{aula03:algo:counting}
+\end{figure}
+
+O custo do Countingsort depende de zerar o vetor $C$ ($O(k)$), 
+contar em $C$ o número de ocorrências dos valores de $A$ ($O(n)$),
+somar as ocorrências ($O(k)$) e ordenar o vetor em $B$ ($O(n)$).
+Assim, o custo será $k + n + k + n = O(k + n)$.
+O custo em espaço é $O(n + k)$ para usar $B$ e $C$.
+
+O Countingsort custa menos que $O(n \log n)$ porque não é um algoritmo baseado
+em comparação.  Ele usa o valor dos elementos para indexar o vetor.
+O algoritmo é estável e não é in-place, assim como só funciona com inteiros.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Bucket sort}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Radix sort}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação entre métodos por distribuição}
+
+A tabela~\ref{aula03:tab:cmp:dist} ilustra a comparação entre os métodos onde:
+\begin{itemize}
+\item $n = $ número de elementos.
+\item $k = $ número de valores.
+\item $s = $ tamanho do alfabeto.
+\end{itemize}
+%
+\begin{table}[!ht]
+\centering
+\caption{Comparação dos métodos simples.}
+\begin{tabular}{lccccc}
+\hline
+          & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
+Countingsort & $O(n+k)$ & $O(n+k)$ & $O(n+k)$ & $n+k$ & sim \\ \hline
+Bucketsort   & $O(n+k)$ & $O(n+k)$ & $O(n^2+k)$ & $n+k$ & sim \\ \hline
+Radixsort   & $O(k n)$ & $O(k n)$ & $O(k n)$ & $n+s$ & sim \\ \hline
+%
+\end{tabular}
+\label{aula03:tab:cmp:dist}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparação geral de métodos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A tabela~\ref{aula03:tab:cmp:total} mostra uma comparação geral de métodos 
+de ordenação.
+%
+\begin{table}[!ht]
+\centering
+\caption{Comparação dos métodos simples.}
+\begin{tabular}{lccccc}
+\hline
+          & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
+Quicksort & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $1$ & não \\ \hline
+Mergesort & $O(n)$ & $O(n \log n)$ & $O(n \log n)$ & $n$ & sim \\ \hline
+Heapsort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $1$ & não \\ \hline
+Radixsort & $O(k n)$ & $O(k n)$ & $O(k n)$ & $n+s$ & sim \\ \hline
+%
+\end{tabular}
+\label{aula03:tab:cmp:total}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
