@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Classificação de dados}
+\chapter{Introdução}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Os algoritmos deste capítulo resolvem o {\bf problema de ordenação}:
@@ -56,7 +56,7 @@ O algoritmo seria:
 Alguns desses métodos são o {\bf radixsort} e o {\bf bucketsort}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Classificação em memória primária}
+\chapter{Classificação em memória primária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Podem ser classificados como:
@@ -65,8 +65,12 @@ Podem ser classificados como:
 Ex.: bolha, inserção, seleção, shellsort.
 \item {\bf Métodos eficientes} -- adequados para vetores grandes, requerem $O(n \log n)$ comparações.
 Ex.: quicksort, mergesort, heapsort.
-\item {\bf Métodos mais eficientes} -- requerem $O(n)$ atribuições. Ex.: radixsort.
+\item {\bf Métodos mais eficientes} -- ou por distribuição, requerem $O(n)$ atribuições. Ex.: radixsort.
 \end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Métodos de ordenação simples}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Bolha (\emph{bubble sort})}
@@ -253,7 +257,7 @@ Shellsort & $O(n)$ & $O(n^{\frac{3}{2}})$ & $O(n^{\frac{3}{2}})$ &  $1$ & não \
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Métodos eficientes}
+\section{Métodos eficientes}
 
 Os métodos eficientes são baseados na estratégia de {\bf divisão e conquista} (D\&C)
 onde:
@@ -607,6 +611,10 @@ do Quicksort, porém o desempenho pode ser afetado.  Existem algoritmos do
 Mergesort com memória in-place, mas o desempenho pode ser afetado.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Métodos de ordenação por distribuição}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Counting sort}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -614,10 +622,6 @@ Mergesort com memória in-place, mas o desempenho pode ser afetado.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Radix sort}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Classificação em memória secundária}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}

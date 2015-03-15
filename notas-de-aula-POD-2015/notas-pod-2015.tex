@@ -2,8 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 %\usepackage{times}
-%\usepackage[margin=1cm,left=1cm,right=1cm]{geometry}
-\usepackage[a4paper]{geometry}
+\usepackage[margin=3cm,left=2cm,right=1.5cm]{geometry}
+%\usepackage[a4paper]{geometry}
 \usepackage[brazilian]{babel} %french
 \usepackage{colortbl}
 \usepackage{fancyhdr}
@@ -26,8 +26,8 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage[long,dayofweek]{datetime}
-\usepackage{todonotes}
-%\usepackage[disable]{todonotes}
+%\usepackage{todonotes}
+\usepackage[disable]{todonotes}
 \usepackage{titlesec}
 
 \graphicspath{{.}{figs/}}
@@ -77,9 +77,11 @@
   \renewcommand{\footrulewidth}{0pt}
 }
 %\fancyfoot[C]{\footnotesize Pesquisa e Ordenação de Dados ``A''~--~UFSM \hfill \thepage}
-\fancyfoot[LE,RO]{\footnotesize\thepage}
-\fancyfoot[RE]{\footnotesize \nouppercase{\leftmark}}
-\fancyfoot[LO]{\footnotesize \nouppercase{\rightmark}}
+\fancyhead[LE]{\slshape\footnotesize \leftmark}
+\fancyhead[RO]{\slshape\footnotesize \rightmark}
+\fancyfoot[C]{\footnotesize\thepage}
+
+
 
 \title{{\bf Notas de aula\\
 Pesquisa e Ordenação de Dados ``A''}}
@@ -103,10 +105,14 @@ livro ``Projeto de Algoritmos'' do prof. Nivio Ziviani.
 
 \pagestyle{fancy}
 
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
 \tableofcontents
 
 \input{aulas/aula02}
+
+\part{Classificação de dados}
 \input{aulas/aula03}
-%\input{aulas/aula04}
+\input{aulas/aula04}
 
 \end{document}
