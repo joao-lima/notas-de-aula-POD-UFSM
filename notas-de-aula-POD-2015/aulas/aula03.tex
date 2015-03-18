@@ -720,7 +720,39 @@ A ordenação de cada bucket é desprezível pois contem $1$ ou poucos elementos
 O custo será $O(2n+r) = O(n+r)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Radix sort}
+\subsection{Radixsort}
+
+O algoritmo da figura~\ref{aula03:algo:radix} mostra a implementação do Radixsort
+para números de base 10 com 2 dígitos.
+%
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Radixsort( int *A, int* B, int n, int digitos ){
+	int C[10];
+	int k = 10;
+	int i, d;
+	int base = 10;
+	int div = 1;
+
+	for(d = 1; d <= digitos; d++){
+		for( i = 0; i < k; i++)    C[i] = 0;
+		for( i = 0; i < n; i++)    C[ (A[i]/div)%base ]++;
+		for( i = 1; i < k; i++)    C[i] = C[i] + C[i-1];
+		for( i = n-1; i >= 0; i-- ){
+			B[C[ (A[i]/div)%base ] - 1] = A[i];
+			C[ (A[i]/div)%base ]--;
+		}
+		for( i = 0; i < n; i++)    A[i] = B[i];
+		div = div * base;
+	}
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo do Radixsort para números de base 10 (2 dígitos).}
+\label{aula03:algo:radix}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Comparação entre métodos por distribuição}
