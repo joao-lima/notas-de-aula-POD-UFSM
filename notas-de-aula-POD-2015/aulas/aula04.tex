@@ -2,3 +2,143 @@
 \chapter{Classificação em memória secundária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Ou também, ordenação em memória externa, consiste em ordenar arquivos de tamanho
+maior que a memória principal (interna) disponível.
+Nos algoritmos de ordenação externa deve-se reduzir o número de acessos ao disco,
+resposável por grande parte do custo do algoritmo.
+
+Uma restrição que pode acontecer é o armazenamento de dados sequencial, como em
+fitas, discos e tambores magnéticos,.
+Ou também, quando somente um registro pode ser acessado em um dado momento.
+Esta última é uma restrições forte comparada ao acesso em vetores.
+
+Os três principais fatores que diferenciam ordenação externa de interna são:
+\begin{enumerate}
+\item O custo para acessar um registro.
+\item Restrições ao acesso físico, como em fitas magnéticas.
+\item Tecnologia empregada.
+\end{enumerate}
+
+A maioria dos métodos de ordenação externa utiliza a seguinte estratégia:
+\begin{enumerate}
+\item Quebrar o arquivo em blocos do tamanho da memória interna disponível.
+\item Ordenar cada bloco.
+\item Intercalar os blocos ordenados, fazendo várias passadas.
+\item A cada passada são criados blocos ordenados cada vez maiores, até que todo 
+o arquivo esteja ordenado.
+\end{enumerate}
+Esses passos são agrupados em \textbf{passos}. 
+O {\bf estágio de classificação} envolve os passos 1 e 2, enquanto que
+o {\bf estágio de intercalação} consiste nos passos 3 e 4.
+
+Os métodos para ordenação externa devem reduzir o número de passadas no arquivo.
+
+Os conceitos usados em seguida são:
+\begin{itemize}
+\item {\bf Arquivo} - estrutura física de armazenamento. 
+\item {\bf Partição} - estrutura lógica de armazenamento, que pode ser composto de
+diversas partições.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Classificação}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Considera-se que a memória principal tem capacidade para armazenar
+$M$ registros do arquivo a classificar.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Classificação interna}
+
+A {\bf classificação interna} envolve os seguintes passos:
+\begin{itemize}
+\item leitura de $M$ registros para a memória.
+\item ordenação desses registros por um algoritmo de ordenação interna.
+	\begin{itemize}
+	\item quicksort, mergesort, etc.
+	\end{itemize}
+\item gravação desses registros classificados.
+	\begin{itemize}
+	\item em uma partição nova de um arquivo existente (ou em novo arquivo).
+	\end{itemize}
+\end{itemize}
+
+A classificação interna possui a desvantagem de não explorar a ordem
+parcial existente no arquivo de entrada.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Seleção por substituição}
+
+A {\bf seleção por substituição}  aproveita a possível classificação
+parcial do arquivo de entrada. 
+Em média, o tamanho das partições obtidas pelo processo de seleção com substituição
+é de $2 * M$.
+
+Os passos do algoritmo são:
+\begin{enumerate}
+\item Ler $M$ registros do arquivo para a memória.
+\item Selecionar, na memória, o registro com menor chave.
+\item Gravar na partição de saída o registro com menor chave.
+\item Substituir (em memória) o registro gravado pelo próximo registro
+do arquivo de entrada.
+\item Caso a chave deste último seja menor do que a chave recém-gravada.
+	\begin{enumerate}
+	\item considerá-lo ``congelado'' e ignorá-lo no restante do processamento.
+	\end{enumerate}
+\item Caso existam em memória registros não ``congelados''
+	\begin{enumerate}
+	\item volta ao passo {\bf (2)}.
+	\end{enumerate}
+\item Caso contrário
+	\begin{enumerate}
+	\item fechar a partição de saída.
+	\item ``descongelar'' os registros ``congelados''.
+	\item abrir nova partição de saída.
+	\item voltar ao passo {\bf (2)}.
+	\end{enumerate}
+\end{enumerate}
+
+A seleção por substituição tem a desvantagem que no final da partição grande, 
+parte do espaço em memória principal está ocupado com registros ``congelados''.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Seleção natural}
+
+A classificação por {\bf seleção natural} reserva um espaço na memória 
+secundário (``\emph{o reservatório}''), que abriga os registros
+``congelados'' em um processo de substituição.
+
+A formação de uma partição se encerra quando o reservatório estiver cheio, ou
+quando terminarem os registros de entrada.
+Quando um reservatório encher, a memória é descarregada na partição atual
+e os dados são copiados do repositório à memória.
+
+A classificação por seleção natural usa como memória interna $M$ e um reservatório
+que comporta $R$ registros.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação de processos}
+
+A classificação interna gera as menores partições, mas simplifica o estágio
+de intercalação por usar partições de mesmo tamanho.
+Os processos de seleção exigem intercalação mais elaborada, porém geram 
+partições maiores, e reduzem o tempo de processamento.
+A seleçõa natural gera as maiores partições, porém utiliza mais operações de 
+entrada e saída. Além de usar memória externa adicional.
+
+Os processos de seleção podem utilizar Heapsort para a ordenação interna.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Intercalação}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Exercícios}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{enumerate}
+\item Dados os números $10, 8, 7, 11, 9, 13, 16, 12, 15, 14$, mostre as partições
+que são criadas por classificação para os métodos: classificação interna, seleção
+por substituição, seleção natural.
+
+\end{enumerate}
