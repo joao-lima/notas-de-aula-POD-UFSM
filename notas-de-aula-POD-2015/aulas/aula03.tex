@@ -655,9 +655,9 @@ void Countingsort( int *A, int* B, int n, int k ){
 \label{aula03:algo:counting}
 \end{figure}
 
-O custo do Countingsort depende de zerar o vetor $C$ ($O(k)$), 
-contar em $C$ o número de ocorrências dos valores de $A$ ($O(n)$),
-somar as ocorrências ($O(k)$) e ordenar o vetor em $B$ ($O(n)$).
+O custo do Countingsort depende de zerar o vetor $C$ -- $O(k)$ --, 
+contar em $C$ o número de ocorrências dos valores de $A$ -- $O(n)$ --,
+somar as ocorrências -- $O(k)$ -- e ordenar o vetor em $B$ -- $O(n)$ --.
 Assim, o custo será $k + n + k + n = O(k + n)$.
 O custo em espaço é $O(n + k)$ para usar $B$ e $C$.
 
@@ -699,6 +699,7 @@ void Bucketsort( float *A, int n, int r ){
 		lista_insere( B[j], A[j] );
 	}
 	for( j = 0; j < r; j++)    OrdenaLista(B[j]);
+
 	i = 0;
 	for( j = 0; j < r; j++){
 		while(!lista_vazia(B[j]))
@@ -713,17 +714,35 @@ void Bucketsort( float *A, int n, int r ){
 
 O custo depende do número de buckets usados. 
 A distribuição é mais uniforme se os buckets serem equivalente ao número de possíveis valores.
-Para uma entrada $n$ e $r$ buckets, o custo em espaço é $O(n+r)$.
-Em custo, assumindo uma distribuição uniforme, tem-se $n$ cópias para os buckets, $r$ passagens pelos buckets e
-$n$ cópias de volta para o vetor original.
+Para uma entrada $n$ e $r$ buckets, assumindo uma distribuição uniforme, tem-se
+$n$ cópias para os buckets, $r$ passagens pelos buckets e $n$ cópias de volta
+para o vetor original.
 A ordenação de cada bucket é desprezível pois contem $1$ ou poucos elementos.
-O custo será $O(2n+r) = O(n+r)$.
+O custo no {\bf caso médio} será $O(2n+r) = O(n+r)$. 
+Por outro lado, o pior caso ocorre quando um bucket tem todos os elementos.
+O custo no {\bf pior caso}  é $O(n^2+r)$ (usando Insertionsort para ordenar um bucket).
+
+Para uma entrada $n$ e $r$ buckets, o custo em espaço é $O(n+r)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Radixsort}
 
+O Radixsort é uma extensão do Bucketsort onde o número de buckets depende do
+tamanho  do alfabeto de entrada.
+O algoritmo realiza diversas rodadas para ordenar os buckets. 
+Na primeira rodada o mapeamento é feito com o dígitos menos significativo.
+Em seguida o algoritmo ordena pelo próximo dígito mais a esquerda, e assim por diante.
+O número de rodadas será $d$ sendo $d$ o dígito mais significativo.
+
+Se o maior número da entrada for $999.999$, apenas $10$ buckets são necessários
+ao invés de 1 milhão no Countingsort e algumas versões do Bucketsort.
+No caso de palavras são necessários $26$ buckets ou mais, dependendo do tamanho
+do alfabeto.
+
 O algoritmo da figura~\ref{aula03:algo:radix} mostra a implementação do Radixsort
 para números de base 10 com 2 dígitos.
+Essa implementação é baseada no Countingsort para ordenar os números para um certo
+dígito $d$.
 %
 \begin{figure}[!htb]
 \centering
@@ -754,13 +773,18 @@ void Radixsort( int *A, int* B, int n, int digitos ){
 \label{aula03:algo:radix}
 \end{figure}
 
+O custo do Radixsort, caso o número de rodadas seja fixo, é $O(n)$ para todos os casos.
+Para um número arbitrário de rodadas $k$, o custo é $O(k n)$.
+Para ordenar números, por exemplo, $k = \lfloor \log_{10} m \rfloor + 1$ onde
+$m$ é o maior valor do vetor.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Comparação entre métodos por distribuição}
 
 A tabela~\ref{aula03:tab:cmp:dist} ilustra a comparação entre os métodos onde:
 \begin{itemize}
 \item $n = $ número de elementos.
-\item $k = $ número de valores.
+\item $r = $ número de divisões dos valores.
 \item $s = $ tamanho do alfabeto.
 \end{itemize}
 %
@@ -770,13 +794,18 @@ A tabela~\ref{aula03:tab:cmp:dist} ilustra a comparação entre os métodos onde
 \begin{tabular}{lccccc}
 \hline
           & Melhor caso & Caso médio & Pior caso & Memória & Estável \\ \hline
-Countingsort & $O(n+k)$ & $O(n+k)$ & $O(n+k)$ & $n+k$ & sim \\ \hline
+Countingsort & $O(n+r)$ & $O(n+r)$ & $O(n+r)$   & $n+r$ & sim \\ \hline
 Bucketsort   & $O(n+r)$ & $O(n+r)$ & $O(n^2+r)$ & $n+r$ & sim \\ \hline
-Radixsort   & $O(k n)$ & $O(k n)$ & $O(k n)$ & $n+s$ & sim \\ \hline
+Radixsort    & $O(k n)$ & $O(k n)$ & $O(k n)$   & $n+s$ & sim \\ \hline
 %
 \end{tabular}
 \label{aula03:tab:cmp:dist}
 \end{table}
+
+A partir dessa tabela, podemos afirmar que o Countingsort e Bucketsort podem
+ser inviáveis se $r$ é grande.
+Mais especificamente, o Bucketsort tem complexidade relativa pois depende do
+quão uniforma é a entrada.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Comparação geral de métodos}
@@ -794,11 +823,14 @@ de ordenação.
 Quicksort & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $1$ & não \\ \hline
 Mergesort & $O(n)$ & $O(n \log n)$ & $O(n \log n)$ & $n$ & sim \\ \hline
 Heapsort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $1$ & não \\ \hline
-Radixsort & $O(k n)$ & $O(k n)$ & $O(k n)$ & $n+s$ & sim \\ \hline
+Radixsort    & $O(k n)$ & $O(k n)$ & $O(k n)$   & $n+s$ & sim \\ \hline
 %
 \end{tabular}
 \label{aula03:tab:cmp:total}
 \end{table}
+
+Na comparação geral, o Radixsort é melhor para números inteiros.
+Porém, ele não é genérico.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
@@ -816,4 +848,10 @@ Quicksort (primeiro elemento como pivô) e Mergesort. Exibir o estado do vetor t
 uma troca.
 
 \item Ordene o vetor $5, 3, 17, 10, 8, 9$ usando Heapsort.
+
+\item Ordene os números abaixo usando:
+	\begin{itemize}
+	\item Countingsort: $1, 5, 3, 9, 7, 3, 2, 1, 4, 6, 6, 5, 4, 1$. Mostre o valor das estruturas temporárias.
+	\item Radixsort: $2, 17, 324, 45, 41, 86, 26, 91, 118, 99, 19$. Mostre o estado do vetor após cada rodada de ordenação.
+	\end{itemize}
 \end{enumerate}
