@@ -2,15 +2,16 @@
 \chapter{Classificação em memória secundária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Ou também, ordenação em memória externa, consiste em ordenar arquivos de tamanho
-maior que a memória principal (interna) disponível.
+Classificação em memória secundária, ou ordenação em memória externa, consiste
+em ordenar arquivos de tamanho maior que a memória principal (interna)
+disponível.
 Nos algoritmos de ordenação externa deve-se reduzir o número de acessos ao disco,
 resposável por grande parte do custo do algoritmo.
 
-Uma restrição que pode acontecer é o armazenamento de dados sequencial, como em
-fitas, discos e tambores magnéticos,.
-Ou também, quando somente um registro pode ser acessado em um dado momento.
-Esta última é uma restrições forte comparada ao acesso em vetores.
+%Uma restrição que pode acontecer é o armazenamento de dados sequencial, como em
+%fitas, discos e tambores magnéticos,.
+%Ou também, quando somente um registro pode ser acessado em um dado momento.
+%Esta última é uma restrições forte comparada ao acesso em vetores.
 
 Os três principais fatores que diferenciam ordenação externa de interna são:
 \begin{enumerate}
@@ -27,13 +28,13 @@ A maioria dos métodos de ordenação externa utiliza a seguinte estratégia:
 \item A cada passada são criados blocos ordenados cada vez maiores, até que todo 
 o arquivo esteja ordenado.
 \end{enumerate}
+
 Esses passos são agrupados em \textbf{passos}. 
 O {\bf estágio de classificação} envolve os passos 1 e 2, enquanto que
 o {\bf estágio de intercalação} consiste nos passos 3 e 4.
-
 Os métodos para ordenação externa devem reduzir o número de passadas no arquivo.
 
-Os conceitos usados em seguida são:
+Os conceitos usados neste capítulo são:
 \begin{itemize}
 \item {\bf Arquivo} - estrutura física de armazenamento. 
 \item {\bf Partição} - estrutura lógica de armazenamento, que pode ser composto de
@@ -50,8 +51,14 @@ $M$ registros do arquivo a classificar.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Classificação interna}
 
+A {\bf classificação interna} consiste na leitura de $M$  registros
+para a memória, ordenação desses registros por qualquer outro algoritmo
+de classificação interna e gravação desses registros classificados
+em uma partição. 
+Todas as partições ordenadas contêm $M$ registros, exceto (talvez) a última.
+
 A {\bf classificação interna} envolve os seguintes passos:
-\begin{itemize}
+\begin{enumerate}
 \item leitura de $M$ registros para a memória.
 \item ordenação desses registros por um algoritmo de ordenação interna.
 	\begin{itemize}
@@ -61,7 +68,7 @@ A {\bf classificação interna} envolve os seguintes passos:
 	\begin{itemize}
 	\item em uma partição nova de um arquivo existente (ou em novo arquivo).
 	\end{itemize}
-\end{itemize}
+\end{enumerate}
 
 A classificação interna possui a desvantagem de não explorar a ordem
 parcial existente no arquivo de entrada.
@@ -74,7 +81,7 @@ parcial do arquivo de entrada.
 Em média, o tamanho das partições obtidas pelo processo de seleção com substituição
 é de $2 * M$.
 
-Os passos do algoritmo são:
+Os passos do algoritmo de seleção por substituição são:
 \begin{enumerate}
 \item Ler $M$ registros do arquivo para a memória.
 \item Selecionar, na memória, o registro com menor chave.
@@ -115,6 +122,35 @@ e os dados são copiados do repositório à memória.
 
 A classificação por seleção natural usa como memória interna $M$ e um reservatório
 que comporta $R$ registros.
+Para $M = R$, o tamanho médio das partições é $M * e$ onde $e = 2,7182....$
+(número de Euler).
+
+Os passos do algoritmo de seleção natural são:
+\begin{enumerate}
+\item Ler $M$ registros do arquivo para a memória.
+\item Selecionar, na memória, o registro com menor chave.
+\item Gravar na partição de saída o registro com menor chave.
+\item Substituir (em memória) o registro gravado pelo próximo registro
+do arquivo de entrada.
+\item Caso a chave deste último seja menor do que a chave recém-gravada.
+	\begin{enumerate}
+	\item gravá-lo no reservatório.
+	\item substituir (em memória) o registro gravado no reservatório pelo
+	próximo registro do arquivo de entrada.
+	\end{enumerate}
+\item Caso ainda exista espaço livre no reservatório.
+	\begin{enumerate}
+	\item volta ao passo {\bf (2)}.
+	\end{enumerate}
+\item Caso contrário
+	\begin{enumerate}
+	\item fechar a partição de saída.
+	\item copiar os registros do reservatório para a memória.
+	\item esvaziar o reservatório.
+	\item abrir nova partição de saída.
+	\item voltar ao passo {\bf (2)}.
+	\end{enumerate}
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Comparação de processos}
@@ -140,5 +176,8 @@ Os processos de seleção podem utilizar Heapsort para a ordenação interna.
 \item Dados os números $10, 8, 7, 11, 9, 13, 16, 12, 15, 14$, mostre as partições
 que são criadas por classificação para os métodos: classificação interna, seleção
 por substituição, seleção natural.
+Assuma $M = 3$ e $R = 3$.
 
+\item Descreva os passos dos algoritmos de classificação para os métodos:
+classificação interna, seleção por substituição, seleção natural.
 \end{enumerate}
