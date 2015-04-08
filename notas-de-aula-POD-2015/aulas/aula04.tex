@@ -168,6 +168,148 @@ Os processos de seleção podem utilizar Heapsort para a ordenação interna.
 \section{Intercalação}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+O objetivo da intercalação é {\bf transformar um conjunto de partições classificadas em uma 
+única partição classificada}.
+Considera-se que a existência de $R$ partições geradas no particionamento.
+O ideal seria intercalar todas as partições de uma só vez e obter o arquivo classificado.
+Porém, todo sistema impõe um limite no número de arquivos abertos simultaneamente. 
+Esse número pode ser menos que o número de partições geradas.
+
+A intercalação exige uma série de passos, e em cada passo:
+\begin{enumerate}
+\item registros são lidos de um conjunto de partições dos arquivos de entrada.
+\item e gravados em outro conjunto de partições de arquivos de saída.
+\end{enumerate}
+
+As operações de entrada e saída (E/S) tem um alto custo na ordenação externa.
+Uma medida de eficiência do estágio de intercalação é dada pelo número de passos 
+sobre os dados dado pela equação:
+\begin{equation*}
+N_{passos} = \frac{No. \; total \; de \; registros \; lidos}{No. \; total \;  de \; registros \; no \; arquivo \; classificado}
+\end{equation*}
+O menor número possível é $2$ ($1$ leitura e $1$ escrita).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Intercalação balanceada de n caminhos}
+
+A {\bf intercalação balanceada de n caminhos} usa $n$ arquivos para a entrada
+de registros e outros $n$ arquivos para a saída de registros.  Sendo $F$ o
+número máximo de arquivos que podem estar abertos ao mesmo tempo, $F = 2 n$.
+Dessa forma, a intercalação balanceada de $n-$caminhos utiliza no máximo $F/2$
+caminhos.
+
+O particionamento inicial pode usar qualquer estratégia de particionamento.
+{\bf Cada partição é escrita em um dos arquivos de entrada de forma intercalada}.
+
+Os passos envolvidos são:
+\begin{enumerate}
+\item primeiro passo: determinar o número de arquivos ($F$) que o algoritmo irá
+manipular, sendo a primeira metade ($F/2$) será usado para entrada enquanto
+a outra metade ($F/2$) para saída.
+
+\item passo dois: distribuir todas as partições, de forma {\bf intercalada},
+nos arquivos de entrada.
+
+\item {\bf passo de intercalação}: intercalar as primeiras partições,
+gravando o resultado em um dos $F/2$ arquivos de saída, em ordem.
+
+\item no final de cada fase, o conjunto de partições de saída
+torna-se o conjunto de entrada.
+
+\item a intercalação termina quando, em uma fase, grava-se apenas uma partição
+(ordenada).
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Intercalação ótima}
+
+A {\bf intercalação ótima} usa $n$ arquivos para entrada e $1$ para saída
+sendo $F = n + 1$.
+
+O particionamento inicial pode usar qualquer estratégia de particionamento.
+Ao contrário do particionamento na intercalação balanceada, {\bf o particionamento
+inicial cria um novo arquivo por partição}.
+
+Os passos envolvidos são:
+\begin{enumerate}
+\item primeiro passo: determinar o número de arquivos ($F$) que o algoritmo irá
+manipular, sendo $F-1$ para entrada enquanto $1$ será de saída.
+
+\item passo dois: abrir $F-1$ arquivos, cada um com uma partição. 
+
+\item {\bf passo de intercalação}: intercalar as partições dos arquivos de entrada,
+gravando o resultado em ordem no arquivo de saída.
+
+\item o arquivo de saída é novo no primeiro passo, e é um dos arquivos já
+inteiramente lidos nos próximos passos.
+
+\item quando todas as partições ficarem vazias, os arquivos usados podem ser descartados.
+O arquivo de saída vira um novo arquivo de entrada e é adicionado aos demais arquivos
+de entrada não processados.
+
+\item a intercalação termina quando restar apenas $1$ arquivo de entrada.
+\end{enumerate}
+
+O problema da intercalação ótima é que cada partição usa um arquivo próprio.
+Esse número de arquivos pode ser grande.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Intercalação polifásica}
+
+A {\bf intercalação polifásica} permite restringir o número de arquivos usados.
+Ela também usa $F-1$ arquivos de entrada, mas permite mútiplas partições por arquivo.
+
+Os passos envolvidos são:
+\begin{enumerate}
+\item primeiro passo: determinar o número de arquivos ($F$) que o algoritmo irá
+manipular, sendo $F-1$ para entrada enquanto $1$ será de saída.
+
+\item passo dois: distribuir todas as partições, de forma {\bf intercalada},
+nos arquivos de entrada.
+
+\item {\bf passo de intercalação}: intercalar as partições dos arquivos de entrada,
+gravando o resultado em ordem no arquivo de saída.
+
+\item Se todas as partições selecionadas de entrada chegarem ao fim, 
+mas nenhuma dos arquivos estiver no fim, uma nova particição no arquivo
+de saída é iniciada.
+As próximas partições de entrada são selecionadas.
+
+\item Se um dos arquivos chegar ao fim, e todas as partições de entrada selecionadas
+chegarem ao fim, o arquivo de saída se transforma em um arquivo de entrada.
+O arquivo de entrada (que chegou ao fim) vira o arquivo de saída e uma nova fase é iniciada.
+
+\item a intercalação termina quando restar apenas $1$ arquivo de entrada e 
+$1$ partição.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Análise dos métodos de intercalação}
+
+A tabela~\ref{aula04:tab:inter} mostra uma comparação dos métodos de intercalação
+conforme exemplos.
+%
+\begin{table}[!ht]
+\centering
+\caption{Comparação dos métodos de intercalação.}
+\begin{tabular}{l|c|c|c}
+\hline
+Estratégia & n. de operações & n. de passos & n. de arquivos usados \\ \hline
+Intercalação balanceada & $72$ & $72/12 = 6$ & $4$ \\ \hline
+Intercalação ótima      & $48$ & $48/12 = 4$ & $7$ \\ \hline
+Intercalação polifásica & $60$ & $60/12 = 4$ & $4$ \\ \hline
+%
+\end{tabular}
+\label{aula04:tab:inter}
+\end{table}
+
+A intercalação ótima pode ser usada quando {\bf não houver restrição} quanto ao
+número de arquivos que podem ser criados, ou quando sabe-se que o número de
+partições é menor que o limite.
+
+A intercalação polifásica pode ser usada quando {\bf haver restrição} quanto ao
+número de arquivos que podem ser criados.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,4 +322,11 @@ Assuma $M = 3$ e $R = 3$.
 
 \item Descreva os passos dos algoritmos de classificação para os métodos:
 classificação interna, seleção por substituição, seleção natural.
+
+\item Fazer a intercalação das seguintes partições:
+$20, 24 - 5, 15 - 8, 9 - 12, 18 - 4, 10 - 7, 11 - 2, 13 - 14, 19$.
+Utilize os métodos de: intercalação balanceada de n caminhos, intercalação ótima e intercalação
+polifásica.
+Consdere $F = 4$.
+
 \end{enumerate}
