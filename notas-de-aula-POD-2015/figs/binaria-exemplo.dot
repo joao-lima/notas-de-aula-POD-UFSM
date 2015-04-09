@@ -1,0 +1,20 @@
+graph G {
+	graph [ordering="out"];
+	n4 -- n2;
+	n4 -- xb [style=invis]
+	n4 -- n6;
+	{rank=same n2 -- xb -- n6 [style=invis]}
+	n2 -- n1;
+	n2 -- xxb [style=invis]
+	n2 -- n3;
+	{rank=same n1 -- xxb -- n3 [style=invis]}
+	n6 -- n5;
+	n6 -- xxxb [style=invis]
+	n6 -- n7;
+	{rank=same n5 -- xxxb -- n7 [style=invis]}
+
+	n4 [label="1",color=black];
+	xb [label="",width=.1,style=invis]
+	xxb [label="",width=.1,style=invis]
+	xxxb [label="",width=.1,style=invis]
+}
