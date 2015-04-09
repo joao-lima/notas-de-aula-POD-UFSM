@@ -205,10 +205,28 @@ $C(n)= 1$, pior caso $C(n) = n$ e caso médio $C(n) = \log  n$.
 O pior caso ocorre quando as chaves são inseridas em ordem crescente ou decrescente.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Árvores balanceadas}
+\section{Árvores de busca balanceadas}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\todo[inline]{Prox. aula.}
+Uma limitação das árvores binárias de pesquisa é a ordem em que os elementos
+são inseridos. Por exemplo, as ordens de inserção abaixo:
+\begin{itemize}
+\item ordem $1, 2, 3, 4, 5, 6, 7$ gera uma {\bf árvore degenerada} (todo nó
+tem apenas um filho).
+\item ordem $4, 6, 2, 5, 1, 7, 3$ gera uma árvore binária completa.
+\end{itemize}
+O que afeta diretamente o desempenho na busca de elementos.
+
+Idealmente deseja-se que a árvore esteja {\bf completamente balanceada}.
+A distância média para qualquer nó da árvore é mínima.
+No entanto, manter uma árvore completamente balanceada tem alto custo.
+Uma solução é procurar uma solução intermediária que possa manter a árvore
+balanceada.
+
+Uma {\bf árvore de busca balanceada} garante uma altura de $O(\log(n))$
+quando implementa um conjunto dinâmico de $n$ itens.
+Alguns exemplos de árvores balanceadas são AVL, árvores 2-3, árvores 2-3-4,
+B-trees e árvore rubro-negra.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvore AVL}
