@@ -223,7 +223,7 @@ No entanto, manter uma árvore completamente balanceada tem alto custo.
 Uma solução é procurar uma solução intermediária que possa manter a árvore
 balanceada.
 
-Uma {\bf árvore de busca balanceada} garante uma altura de $O(\log(n))$
+Uma {\bf árvore de busca balanceada} garante uma altura de $O(\log n)$
 quando implementa um conjunto dinâmico de $n$ itens.
 Alguns exemplos de árvores balanceadas são AVL, árvores 2-3, árvores 2-3-4,
 B-trees e árvore rubro-negra.
@@ -231,7 +231,201 @@ B-trees e árvore rubro-negra.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvore AVL}
 
-\todo[inline]{Prox. aula.}
+Uma árvore binária é denominada {\bf AVL} (dos seus criados Georgy
+Adelson-Velsky e Landis) se para todos os nós, {\bf as alturas de suas duas
+sub-árvores diferem no máximo em uma unidade}, sendo assim balanceada.
+Operações de consulta, inserção e remoção de nós tem custo $O(\log n)$.
+
+O {\bf fator de balanceamento} (FB) de um nó é a diferença entre
+a altura da sub-árvore da esquerda e a altura da sub-árvore da direita.
+Se não existir uma sub-árvore, a altura é zero.
+Os resultados de um FB são:
+\begin{itemize}
+\item $> 0$ - sub-árvore da direita é menor.
+\item $< 0$ - sub-árvore da esquerda é menor.
+\item $= 0$ - sub-árvores tem a mesma altura.
+\end{itemize}
+Os valores válidos de FB são $-1$ (sub-árvore da esquerda é menor), $0$, $1$
+(sub-árvore da direita é menor).
+
+\subsubsection{Inserção}
+
+O nó é inserido como em uma árvore binária comum.
+Se a inserção não degenerar a árvore, o processo termina.
+Caso contrário, é necessário:
+\begin{enumerate}
+\item encontrar o nó cujo FB esteja fora do intervalo (pivô).
+\item realizar uma rotação na árvore a partir do nó ``pivô''
+(rotação simples ou rotação dupla).
+\end{enumerate}
+Apenas uma rotação (simples ou dupla) é necessária.
+Após essa rotação, a árvore já estará balanceada.
+Há quatro possibilidades de rotão:
+\begin{itemize}
+\item 2 casos externos (direita e esquerda) com rotação simples.
+\item 2 casos internos (direta e esquerda) com rotação dupla.
+\end{itemize}
+
+\subsubsection{Rotação}
+
+Suponha que $\alpha$ seja um pivô, nos casos externos, uma rotação simples é necessária 
+caso a inserção ocorra na \textbf{sub-árvore à esquerda do filho à esquerda de} $\alpha$
+ou na \textbf{sub-árvore à direita do filho à direita de} $\alpha$.
+A figura~\ref{aula05:avl:rot:simples1} demonstra dois exemplos de rotação
+simples a direta.
+%
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.2\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n3) {3}
+	  child {
+		node [circle,draw] (n2) {2}
+			child { node [circle,draw] (n1) {1} }
+			child[missing] {}
+	  }
+	  child[missing] {};
+	\end{tikzpicture}
+  \end{minipage}
+%
+  \begin{minipage}{0.2\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n2) {2}
+		child { node [circle,draw] (n1) {1} }
+		child { node [circle,draw] (n3) {3} };
+	\end{tikzpicture}
+  \end{minipage}
+  %
+  \vline
+  %
+  \begin{minipage}{0.25\textwidth}
+	\centering
+	\begin{tikzpicture}[thick,
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm ]
+	\node [circle,draw] (n4) {4}
+	  child {
+		node [circle,draw] (n2) {2}
+		child {
+			node [circle,draw] (n1) {1}
+			child { node[circle,draw] (n0) {0} }
+			child[missing] {}
+		}
+		child { node[circle,draw] (n3) {3} }
+	  }
+	  child { node [circle,draw] (n5) {5} };
+	\end{tikzpicture}
+  \end{minipage}
+%
+  \begin{minipage}{0.2\textwidth}
+	\centering
+	\begin{tikzpicture}[thick,
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm ]
+	\node [circle,draw] (n2) {2}
+	  child {
+		node [circle,draw] (n1) {1}
+		child { node [circle,draw] (n0) {0} }
+		child[missing] {}
+	  }
+	 child {
+		 node[circle,draw] (n4) {4}
+		child { node [circle,draw] (n3) {3} }
+		child { node [circle,draw] (n5) {5} }
+	 };
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Dois exemplos de AVL com rotação simples para a direita.}
+\label{aula05:avl:rot:simples1}
+\end{figure}
+
+Nos casos internos, suponha que o pivô seja $\alpha$, 
+uma rotação dupla é necessária caso a inserção ocorra 
+na {\bf sub-árvore à esquerda do filho à direita de} $\alpha$ ou
+na {\bf sub-árvore à direita do filho à esquerda de} $\alpha$.
+Uma rotação dupla equivale a duas rotações simples em sequência.
+A figura~\ref{aula05:avl:rot:dupla1} demonstra um exemplo de rotação
+dupla a direta.
+%
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n3) {3}
+	  child {
+		node [circle,draw] (n1) {1}
+			child[missing] {}
+			child { node [circle,draw] (n2) {2} }
+	  }
+	  child[missing] {};
+	\end{tikzpicture}
+  \end{minipage}
+%
+  \vline
+%
+  \begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n3) {3}
+	  child {
+		node [circle,draw] (n2) {2}
+			child { node [circle,draw] (n1) {1} }
+			child[missing] {}
+	  }
+	  child[missing] {};
+	\end{tikzpicture}
+  \end{minipage}
+%
+  \vline
+%
+  \begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n2) {2}
+		child { node [circle,draw] (n1) {1} }
+		child { node [circle,draw] (n3) {3} };
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Exemplo de AVL com rotação dupla.}
+\label{aula05:avl:rot:dupla1}
+\end{figure}
+
+\subsubsection{Remoção}
+
+\subsubsection{Análise}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvore rubro-negra}
 
