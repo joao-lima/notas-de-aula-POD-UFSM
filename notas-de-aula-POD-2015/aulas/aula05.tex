@@ -424,6 +424,75 @@ dupla a direta.
 
 \subsubsection{Remoção}
 
+A remoção em AVL é similar a inserções, mas mais complexas.
+Incialmente, usa-se a estratégia de remoção das árvores não balanceadas.
+Porém, pode gerar desequilíbrio e exigir balanceamento.
+Rotações simples e duplas são necessárias durante esse balanceamento.
+
+Após o balanceamento, pode haver desequilíbrio em níveis superiores.
+Assim, deve-ser analisar também esses níveis superiores.
+A figura~\ref{aula05:avl:rm:ex1} demonstra um exemplo de remoção
+com rotação simples a esquerda.
+%
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n4) {4}
+	  child { node [circle,draw] (n2) {2} }
+	  child {
+		node [circle,draw] (n6) {6}
+			child[missing] {}
+			child { node [circle,draw] (n7) {7} }
+	  };
+	\end{tikzpicture}
+  \end{minipage}
+%
+  \vline
+%
+  \begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n4) {4}
+	  child[missing] {}
+	  child {
+		node [circle,draw] (n6) {6}
+			child[missing] {}
+			child { node [circle,draw] (n7) {7} }
+	  };
+	\end{tikzpicture}
+  \end{minipage}
+%
+  \vline
+%
+  \begin{minipage}{0.3\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=2cm},
+		level 2/.style={sibling distance=1cm},
+		level 3/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw] (n6) {6}
+		child { node [circle,draw] (n4) {4} }
+		child { node [circle,draw] (n7) {7} };
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Exemplo de remoção em AVL (nó 2) com rotação simples a esquerda.}
+\label{aula05:avl:rm:ex1}
+\end{figure}
+
 \subsubsection{Análise}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
