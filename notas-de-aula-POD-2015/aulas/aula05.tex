@@ -547,9 +547,11 @@ balanceamento para manter FP tem custo $O(\log n)$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvore rubro-negra}
 
-Uma  árvore rubro-negra (\emph{red-black tree}) é um tipo de árvore de pesquisa binária com uma propriedade
-adicional (1 bit) que representa a \textbf{cor} de um nó.
-Além disso, as folhas não armazenam dados sendo denotados por \textsc{NIL} (nulo).
+Uma  árvore rubro-negra (\emph{red-black tree}) é um tipo de árvore de pesquisa
+binária com uma propriedade adicional (1 bit) que representa a \textbf{cor} de
+um nó.
+Além disso, as folhas não armazenam dados sendo denotados por \textsc{NIL}
+(nulo).
 A figura~\ref{aula05:redblack:ex1} demonstra um exemplo de árvore rubro-negra.
 %
 \begin{figure}[!htb]
@@ -599,6 +601,20 @@ A figura~\ref{aula05:redblack:ex1} demonstra um exemplo de árvore rubro-negra.
 \caption{Exemplo de árvore rubro-negra.}
 \label{aula05:redblack:ex1}
 \end{figure}
+
+As propriedades de uma rubro-negra são:
+\begin{enumerate}
+\item Cada nó é vermelho ou preto.
+\item A raiz e todas as folhas (\textsc{NIL}) são preto.
+\item Se um nós é vermelho, então seu antecessor (nó pai) é preto.
+\item Todos os caminhos simples de qualquer nó $x$ para uma folha descendente 
+tem o mesmo número de nós pretos.
+\end{enumerate}
+
+\begin{theorem}
+Uma árvore rubro-negra com $n$ elementos tem altura
+\[ h \leq 2 \log (n + 1) \].
+\end{theorem}
 
 \todo[inline]{Prox. aula.}
 
