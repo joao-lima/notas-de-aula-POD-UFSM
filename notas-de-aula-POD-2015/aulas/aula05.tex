@@ -547,6 +547,59 @@ balanceamento para manter FP tem custo $O(\log n)$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvore rubro-negra}
 
+Uma  árvore rubro-negra (\emph{red-black tree}) é um tipo de árvore de pesquisa binária com uma propriedade
+adicional (1 bit) que representa a \textbf{cor} de um nó.
+Além disso, as folhas não armazenam dados sendo denotados por \textsc{NIL} (nulo).
+A figura~\ref{aula05:redblack:ex1} demonstra um exemplo de árvore rubro-negra.
+%
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=4cm},
+		level 2/.style={sibling distance=3cm},
+		level 3/.style={sibling distance=2cm},
+		level 4/.style={sibling distance=1cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=black,draw=black] (n7) {7}
+	  child {
+		  node [circle,draw,white,fill=black,draw=black] (n3) {3}
+		  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+		  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+	  }
+	  child {
+		node [circle,draw,white,fill=red,draw=black] (n18) {18}
+		child {
+		  node [circle,draw,white,fill=black,draw=black] (n10) {10}
+		  child {
+			node [circle,draw,white,fill=red,draw=black] (n8) {8}
+			  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+			  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+		  }
+		  child {
+			node [circle,draw,white,fill=red,draw=black] (n11) {11}
+			  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+			  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+		  }
+		}
+		child {
+		  node [circle,draw,white,fill=black,draw=black] (n22) {22}
+			  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+			  child {
+				node [circle,draw,white,fill=red,draw=black] (n26) {26}
+				  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+				  child { node [rectangle,draw,white,fill=black,draw=black,minimum size=0.5em] {} }
+			  }
+		}
+	  };
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Exemplo de árvore rubro-negra.}
+\label{aula05:redblack:ex1}
+\end{figure}
+
 \todo[inline]{Prox. aula.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
