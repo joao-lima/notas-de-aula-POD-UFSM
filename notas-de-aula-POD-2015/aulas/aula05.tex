@@ -640,7 +640,17 @@ tem a mesma altura em nós preto.
 \item insere na árvore o nó $x$ com cor vermelha.
 \item se propriedade 3 foi violada:
 	\begin{enumerate}
-	\item recolorir o nó pai de $x$ e tios (nós vizinhos do pai de $x$, ou filhos do avô de $x$).
+	\item {\bf Caso 1} - ocorre quando o nó pai de $x$ e $z$ são vermelhos
+	(figura~\ref{aula05:redblack:ex2}).
+	Consiste em recolorir o nó pai de $x$ e tios (nós vizinhos do pai de $x$, ou
+	filhos do avô de $x$).
+	O novo $x$ será o nó avô do antigo $x$ .
+	\item {\bf Caso 2} - quando o pai de $x$ é vermelho e $z$ é preto
+		(figura~\ref{aula05:redblack:ex3}).
+		É feita uma rotação para esquerda, e automaticamente cai no {\bf Caso 3}.
+	\item {\bf Caso 3} - novamente quando o pai de $x$ é vermelho e $z$ é preto
+		(figura~\ref{aula05:redblack:ex4}).
+		É feita uma rotação para direita.
 	\end{enumerate}
 \end{enumerate}
 
@@ -666,7 +676,7 @@ tem a mesma altura em nós preto.
 		  }
 	  }
 	  child {
-		  node [circle,draw,white,fill=red,draw=black] (d) {D}
+		  node [circle,draw,white,fill=red,draw=black,label=left:$z$] (d) {D}
 		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
 		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
 	  };
@@ -726,7 +736,7 @@ tem a mesma altura em nós preto.
 			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
 		  }
 	  }
-	  child { node [rectangle,draw,white,fill=blue,draw=black] {} };
+	  child { node [rectangle,draw,white,fill=blue,draw=black,label=left:$z$] {} };
 	\end{tikzpicture}
   \end{minipage}
   %
@@ -779,7 +789,7 @@ tem a mesma altura em nós preto.
 		  }
 		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
 	  }
-	  child { node [rectangle,draw,white,fill=blue,draw=black] {} };
+	  child { node [rectangle,draw,white,fill=blue,draw=black,label=left:$z$] {} };
 	\end{tikzpicture}
   \end{minipage}
   %
@@ -815,7 +825,12 @@ tem a mesma altura em nós preto.
 
 \subsubsection{Análise}
 
-\todo[inline]{Prox. aula.}
+Como a altura de uma rubro-negra de $n$ nós é $O(\log n)$, o custo da inserção
+é $O(\log n)$.
+Esse custo inclui o custo de inserção $O(\log n)$, como em uma árvore binária
+de busca, e rotações para manter a árvore de no máximo $O(\log n)$.
+Não obstante, ele não executa mais do que 2 rotações porque sempre executa 
+o caso 1 e em seguida caso 2 ou caso 3.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{Árvore SBB}
@@ -838,4 +853,6 @@ e pior caso.
 
 \item Escreva o algoritmo para imprimir o \textsc{menor} elemento de uma árvore de busca binária.
 \item Escreva o algoritmo para imprimir o \textsc{maior} elemento de uma árvore de busca binária.
+
+\item Escreva um algoritmo para imprimir todos os elementos de uma árvore AVL em ordem decrescente.
 \end{enumerate}
