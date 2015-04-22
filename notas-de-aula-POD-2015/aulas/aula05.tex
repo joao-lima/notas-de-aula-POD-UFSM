@@ -322,10 +322,10 @@ simples a direta.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n3) {3}
+	\node [circle,draw,label=above:{\footnotesize 2}] (n3) {3}
 	  child {
-		node [circle,draw] (n2) {2}
-			child { node [circle,draw] (n1) {1} }
+		node [circle,draw,label=above:{\footnotesize 1}] (n2) {2}
+			child { node [circle,draw,label=above:{\footnotesize 0}] (n1) {1} }
 			child[missing] {}
 	  }
 	  child[missing] {};
@@ -340,9 +340,9 @@ simples a direta.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n2) {2}
-		child { node [circle,draw] (n1) {1} }
-		child { node [circle,draw] (n3) {3} };
+	\node [circle,draw,label=above:{\footnotesize 0}] (n2) {2}
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n1) {1} }
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n3) {3} };
 	\end{tikzpicture}
   \end{minipage}
   %
@@ -355,17 +355,17 @@ simples a direta.
 		level 2/.style={sibling distance=1cm},
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm ]
-	\node [circle,draw] (n4) {4}
+	\node [circle,draw,label=above:{\footnotesize 2}] (n4) {4}
 	  child {
-		node [circle,draw] (n2) {2}
+		node [circle,draw,label=above:{\footnotesize 1}] (n2) {2}
 		child {
-			node [circle,draw] (n1) {1}
-			child { node[circle,draw] (n0) {0} }
+			node [circle,draw,label=above:{\footnotesize 1}] (n1) {1}
+			child { node[circle,draw,label=above:{\footnotesize 0}] (n0) {0} }
 			child[missing] {}
 		}
-		child { node[circle,draw] (n3) {3} }
+		child { node[circle,draw,label=above:{\footnotesize 0}] (n3) {3} }
 	  }
-	  child { node [circle,draw] (n5) {5} };
+	  child { node [circle,draw,label=above:{\footnotesize 0}] (n5) {5} };
 	\end{tikzpicture}
   \end{minipage}
 %
@@ -376,20 +376,20 @@ simples a direta.
 		level 2/.style={sibling distance=1cm},
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm ]
-	\node [circle,draw] (n2) {2}
+	\node [circle,draw,label=above:{\footnotesize 0}] (n2) {2}
 	  child {
-		node [circle,draw] (n1) {1}
-		child { node [circle,draw] (n0) {0} }
+		node [circle,draw,label=above:{\footnotesize 1}] (n1) {1}
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n0) {0} }
 		child[missing] {}
 	  }
 	 child {
-		 node[circle,draw] (n4) {4}
-		child { node [circle,draw] (n3) {3} }
-		child { node [circle,draw] (n5) {5} }
+		 node[circle,draw,label=above:{\footnotesize 0}] (n4) {4}
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n3) {3} }
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n5) {5} }
 	 };
 	\end{tikzpicture}
   \end{minipage}
-\caption{Dois exemplos de AVL com rotação simples para a direita.}
+\caption{Dois exemplos de AVL com rotação simples para a direita e cada nó com seu FB.}
 \label{aula05:avl:rot:simples1}
 \end{figure}
 
@@ -411,11 +411,11 @@ dupla a direta.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n3) {3}
+	\node [circle,draw,label=above:{\footnotesize 2}] (n3) {3}
 	  child {
-		node [circle,draw] (n1) {1}
+		node [circle,draw,label=above:{\footnotesize -1}] (n1) {1}
 			child[missing] {}
-			child { node [circle,draw] (n2) {2} }
+			child { node [circle,draw,label=above:{\footnotesize 0}] (n2) {2} }
 	  }
 	  child[missing] {};
 	\end{tikzpicture}
@@ -431,10 +431,10 @@ dupla a direta.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n3) {3}
+	\node [circle,draw,label=above:{\footnotesize 2}] (n3) {3}
 	  child {
-		node [circle,draw] (n2) {2}
-			child { node [circle,draw] (n1) {1} }
+		node [circle,draw,label=above:{\footnotesize 1}] (n2) {2}
+			child { node [circle,draw,label=above:{\footnotesize 0}] (n1) {1} }
 			child[missing] {}
 	  }
 	  child[missing] {};
@@ -451,12 +451,12 @@ dupla a direta.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n2) {2}
-		child { node [circle,draw] (n1) {1} }
-		child { node [circle,draw] (n3) {3} };
+	\node [circle,draw,label=above:{\footnotesize 0}] (n2) {2}
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n1) {1} }
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n3) {3} };
 	\end{tikzpicture}
   \end{minipage}
-\caption{Exemplo de AVL com rotação dupla.}
+\caption{Exemplo de AVL com rotação dupla, e cada nó com seu FB.}
 \label{aula05:avl:rot:dupla1}
 \end{figure}
 
@@ -482,12 +482,12 @@ com rotação simples a esquerda.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n4) {4}
-	  child { node [circle,draw] (n2) {2} }
+	\node [circle,draw,label=above:{\footnotesize -1}] (n4) {4}
+	  child { node [circle,draw,label=above:{\footnotesize 0}] (n2) {2} }
 	  child {
-		node [circle,draw] (n6) {6}
+		node [circle,draw,label=above:{\footnotesize -1}] (n6) {6}
 			child[missing] {}
-			child { node [circle,draw] (n7) {7} }
+			child { node [circle,draw,label=above:{\footnotesize 0}] (n7) {7} }
 	  };
 	\end{tikzpicture}
   \end{minipage}
@@ -502,12 +502,12 @@ com rotação simples a esquerda.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n4) {4}
+	\node [circle,draw,label=above:{\footnotesize -2}] (n4) {4}
 	  child[missing] {}
 	  child {
-		node [circle,draw] (n6) {6}
+		node [circle,draw,label=above:{\footnotesize -1}] (n6) {6}
 			child[missing] {}
-			child { node [circle,draw] (n7) {7} }
+			child { node [circle,draw,label=above:{\footnotesize 0}] (n7) {7} }
 	  };
 	\end{tikzpicture}
   \end{minipage}
@@ -522,9 +522,9 @@ com rotação simples a esquerda.
 		level 3/.style={sibling distance=1cm},
 		level distance = 1cm
 		]
-	\node [circle,draw] (n6) {6}
-		child { node [circle,draw] (n4) {4} }
-		child { node [circle,draw] (n7) {7} };
+	\node [circle,draw,label=above:{\footnotesize 0}] (n6) {6}
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n4) {4} }
+		child { node [circle,draw,label=above:{\footnotesize 0}] (n7) {7} };
 	\end{tikzpicture}
   \end{minipage}
 \caption{Exemplo de remoção em AVL (nó 2) com rotação simples a esquerda.}
