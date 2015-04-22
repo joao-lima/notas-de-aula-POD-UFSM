@@ -616,12 +616,211 @@ Uma árvore rubro-negra com $n$ elementos tem altura
 \[ h \leq 2 \log (n + 1) \].
 \end{theorem}
 
+\subsubsection{Rotações}
+
+Inserções e remoções custam $O(\log n)$ e, como podem modificar a árvore,
+o resultado pode violar as propriedades de uma rubro-negra.
+A rotação muda cores de nós e a estrutura da árvore.
+Há dois tipos de rotação em árvores rubro-negras: rotações a esquerda e 
+rotações a direita.
+As rotação são explicadas na inserção.
+
+\subsubsection{Inserção}
+
+A inserção adiciona um nó $x$ de cor vermelha na árvore da mesma forma que 
+em uma árvore binária de busca.
+Nesse caso, apenas a propriedade 3 de rubro-negras pode ser violada.
+Caso a propriedade 3 foi violada, mover para o nó pai por recoloração até que
+as propriedades sejam respeitadas através de rotações e recolorações.
+
+Os passos da inserção envolvem 3 casos. Nos exemplos abaixo,
+cada quadrado azul representa uma sub-árvore com uma raiz preta, e todas
+tem a mesma altura em nós preto.
+\begin{enumerate}
+\item insere na árvore o nó $x$ com cor vermelha.
+\item se propriedade 3 foi violada:
+	\begin{enumerate}
+	\item recolorir o nó pai de $x$ e tios (nós vizinhos do pai de $x$, ou filhos do avô de $x$).
+	\end{enumerate}
+\end{enumerate}
+
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=3cm},
+		level 2/.style={sibling distance=2cm},
+		level 3/.style={sibling distance=1cm},
+		level 4/.style={sibling distance=0.5cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=black,draw=black] (c) {C}
+	  child {
+		  node [circle,draw,white,fill=red,draw=black] (a) {A}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child {
+			  node [circle,draw,white,fill=red,draw=black,label=left:$x$] (b) {B} 
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  }
+	  }
+	  child {
+		  node [circle,draw,white,fill=red,draw=black] (d) {D}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+	  };
+	\end{tikzpicture}
+  \end{minipage}
+  %
+  \vline
+  %
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=3cm},
+		level 2/.style={sibling distance=2cm},
+		level 3/.style={sibling distance=1cm},
+		level 4/.style={sibling distance=0.5cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=red,draw=black,label=left:novo $x$] (c) {C}
+	  child {
+		  node [circle,draw,white,fill=black,draw=black] (a) {A}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child {
+			  node [circle,draw,white,fill=red,draw=black] (b) {B}
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  }
+	  }
+	  child {
+		  node [circle,draw,white,fill=black,draw=black] (d) {D}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+	  };
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Caso 1 da inserção em árvore rubro-negra: recoloração}
+\label{aula05:redblack:ex2}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=3cm},
+		level 2/.style={sibling distance=2cm},
+		level 3/.style={sibling distance=1cm},
+		level 4/.style={sibling distance=0.5cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=black,draw=black] (c) {C}
+	  child {
+		  node [circle,draw,white,fill=red,draw=black] (a) {A}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child {
+			  node [circle,draw,white,fill=red,draw=black,label=left:$x$] (b) {B}
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  }
+	  }
+	  child { node [rectangle,draw,white,fill=blue,draw=black] {} };
+	\end{tikzpicture}
+  \end{minipage}
+  %
+  \vline
+  %
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=3cm},
+		level 2/.style={sibling distance=2cm},
+		level 3/.style={sibling distance=1cm},
+		level 4/.style={sibling distance=0.5cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=black,draw=black] (c) {C}
+	  child {
+		  node [circle,draw,white,fill=red,draw=black] (b) {B}
+		  child {
+			  node [circle,draw,white,fill=red,draw=black,label=left:$x$] (a) {A}
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  }
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+	  }
+	  child { node [rectangle,draw,white,fill=blue,draw=black] {} };
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Caso 2 da inserção em árvore rubro-negra: rotação para esquerda.}
+\label{aula05:redblack:ex3}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=3cm},
+		level 2/.style={sibling distance=2cm},
+		level 3/.style={sibling distance=1cm},
+		level 4/.style={sibling distance=0.5cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=black,draw=black] (c) {C}
+	  child {
+		  node [circle,draw,white,fill=red,draw=black] (b) {B}
+		  child {
+			  node [circle,draw,white,fill=red,draw=black,label=left:$x$] (a) {A}
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+			  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  }
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+	  }
+	  child { node [rectangle,draw,white,fill=blue,draw=black] {} };
+	\end{tikzpicture}
+  \end{minipage}
+  %
+  \vline
+  %
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\begin{tikzpicture}[thick, 
+		level 1/.style={sibling distance=3cm},
+		level 2/.style={sibling distance=2cm},
+		level 3/.style={sibling distance=1cm},
+		level 4/.style={sibling distance=0.5cm},
+		level distance = 1cm
+		]
+	\node [circle,draw,white,fill=black,draw=black] (b) {B}
+	  child {
+		  node [circle,draw,white,fill=red,draw=black] (a) {A}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+	  }
+	  child { 
+		  node [circle,draw,white,fill=red,draw=black] (c) {C}
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+		  child { node [rectangle,draw,white,fill=blue,draw=black] {} }
+	};
+	\end{tikzpicture}
+  \end{minipage}
+\caption{Caso 3 da inserção em árvore rubro-negra: rotação para direita.}
+\label{aula05:redblack:ex4}
+\end{figure}
+
+%\subsubsection{Remoção}
+
+\subsubsection{Análise}
+
 \todo[inline]{Prox. aula.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Árvore SBB}
-
-\todo[inline]{Prox. aula.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{Árvore SBB}
+%
+%\todo[inline]{Prox. aula.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Tabelas \textsc{Hash}}
