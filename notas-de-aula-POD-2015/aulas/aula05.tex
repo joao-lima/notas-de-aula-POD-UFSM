@@ -650,7 +650,7 @@ tem a mesma altura em nós preto.
 		É feita uma rotação para esquerda, e automaticamente cai no {\bf Caso 3}.
 	\item {\bf Caso 3} - novamente quando o pai de $x$ é vermelho e $z$ é preto
 		(figura~\ref{aula05:redblack:ex4}).
-		É feita uma rotação para direita.
+		É feita uma rotação para direita, ainda recolorir pai de $x$ e avô de $x$.
 	\end{enumerate}
 \end{enumerate}
 
@@ -851,8 +851,57 @@ o caso 1 e em seguida caso 2 ou caso 3.
 \item Descreva os passos da busca binária e os custos para o melhor caso, caso médio
 e pior caso.
 
+\item Qual é a principal característica de uma árvore binária de pesquisa ?
+
+\item Descreva a árvore binária de busca criada a partir dos seguintes elementos:
+$5, 8, 3, 6, 7, 1, 9, 4$.
+
+\item A partir da árvore do exercício anterior, descreva a árvore binária de busca
+resultante da remoção dos seguintes elementos: $4, 5$.
+
+\item Desenhe a árvore AVL resultante da inserção dos números: 
+$9, 8, 7, 6, 5, 4, 3, 2, 1$.
+
 \item Escreva o algoritmo para imprimir o \textsc{menor} elemento de uma árvore de busca binária.
 \item Escreva o algoritmo para imprimir o \textsc{maior} elemento de uma árvore de busca binária.
 
-\item Escreva um algoritmo para imprimir todos os elementos de uma árvore AVL em ordem decrescente.
+\item Escreva dois algoritmos que recebem uma árvore AVL como entrada: para
+imprimir todos os elementos em ordem crescente e decrescente.
+
+\item Considere a seguinte lista de valores: $[0, 9, 10, 3, 8, 4, 5, 1]$. 
+	\begin{enumerate}
+	\item Construa  uma árvore binária de busca não balanceada.
+	\item Construa  uma árvore AVL.
+	\end{enumerate}
+
+\item Para uma árvore binária de busca:
+	\begin{enumerate}
+	\item Descreva um algoritmo {\bf não recursivo} que faz um percurso em-ordem.
+	\item Descreva algoritmos recursivos para percursos pré-ordem e pós-ordem.
+	\item Descreva algoritmos recursivos para buscar o elemento mínimo
+		(\lstinline{ArvoreMinimo}) e elemento máximo
+		(\lstinline{ArvoreMaximo}).
+	\end{enumerate}
+
+\item  Supondo que temos números de $1$ a $1000$ em uma árvore binária de busca,
+e queremos buscar o número $363$. Quais das sequencias abaixo {\bf não} 
+poderiam ser sequencias de nós percorridos nessa busca ?
+	\begin{enumerate}
+	\item $2,252,401,398,330,344,397,363$.
+	\item $924, 220, 911, 244, 898, 258, 362, 363$.
+	\item $925, 202, 911, 240, 912, 245, 363$.
+	\item $2,399,387,219,266,382,381,278,363$.
+	\item $935, 278, 347, 621, 299, 392, 358, 363$.
+	\end{enumerate}
+
+\item Desenhe uma árvore rubro-negra com chaves ${1, 2, ..., 15}$.
+Adicione os nós folhas com \textsc{NIL} e faça coloração dos nós de forma
+que o $bh(x)$ (\emph{black-height} ou altura-preto) da árvore seja 2, 3 e 4.
+
+\item Mostre a árvore rubro-negra resultante depois de inserir sucessivamente
+os nós ${41, 38, 31, 12, 19, 8}$ em uma árvore vazia.
+
+\item Agora, baseado no exercício anterior,  mostre a árvore rubro-negra
+resultante da remoção dos nós ${8, 12, 19, 31, 38, 41}$ sucessivamente.
+
 \end{enumerate}

@@ -837,21 +837,77 @@ Porém, ele não é genérico.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{enumerate}
+\item Invente um exemplo de entrada (vetor) para demonstrar que a ordenação
+por Seleção é um método instável.
+Mostre os passos da execução até que a estabilidade seja violada.
+
 \item Ordene os elementos $3, 7, 1, 4, 9, 2$ usando os métodos: bolha, seleção,
 inserção, shellsort (com gaps $3, 2, 1$). Não esqueça de exibir o estado do vetor a cada troca
 de elementos.
 
-\item Demonstre as etapas do Quicksort para ordenar a 
+%\item Demonstre as etapas do Quicksort para ordenar a 
 
 \item Ordene os elementos do vetor $3, 10, 8, 9, 5, 4, 1, 2$ usando os métodos: 
 Quicksort (primeiro elemento como pivô) e Mergesort. Exibir o estado do vetor toda vez que ocorrer 
 uma troca.
 
-\item Ordene o vetor $5, 3, 17, 10, 8, 9$ usando Heapsort.
+\item Sobre Heaps
+	\begin{enumerate}
+	\item Quais são os elementos mínimo e máximo de um Heap com altura $h$ ?
+	\item Um vetor ordenado um Heap mínimo ?
+	\item Um vetor com valores $A = [23, 17, 14, 6, 13, 10, 1, 5, 7, 12]$ é um Heap máximo ?
+	\item Usando o algoritmo da figura~\ref{aula03:algo:heap:refaz}, ilustre as operações
+	da operação \lstinline{Refaz(A,3,14)} para o vetor
+	$A = [27, 17, 3, 16, 13, 10, 1, 5, 7, 12, 4, 8, 9, 0]$.
+	\item Reescreva o algoritmo da figura~\ref{aula03:algo:heap:refaz}, que cria
+	um Heap máximo, para gerar um Heap mínimo.
+	\end{enumerate}
+
+\item Ordene os vetores abaixo usando Heapsort:
+	\begin{enumerate}
+	\item $A = [5, 3, 17, 10, 8, 9]$.
+	\item $A = [5, 13, 2, 25, 7, 17, 20, 8, 4]$.
+	\end{enumerate}
+
+\item Qual é o custo de execução do Heapsort para um vetor $A$ de tamanho $n$ já classificado
+em ordem crescente ? E em ordem decrescente ?
+
+\item Qual é o curso do Quicksort quando todos os elementos de $A$ tem o mesmo
+valor.
+
+\item Suponha que cada um dos elementos em $A[1..n]$ possua um valor entre três valores
+distintos.
+	\begin{enumerate}
+	\item Descreva um algoritmo eficiente para ordenar os elementos. (Dica: uma boa
+		solução é utilizar a função principal do Quicksort.).
+	\item Apresente a análise do pior caso para número de comparações.
+	\end{enumerate}
+
+\item Que algoritmo de ordenação você usaria para cada um dos seguintes casos, e justifique:
+	\begin{enumerate}
+	\item A ordem original de elementos com chave idêntica precisa ser mantida.
+	\item O tempo de execução não pode ter grandes variações para nenhum caso.
+	\item A lista a ser ordenada já está bem próxima da ordem final.
+	\item Os elementos a serem ordenados são muito grandes se comparados ao tamanho
+		das chaves.
+%	\item A lista a ser ordenada não cabe na memória principal.
+	\end{enumerate}
+	
+\item Sobre Quicksort:
+	\begin{enumerate}
+	\item Descreva uma (ou mais) maneira para manter o tamanho da pilha de recursão 
+		(chamadas recursivas) o menor possível na implementação do
+		Quicksort.
+	\item Sem este artifício, qual seria o tamanho da pilha de chamadas para o
+	pior caso do Quicksort ?
+	\end{enumerate}
+	
 
 \item Ordene os números abaixo usando:
 	\begin{itemize}
 	\item Countingsort: $1, 5, 3, 9, 7, 3, 2, 1, 4, 6, 6, 5, 4, 1$. Mostre o valor das estruturas temporárias.
 	\item Radixsort: $2, 17, 324, 45, 41, 86, 26, 91, 118, 99, 19$. Mostre o estado do vetor após cada rodada de ordenação.
+	\item Bucketsort: $.79, .13, .16, .64, .39, .20, .89, .53, .71, .42$. Mostre o estado do vetor após cada rodada de ordenação.
 	\end{itemize}
+
 \end{enumerate}
