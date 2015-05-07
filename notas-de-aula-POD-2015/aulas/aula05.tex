@@ -841,7 +841,96 @@ o caso 1 e em seguida caso 2 ou caso 3.
 \section{Tabelas \textsc{Hash}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\todo[inline]{Prox. aula.}
+Em uma tabela \textsc{hash} os registros armazenados em uma tabela são
+diretamente endereçados a partir de uma transformação aritmética sobre a chave
+de pesquisa.
+A operação é chamada transformação de chave ou \emph{hashing}.
+
+A pesquisa com transformação de chave é composta de duas etapas:
+\begin{enumerate}
+\item Computar o valor a {\bf função de transformação}, que 
+transforma a chave de pesquisa em um endereço da tabela.
+
+\item Considerando que duas ou mais chaves podem ser transformadas em um
+mesmo endereço de tabela, é necessário existir um método lidar
+com \textbf{colisões}.
+\end{enumerate}
+
+Algumas {\bf colisões} irão ocorrer qualquer que seja a função de transformação,
+e tais colisões têm de ser resolvidas.
+Mesmo com alguma função de transformação que distribua registros de forma uniforme,
+existe uma alta probabilidade de haver colisões.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Funções de hash}
+
+Uma função de hash $h$ mapea um universo $U$  de todas as chaves em 
+\emph{slots} de uma tabela hash $T[0..m-1]$ para $S$ sendo
+$S = \{0, 1, ..., m-1\}$ onde $m$ é muito menor que o universo $U$.
+O valor da chave $h(k)$ é o {\bf valor hash} da chave $k$.
+A função hash reduz o intervalo de índices e tamanho de um vetor.
+Ao invés de $|U|$, o vetor (tabela $T$) tem tamanho $m$ sendo $|U| > m$.
+
+Um método simples de \emph{hashing} é o resto da divisão por $m$
+\begin{equation*}
+h(k) = k\; mod\; m
+\end{equation*}
+onde $k$ é a chave como um inteiro.
+
+{\bf Cuidado} na escolha do valor de $m$. $m$ deve ser um número primo não muito
+próximo do exponencial de $2$ ou $10$ e não usado com frequência.
+
+No caso de colisões, uma solução simples é construir uma lista 
+encadeada para cada endereço da tabela.
+Dessa forma, todas as chaves com o mesmo endereço são encadeadas em uma lista.
+O {\bf fator de balanceamento} de $T$ é $\alpha = n/m$ onde $n$ é o número
+de chaves na tabela e $m$ o tamanho da tabela.
+A figura~\ref{aula05:fig:hash} ilustra um exemplo de tabela hash com alguns
+slots com colisões.
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{aula05-hash1}
+\caption{Exemplo de uma tabela hash com colisões.}
+\label{aula05:fig:hash}
+\end{figure}
+
+O custo de busca para uma chave é $O(1 + \alpha)$ onde custo $1$ é aplicar
+a função hash e acessar o slot, e $\alpha$ a busca na lista.
+Então, o custo é $O(1)$ se $\alpha = O(1)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Endereçamento aberto}
+
+Existem diversos métodos para armazenar $n$ registros em uma tabela de tamanho
+$m > n$ em que utilizam lugares vázios na própria tabela para resolver
+colisões.
+No {\bf endereçamento aberto} todas as chaves são armazenadas na própria 
+tabela, sem uso de memória adicional.
+
+% TODO exemplo ziviane pg 86
+Entre as várias propostas, a mais simples é \emph{hashing linear} dada por
+\begin{equation*}
+k(k,i) = (h'(k) + i)\; mod \; m.
+\end{equation*}
+O hashing linear sofre do {\bf agrupamento} (\emph{clustering}) na medida
+em que a tabela começa a ficar cheia, pois a inserção de uma nova chave tende
+a ocupar uma posição na tabela que esteja contígua a outras posições já ocupadas,
+o que deteriora o tempo necessário para novas pesquisas.
+Mesmo que o hashing linear ter esse problema, os resultados são satisfatórios.
+O melhor caso, assim como o caso médio é $O(1)$.
+O pior caso é $O(n)$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hashing perfeito}
+
+Se $h(x_i) = h(x_j)$ se e somente se $i = j$, então não há colisões e a 
+função de transformação é chamada de {\bf função de transformação perfeita}.
+Se o número de chaves $n$ e o tamanho da tabela $m$ são iguais, então temos uma
+{\bf função de transformação perfeita mínima} ($hp$).
+
+Se $x_i \leq x_j$ e $hp(x_i) \leq hp(x_j)$ então a ordem lexicográfica é preservada. 
+Nesse caso, temos uma {\bf função de transformação perfeito mínima com ordem preservada}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
