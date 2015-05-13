@@ -1154,7 +1154,7 @@ com alfabeto \{0, 1\}.
 Entretanto, ela não usa um caractere especial para término (\$).
 Todas as cadeias devem ter o mesmo tamanho.
 
-Cada nós possui no máximo 2 filhos, e cada nó tem dois tipos: nós de desvio e nós de conteúdo.
+Cada nó possui no máximo 2 filhos, e cada nó tem dois tipos: nós de desvio e nós de conteúdo.
 Os nós de desvio possuem uma informação numérica que indica o bit da chave a testar.
 A partir desse bit é decidido qual caminho da árvore a seguir.
 
@@ -1174,7 +1174,7 @@ Os valores dentro de cada nó indicam qual bit a ser testado no próximo desvio.
 A busca começa pela raiz e pelo primeiro caractere (bit 0). 
 Há dois cenários:
 \begin{description}
-\item[Cenário 1] o nó atual não é folha
+\item[Cenário 1] o nó atual não é folha.
 	\begin{enumerate}
 	\item Verificar o dígito da chave de busca equivalente ao valor do nó.
 	\item Se for 0, seguir a subárvore da esquerda.
@@ -1182,12 +1182,70 @@ Há dois cenários:
 	\item Se não houver subárvore a seguir, a chave de busca não está indexada.
 	\end{enumerate}
 
-\item[Cenário 2]
+\item[Cenário 2] o nó atual é folha.
 	\begin{enumerate}
 	\item Deve-se verificar se o valor indexado realmente corresponde a chave de busca.
 	\end{enumerate}
 \end{description}
 
+\subsubsection{Inserção}
+
+Os passos da inserção em árvores Patricia são os seguintes:
+\begin{enumerate}
+\item A palavra (cadeia de bits) é buscada.
+\item Se a árvore estiver vazia:
+	\begin{enumerate}
+	\item Cria-se uma estrutura inicial para indexar a palavra.
+	\item Um nó raiz, com valor igual a 1, e um nó filho (a esquerda ou direita), indexando
+		a palavra.
+	\end{enumerate}
+\item Se a busca parar em um nó anterior a um nó folha.
+	\begin{enumerate}
+	\item Significa que o nó só possui um único filho.
+	\item Cria-se o outro filho, que indexará a palavra inserida.
+	\end{enumerate}
+
+\item Se a busca parar em um nó folha.
+	\begin{enumerate}
+	\item o conteúdo indexado é comparado com a palavra a ser inserida.
+	\item se for igual, é adicionada uma entrada no nó folha para a palavra indexada.
+	\item Se for diferente.
+		\begin{enumerate}
+		\item é preciso descobrir o nó da árvore a ser atualizado.
+		\item para isso, é verificada a posição $P$ do primeiro bit onde ocorre a
+			diferença.
+		\item Se o bit for {\bf maior} que a última posição utilizada, deve-se adicionar um nó aqui.
+		\item Se o bit for {\bf menor}  que a última posição utilizada, deve-ser subir na árvore
+			para encontrar o local adequado. 
+		\end{enumerate}
+	\end{enumerate}
+
+\item Para o caso de subida na árvore.
+	\begin{enumerate}
+	\item Sobe-se na árvore até encontrar o nó $X$, o nó mais baixo cujo
+		valor seja maior que a posição $P$.
+	\item Nesse ponto é inserido um novo nó, tendo como filhos:
+		\begin{enumerate}
+		\item O nó $X$.
+		\item Um novo nó para indexar a nova palavra.
+		\end{enumerate}
+	\item Os ponteiros e valores dos nós criados/remanejados são atualizados.
+	\end{enumerate}
+	
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Aplicações de Tries e Patricia}
+
+As Tries de caracteres podem ser aplicadas em:
+\begin{itemize}
+\item Verificadores de ortografia.
+\item Motores de busca - nós folhas guardam páginas que possuem a palavra indexada.
+\end{itemize}
+
+As Tries binárias são usadas na compressão de dados, como na Codificação de Huffman.
+
+As árvores Patricia podem ser usadas na indexação de chaves longas.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
