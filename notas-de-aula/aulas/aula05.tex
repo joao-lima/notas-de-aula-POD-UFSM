@@ -1147,6 +1147,48 @@ suficiente.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvores Patricia}
 
+Uma árvore Patricia, ou \emph{radix tree}, ou \emph{patricia trie}, vem do
+acrônimo ``\emph{Practical Algorithm To Retrieve Information Coded In
+Alphanumeric}'' e é uma árvore de busca compacta semelhante a uma Trie binária,
+com alfabeto \{0, 1\}.
+Entretanto, ela não usa um caractere especial para término (\$).
+Todas as cadeias devem ter o mesmo tamanho.
+
+Cada nós possui no máximo 2 filhos, e cada nó tem dois tipos: nós de desvio e nós de conteúdo.
+Os nós de desvio possuem uma informação numérica que indica o bit da chave a testar.
+A partir desse bit é decidido qual caminho da árvore a seguir.
+
+A figura~\ref{aula05:fig:patricia1} mostra um exemplo de árvore Patricia e as
+respectivas chaves.
+Os valores dentro de cada nó indicam qual bit a ser testado no próximo desvio.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula05-patricia1}
+\caption{Exemplo de uma árvore Patricia.}
+\label{aula05:fig:patricia1}
+\end{figure}
+
+\subsubsection{Busca}
+
+A busca começa pela raiz e pelo primeiro caractere (bit 0). 
+Há dois cenários:
+\begin{description}
+\item[Cenário 1] o nó atual não é folha
+	\begin{enumerate}
+	\item Verificar o dígito da chave de busca equivalente ao valor do nó.
+	\item Se for 0, seguir a subárvore da esquerda.
+	\item Caso contrário, seguir a subárvore da direita.
+	\item Se não houver subárvore a seguir, a chave de busca não está indexada.
+	\end{enumerate}
+
+\item[Cenário 2]
+	\begin{enumerate}
+	\item Deve-se verificar se o valor indexado realmente corresponde a chave de busca.
+	\end{enumerate}
+\end{description}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
