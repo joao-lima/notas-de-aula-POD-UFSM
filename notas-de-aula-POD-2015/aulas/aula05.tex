@@ -880,6 +880,13 @@ onde $k$ é a chave como um inteiro.
 {\bf Cuidado} na escolha do valor de $m$. $m$ deve ser um número primo não muito
 próximo do exponencial de $2$ ou $10$ e não usado com frequência.
 
+Existem diversos métodos para armazenar $n$ registros em uma tabela de tamanho
+$m > n$ em que utilizam lugares vázios na própria tabela para resolver
+colisões.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Encadeamento}
+
 No caso de colisões, uma solução simples é construir uma lista 
 encadeada para cada endereço da tabela.
 Dessa forma, todas as chaves com o mesmo endereço são encadeadas em uma lista.
@@ -902,11 +909,9 @@ Então, o custo é $O(1)$ se $\alpha = O(1)$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Endereçamento aberto}
 
-Existem diversos métodos para armazenar $n$ registros em uma tabela de tamanho
-$m > n$ em que utilizam lugares vázios na própria tabela para resolver
-colisões.
 No {\bf endereçamento aberto} todas as chaves são armazenadas na própria 
 tabela, sem uso de memória adicional.
+Se o endereço $e$ estiver ocupado tenta no endereço $e+1, e+2, ... n, 1, 2, ...  e-1$.
 
 % TODO exemplo ziviane pg 86
 Entre as várias propostas, a mais simples é \emph{hashing linear} dada por
@@ -922,6 +927,20 @@ O melhor caso, assim como o caso médio é $O(1)$.
 O pior caso é $O(n)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Chaves não númericas}
+
+As chaves não númericas devem ser transformadas em números dado por
+\begin{equation*}
+k = \sum_{i = 1}^{n} chave[i] \times p[i]
+\end{equation*}
+onde $n$ é o número de caracteres da chave, $chave[i]$ é o código ASCII do $i-$ésimo
+caractere da chave, e $p[i]$ é um inteiro de um conjunto de pesos gerados aleatóriamente
+para $1 \leq i \leq n$.
+
+O uso de pesos tem a vantagem de gerar duas funções $h_1(k)$ e $h_2(k)$ diferentes
+para dois conjuntos diferentes $p_1[i]$ e $p_2[i]$ $1 \leq i \leq n$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hashing perfeito}
 
 Se $h(x_i) = h(x_j)$ se e somente se $i = j$, então não há colisões e a 
@@ -931,6 +950,202 @@ Se o número de chaves $n$ e o tamanho da tabela $m$ são iguais, então temos u
 
 Se $x_i \leq x_j$ e $hp(x_i) \leq hp(x_j)$ então a ordem lexicográfica é preservada. 
 Nesse caso, temos uma {\bf função de transformação perfeito mínima com ordem preservada}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Busca digital}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A busca digital, ou pesquisa digital, é baseada na representação das chaves como uma 
+sequência de caracteres ou dígitos.
+Em vez de comparar uma chave de busca com os elementos, os caracteres da chave
+de busca são comparados.
+O método de busca digital é análogo à pesquisa manual em dicionários.
+
+Os métodos de busca digital são vantajosos quando as chaves são grandes e de 
+\textbf{tamanho variável}.
+Um aspecto interessante quanto aos métodos de pesquisa digital é a possibilidade
+de localizar todas as ocorrências de uma determinada cadeia em um texto com tempo
+de resposta logarítmico em relação ao tamanho do texto.
+
+Os métodos estudados são Trie e Patricia.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Árvores Trie}
+
+O nome \textbf{Trie} vem de \emph{Retrieval} (recuperação).
+Uma trie é uma árvore de busca $n-$ária, o grau equivale ao tamanho do
+alfabeto, e ordenada, cujos nós irmãos são ordenados.
+Usada para indexar chaves de busca, em geral caracteres, os arcos
+os arcos são caracteres da chave.
+
+Considerando as chaves como sequência de bits (quando $n = 2$), o algoritmo
+de pesquisa digital é semelhante ao de pesquisa em árvore, exceto que em vez de
+caminhar na árvore de acordo com o resultado da comparação entre chaves, caminha-se
+de acordo com os bits da chave.
+
+A figura~\ref{aula05:fig:trie1} ilustra um exemplo de árvore Trie com palavras indexadas
+Alma, Almir, Alto, Be, Cal.
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{aula05-trie1}
+\caption{Exemplo de uma árvore Trie.}
+\label{aula05:fig:trie1}
+\end{figure}
+
+\subsubsection{Chaves}
+
+Uma chave é uma palavra sobre um alfabeto. 
+Um símbolo é usado para indicar o término de uma chave. 
+Esse símbolo deve ser um caractere que não faça parte do alfabeto, e garante
+que uma chave não seja um prefixo de outra.
+Dessa forma, os registros estarão nos nós folha da árvore.
+%
+\begin{description}
+\item[Exemplo 1] tendo o alfabeto \{A, B, C, ..., Z\} e o símbolo
+de término \$. Possíveis chaves: BOTA\$, CARRO\$, LEI\$.
+
+\item[Exemplo 2] tendo o alfabeto \{0, 1, ..., 9\} e o símbolo de término \$.
+Possíveis chaves: 134\$, 12978\$, 99777\$.
+\end{description}
+O caminho da raiz até um nó qualquer forma de um prefixo de uma chave indexada.
+
+O formato das tries não depende da ordem em que as chaves são inseridas, depende
+apenas dos valores das chaves.
+
+\subsubsection{Estrutura de uma Trie}
+
+A estrutura é composta de:
+\begin{description}
+\item[Nó raiz]  vazio e indexa nós que representem prefixos das chaves indexadas.
+\item[Nós intermediários] prefixos de chaves de busca indexadas. Indexam outros nós
+que aumentam o prefixo.
+\item[Nós folha] chave completa e indexam as regiões de interesse. Ex.: offset da chave
+de busca dentro de um arquivo de texto.
+\end{description}
+
+\subsubsection{Busca}
+
+A busca começa pela raiz e pelo primeiro caractere.
+Há dois cenários:
+\begin{description}
+\item[Cenário 1] o nó atual não é folha.
+	\begin{enumerate}
+	\item Se existe um filho que corresponda ao próximo caractere da chave.
+		\begin{itemize}
+		\item Avançar um caractere (passar a ignorá-lo a partir deste momento).
+		\item Visitar o filho.
+		\end{itemize}
+	\item Se não existe esse filho.
+		\begin{itemize}
+		\item A chave não está indexada.
+		\end{itemize}
+	\end{enumerate}
+\item[Cenário 2]  o nó atual é folha.
+	\begin{enumerate}
+	\item Esse nó de dados representa a resposta.
+	\end{enumerate}
+\end{description}
+
+\subsubsection{Inserção}
+
+Os passos da inserção são:
+\begin{enumerate}
+\item A palavra é buscada.
+\item Se encontrar a palavra.
+	\begin{enumerate}
+	\item Adiciona-se um ponteiro no nó correspondente. O nó vira uma lista invertida contendo
+	os offsets.
+	\end{enumerate}
+\item Caso contrário 
+	\begin{enumerate}
+	\item Localizar o último nó visitado.
+	\item a partir desse nó, inserir o restante dos caracteres em novos nós.
+	\end{enumerate}
+\end{enumerate}
+
+\subsubsection{Implementação}
+
+Uma Trie pode ser implementada de duas formas diferentes:
+\begin{itemize}
+\item \textbf{R-Way} com nós de desvio e nós de informação. Os nós de desvio contem um filho para
+cada símbolo do alfabeto mais um filho para o símbolo especial.
+
+\item {\bf árvore TST (Ternary Search Tree)} ocupam menos espaço.
+Cada nós possui um caractere e três ponteiros: próximo caractere (centro), 
+caractere alternativo menor que o atual (esquerda), e caractere alternativo
+maior que o atual (direita).
+\end{itemize}
+
+\subsubsection{Análise}
+
+O custo em execução é $O(k m)$ para $k$ o tamanho do alfabeto e $m$ o tamanho da 
+chave de busca.
+O tempo de execução é independente do número de chaves, e a altura é igual ao comprimento da chave
+mais longa.
+
+O custo em espaço é $O(s)$ para $s$ a soma do tamanho de todas as chaves. 
+
+\subsubsection{Trie compacta}
+
+O espaço de uma Trie é reduzido por meio de compressão de nós redundantes, ou seja,
+mesclando nós que possuem apenas um caminho possível.
+A figura~\ref{aula05:fig:trie2} ilustra a versão compacta da  árvore Trie 
+da figura~\ref{aula05:fig:trie1}.
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.6\textwidth]{aula05-trie2}
+\caption{Exemplo de uma árvore Trie compacta.}
+\label{aula05:fig:trie2}
+\end{figure}
+
+O custo em espaço de uma Trie compacta é $O(n)$ para $n$ o número de chaves, bem menor
+que $O(s)$ da árvore não compacta. 
+Todavia, o tempo de execução é o mesmo sendo $O(k m)$ para $k$ o tamanho do alfabeto e $m$
+o tamanho da chave de busca.
+
+\subsubsection{Trie binária}
+
+Uma Trie binária é um tipo especial de Trie em que o alfabeto possui apenas 
+apenas dois símbolos: \{0, 1\}.
+Para compensar a ausência de símbolo especial, todas as cadeias de bits devem
+ter o mesmo tamanho.
+Caso alguma chave não tenha tamanho suficiente, basta preencher com 0s à
+esquerda.
+
+A figura~\ref{aula05:fig:trie3} ilustra um exemplo de árvore de árvore Trie binária
+normal (esquerda) e compacta (direita) para os seguintes elementos:
+\begin{itemize}
+\item 0 - chave 000 valor 4.
+\item 1 - chave 001 valor 22.
+\item 4 - chave 100 valor 14.
+\item 5 - chave 101 valor 39.
+\end{itemize}
+%
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{aula05-trie3}
+  \end{minipage}
+  %
+  \vline
+  %
+  \begin{minipage}{0.4\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{aula05-trie4}
+  \end{minipage}
+\caption{Exemplo de uma árvore Trie binária (esquerda) e binária compacta (direita).}
+\label{aula05:fig:trie3}
+\end{figure}
+
+No pior caso, há $b$ comparações de bits, o que pode ser ineficiente quando as
+chaves são grandes.  A versão compacta pode reduzir o custo, mas não o
+suficiente.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Árvores Patricia}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
