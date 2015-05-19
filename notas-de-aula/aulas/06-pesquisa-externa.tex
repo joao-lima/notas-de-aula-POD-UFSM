@@ -284,8 +284,25 @@ para restaurar a ordem sequencial.
 \subsection{Clusterização multitable}
 
 Os registros de cada tabela podem ser armazenados em arquivos separados.
-Em uma \textbf{clusterização multitable}, registros de tabelas são armazenados no mesmo 
+Em uma \textbf{clusterização multitable}, registros de tabelas diferentes são armazenados no mesmo 
 arquivo.
+A principal motivação para armazenar registros relacionados no mesmo bloco é minimizar
+a entrada e saída.
+A figura~\ref{aula06:fig:clustering1} ilustra a organização de um arquivo com clusterização.
+Esse arquivo armazena registros de uma ou mais relações em cada bloco.
+Tal organização permite a leitura de registros que podem satisfazer uma união por meio de 
+uma leitura de bloco.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-clustering1}
+\caption{Estrutura de arquivo de uma clusterização multitable.}
+\label{aula06:fig:clustering1}
+\end{figure}
+
+Essa organização é boa para consultas com relação, e consultas envolvendo um único
+deparamento e seus professores.
+Porém, ela é ruim para consultas somente de departamentos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices densos e esparsos}
