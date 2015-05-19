@@ -178,7 +178,7 @@ Alguns sistemas possuem utilitários para \textbf{desfragmentar} o sistema
 de arquivos, de modo a acelerar o acesso.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Organização e estrutura de arquivos}
+\section{Organização de arquivos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 A pesquisa em memória secundária normalmente está associada a \textbf{pesquisa 
@@ -246,7 +246,8 @@ Se as slotted-pages são do tamanho de um bloco, o problema dos registros que cr
 Isso limita o tamanho dos registros em um banco de dados, o que é o caso padrão.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Organização de registros em arquivos}
+\section{Organização de registros em arquivos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Até agora, vimos como representar registros em uma estrutura de arquivo.
 Há várias formas de organizar registros em arquivos:
@@ -305,7 +306,8 @@ deparamento e seus professores.
 Porém, ela é ruim para consultas somente de departamentos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Sistemas de arquivos}
+\section{Sistemas de arquivos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Em organizações de arquivos sequencias, cada tabela é armazenada em um arquivo.
 O armazenamento poderia ser feito por meio do sistema de arquivos do sistema
@@ -318,7 +320,67 @@ As tabelas são armazenadas em um único arquivo, e o SGBD gerencia o arquivos p
 Isso exige a implementação de um sistema de arquivos dentro do SGBD.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Sistemas de arquivos}
+\subsection{Buffer manager}
+
+O  número de transferencias de blocos entre o disco e a memória pode ser
+reduzido mantendo o maior número possível de blocos na memória principal.
+Um \textbf{buffer} é a porção da memória principal disponível para armazenar cópias
+de blocos de disco.
+O \textbf{buffer manager} é responsável pela alocação de espaço do buffer na 
+memória principal.
+
+Programas utilizam o buffer manager quando precisam ler um bloco do disco:
+\begin{enumerate}
+\item se o bloco já estiver no buffer, o gerenciador retorna o endereço 
+do bloco na memória principal.
+
+\item se o bloco não estiver no buffer, o manager:
+	\begin{enumerate}
+	\item aloca espaço no buffer para o bloco.
+		\begin{enumerate}
+		\item substituindo algum outro bloco, se necessário, para
+			liberar espaço para o novo bloco.
+		\item o bloco substituído é escrito de volta no disco somente se ele foi
+		modificado desde a última vez que ele foi escrito/recuperado do disco.
+		\end{enumerate}
+	\item Lê o bloco do disco para o buffer e retorna o endereço do bloco
+		na memóra principal para o programa.
+	\end{enumerate}
+\end{enumerate}
+
+Sua função é similar ao gerenciamento e memória virtual dos sistemas operacionais.
+Porém, bancos de dados tem requisitos diferentes.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Políticas de substituição de blocos}
+
+A maioria dos sistemas operacionais usam a política de substituição do bloco menos recentemente usado
+ou \emph{least recently used} (LRU).
+A ideia por trás do LRU é usar um padrão passado de referência a blocos como uma previsão de 
+futuras referências, ja que usualmente nada mais se conhece.
+Consultas possuem um padrão de acesso bem definido, com varreduras sequenciais.
+O sistema do BD pode usar informação contida na consulta para prever referências futuras.
+
+O LRU pode ser uma estratégia ruim para certos tipos de acesso que envolvem varreduras repetidas.
+Por exemplo, na junção de 2 tabelas $r$ e $s$ por um laço aninhado. 
+Uma estratégia mista é preferível, onde o otimizador de consultas pode oferecer dicas
+para substituição de blocos.
+
+Outras técnicas do buffer manager são:
+\begin{description}
+\item[Pinned block] bloco em memória que não tem permissão de ser escrito
+de volta no disco.
+
+\item[Estratégia Toss-immediate]  libera o espaço ocupado por um bloco assim que 
+a última tupla do bloco é processada.
+
+\item[Estratégia MRU] MRU significa mais recentemente usado (\emph{most recently used}), onde 
+o sistema marca o bloco sendo processado. Depois que a última tupla do bloco é processada,
+o bloco é desmarcado, e se torna o bloco mais recentemente usado.
+
+\item[Saída forçada] o manager também suporta saída forçada de blocos para fins de 
+recuperação.
+\end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices densos e esparsos}
