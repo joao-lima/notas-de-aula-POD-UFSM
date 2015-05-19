@@ -2,9 +2,175 @@
 \chapter{Pesquisa em memória secundária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Este capítulo aborda questões relacionadas a técnicas de armazenamento
+e recuperação de dados em memória secundária.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introdução}
+\section{Memória secundária}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A classificação de dispositívos físicos pode ser feita ao considerar:
+\begin{enumerate}
+\item Desempenho no acesso aos dados.
+\item Custo por unidade de dados.
+\item Confiabilidade para casos de perda de dados em falhas de
+energia ou falha do sistema, ou mesmo falha física do dispositívo.
+\end{enumerate}
+Também pode-se diferenciar armazenamento em:
+\begin{description}
+\item[Volátil] perde dados quando é desligado.
+\item[Não-volátil] persistente mesmo quando é desligado. Inclui armazenamento
+secundário e terciário.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Mídias de armazenamento}
+
+As médias de armazenamento disponíveis em geral são:
+\begin{description}
+\item[Cache] a mais rápida e custosa, volátil, e gerenciada pelo hardware
+do processador.
+
+\item[Memória principal] acesso rápido da ordem de 10 a 100 nanosegundos (1 nanosegundo = $10^{-9}$).
+Em geral muito pequena (ou muito cara) para armazenar todos os dados de um banco de dados.
+Hoje  em dia, em alguns casos, armazena todo o banco de dados (\emph{memcached}).
+Ela é volátil, sendo que os dados são pedidos na falta de energia ou falha do sistema.
+
+\item[Flash] dados sobrevivem em falhas de energia. Dados podem ser escritos em um local
+uma única vez, porém podem ser escritos novamente.
+Pode ser lida um número ilimitado de vezes, mas há um limite no  número de gravações
+que varia entre 10K e 1M.
+As leituras podem ser mais rápidas que a memória principal, mas as escritas
+são lentas.
+Muito usada em dispositivos embarcados como câmeras digitais, 
+telefones, e memórias flash drive (pendrive).
+
+\item[Magnética] dados são armazenados em uma mídia magnética com discos de movimento
+giratório. 
+Deve-se ler os dados do disco para a memória principal, e depois escrever de volta ao disco.
+O acesso direto é possível em qualquer ordem, ao contrário de mídias de fita.
+
+
+\item[Ótica] não volátil e os dados são lidos óticamente de um disco 
+giratório através de um laser.
+Os mais populares são CDROM (640 MB), DVD (4.7GB), e Blu-ray (27 GB a 54 GB).
+As leituras e escritas são mais lentas comparadas a discos magnéticos.
+
+\item[Fita magnética]
+não volátil, usado primariamente para backup (recuperar falhas de disco), e 
+arquivamento de dados.
+O acesso é sequencial, muito mais lento que discos. Porém, a capacidade
+de armazenamento é alta (40 a 300GB).
+\end{description}
+
+A figura~\ref{aula06:fig:media} ilustra a hierarquia de armazenamento de acordo com 
+o desempenho e custo.
+Os níveis mais altos são mais custosos, porém mais rápidos.
+No sentido contrário, o custo por bit reduz, mas o tempo de acesso aumenta.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-media}
+\caption{Hierarquia de mídias de armazenamento.}
+\label{aula06:fig:media}
+\end{figure}
+
+Nessa hierarquia, podemos agrupar as mídias em:
+\begin{description}
+\item[Armazenamento primário] mais rápido mas volátil. Ex: cache, memória principal.
+
+\item[Armazenamento segundário] próximo nível na hierarquia, não volátil,
+acesso moderadamente rápido. Ex: memória flash, discos magnéticos.
+
+\item[Armazenamento terciário] nível mais baixo, não volátil, tempo de acesso
+lento. Também chamado armazenamento off-line. Ex: fita magnética, armazenamento ótico.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Disco magnético}
+
+\subsubsection{Estrutura física}
+
+Fisicamente, discos magnéticos são simples.
+A figura~\ref{aula06:fig:hd} mostra o funcionamento interno de um disco.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-hd}
+\caption{Mecanismo de cabeças de leitura em um disco magnético.}
+\label{aula06:fig:hd}
+\end{figure}
+
+Cada prato do disco tem duas superfícias com material magnético, onde a informação
+é gravada.
+O cabeçote de escrita-leitura (\emph{read-write head}) fica posicionada bem 
+próxima a superfície do prato, e lê e escreve dados codificados magneticamente.
+A superfície é dividida logicamente em {\bf trilhas}, que são subdivididas em 
+\textbf{setores}. 
+Um setor é a menor unidade que pode ser lida ou escrita do disco.
+Em geral, um setor tem 512 bytes; há perto de 50K a 100K trilhas por prato, e 1
+a 5 pratos por disco.
+
+Os pratos são montados em braços de disco.
+Para ler e escrever um setor, o braço do disco se move para posicionar o cabeçote
+na trilha correta.
+O prato gira, e os dados são lidos e/ou escritos a medida que o setor
+passa pelo cabeçote.
+
+Outro componente de discos é o {\bf controlador de disco} que faz a inteface 
+entre o computador e o hardware do disco.
+Ele aceita comandos de alto nível para ler e escrever setores.
+Entre outras funções, garante checagem de erros.
+
+\subsubsection{Medidas desempenho}
+
+O \textbf{tempo de acesso} é o tempo que leva desde a solicitação de leitura/escrita
+até o momento em que a transferência começa de fato. 
+O tempo de acesso consiste em:
+\begin{description}
+\item[Tempo de busca] tempo que leva para reposicionar o braço na trilha correta.
+O tempo médio de busca é 1/2 do pior tempo de busca, em geral 4 a 10 milisegundos.
+
+\item[Latência rotacional] tempo que leva para o setor a ser acessado
+aparecer debaixo do cabeçote. Latência média é 1/2 do pior caso, em geral
+4 a 11 milisegundos em discos (5400 a 15000 rpm). 
+\end{description}
+
+A \textbf{taxa de transferência} é a taxa com que os dados são recuperados ou 
+armazenados no disco. A taxa máxima é de 25 a 100 MB por segundo, e essa
+taxa é menor para trilhas internas.
+
+O \emph{Mean time to failure} (MTTF) é o tempo médio de funcionamento de um disco
+sem falhas. 
+Esse tempo varia entre 3 a 5 anos. 
+A probabilidade de falhas em disco novos é baixa, que corresponde a um
+``MTTF teórico'' de 500K a 1,2M horas.
+Ou seja, um MTTF de 1,2M horas para um disco novo significa que dados 1000 novos discos,
+na média um irá falhar a cada 1200 horas.
+
+\subsubsection{Otimização de acessos}
+
+A transferência de dados entre disco e memória ocorre em unidades de \textbf{blocos},
+que são uma sequência continua de setores em uma única trilha.
+O tamanho varia de 512 a vários kilobytes. Blocos pequenos podem implicar 
+em várias transferencias do disco, enquanto que grandes blocos podem 
+desperdiçar espaços devido a blocos parcialmente ocupados.
+Um tamanho típico utilizado é de 4 a 16 kilobytes.
+
+A otimização de acessos envolve \textbf{algoritmos de escalonamento} que são usados para ordenar o 
+acesso às trilhas para minimizar o  movimento do braço.
+O \textbf{algoritmo do elevador} funciona da seguinte forma:
+\begin{enumerate}
+\item move o braço do disco em uma direção (de dentro para fora ou de fora para dentro).
+\item processa todas as requisições pendentes nessa direção.
+\item reverte o movimento e repete a varredura.
+\end{enumerate}
+
+Outra forma de otimização é a \textbf{organização de arquivos} que otimiza o acesso ao
+organizar os blocos, de modo a corresponder à forma com que os dados são acessados.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{RAID}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices densos e esparsos}
