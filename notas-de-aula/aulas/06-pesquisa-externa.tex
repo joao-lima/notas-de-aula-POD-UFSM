@@ -168,9 +168,124 @@ O \textbf{algoritmo do elevador} funciona da seguinte forma:
 
 Outra forma de otimização é a \textbf{organização de arquivos} que otimiza o acesso ao
 organizar os blocos, de modo a corresponder à forma com que os dados são acessados.
+Exemplo é armazenar informações relacionadas em regiões próximas.
+Arquivos podem se \textbf{fragmentar} com o passar do tempo.
+Fragmentação acontece quando o arquivo é modificado, ou quando os blocos livres
+estão espalhados, e novos arquivos tiverem que ocupar esses blocos.
+O acesso sequencial a um arquivo fragmentado leva a maior movimentação do
+braço do disco. 
+Alguns sistemas possuem utilitários para \textbf{desfragmentar} o sistema
+de arquivos, de modo a acelerar o acesso.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{RAID}
+\section{Pesquisa em memória secundária}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A pesquisa em memória secundária normalmente está associada a \textbf{pesquisa 
+em bancos de dados}.
+O banco de dados é armazenado como uma coleção de arquivos. Cada arquivo
+é uma sequência de registros, e cada registro é uma sequência de campos.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Registros de tamanho fixo}
+
+A estratégia mais simples é assumir \textbf{registros de tamanho fixo}.
+Cada tabela possui o seu próprio arquivo, e cada arquivo possui registros
+de um tipo específico de dado.
+O cabeçalho possui informações de controle. Cada registro tem um ponteiro
+especial, que aponta para o seu próximo registro.
+O problema com essa abordagem é a ocupação parcial do bloco.
+Por exemplo, cada registro ocupa 300 bytes e cada bloco ocupa 1024 bytes.
+O cabeçalho ocupa 20 bytes. Qual o mínimo de espaço que será desperdiçado ?
+
+Uma solução é permitir que registros cruzem a fronteira de um bloco. 
+As alternativas para remoção do registro $i$ são:
+\begin{enumerate}
+\item mover registros $i+1$, ..., $n$ para $i$, ..., $n-1$.
+\item mover registro $n$ para $i$.
+\item não mover nada, ligar os registros vazios por uma \emph{free list}.
+\end{enumerate}
+
+Com \emph{free lists}, pode-se usar um ponteiro especial para guardar os registros livres.
+Ela é uma representação mais eficiente que reusa o espaço destinado
+aos atributos dos registros para guardar os ponteiros.
+O cabeçalho possui informações de controle como ponteiro para o primeiro registro
+com dados do bloco, e ponteiro para o primeiro registro livre do bloco.
+
+O principal problema dessa abordagem é o desperdício de espaço dentro do bloco.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Registros de tamanho variável}
+
+A estrutura de \textbf{slotted-page} é comumente utilizada para organizar
+registros de tamanho variável dentro de um bloco.
+A figura~\ref{aula06:fig:slotted} ilustra a estrutura.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{aula06-slotted}
+\caption{Estrutura do \emph{slotted-page}.}
+\label{aula06:fig:slotted}
+\end{figure}
+O cabeçalho contém:
+\begin{itemize}
+\item número de registros.
+\item localização e tamanho de cada registro.
+\item fim do espaço livre no bloco.
+\end{itemize}
+Os registros podem ser movidos dentro de uma página para evitar espaços vazios
+entre eles; as entradas no cabeçalho precisam ser atualizadas.
+Ponteiros não apontam diretamente para o registro, mas apontam 
+para o ponteiro de entrada do registro no cabeçalho.
+
+Registros de tamanho variável aparecem em bancos de dados de diversas formas:
+armazenameto de múltiplos tipos de conteúdo em um mesmo arquivo;
+armazenamento de atributos que possem tamanho variável.
+
+Se as slotted-pages são do tamanho de um bloco, o problema dos registros que cruzam é eliminado.
+Isso limita o tamanho dos registros em um banco de dados, o que é o caso padrão.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Organização de registros em arquivos}
+
+Até agora, vimos como representar registros em uma estrutura de arquivo.
+Há várias formas de organizar registros em arquivos:
+\begin{description}
+\item[Heap] um registro pode ser posicionado em qualquer lugar onde haja espaço.
+
+\item[Sequencial] registros armazenados em ordem sequencial, com base
+no valor da chave de busca de cada registro.
+
+\item[Hashing] um função hash calculada com base em alguns atributos do 
+registro. O resultado especifica em que bloco do arquivo do registro
+deve ser posicionado.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Organização de arquivos sequencial}
+
+Adequada para aplicações que executam processamento sequencial sobre todo o arquivo.
+Os registros do arquivo são ordenados por uma \textbf{chave de busca}.
+
+A operação de remoção usa \emph{free lists} para registros de tamanho fixo.
+
+A inserção localiza a posição onde o registro deve ser inserido e:
+\begin{enumerate}
+\item se houver espaço no bloco, insere no bloco.
+\item se for o último registro, insere em um novo bloco.
+\item se houver espaço em um bloco vizinho, distribuir. Caso contrário,
+insere em um novo \textbf{bloco de estouro} (\emph{overflow block}).
+\item de qualquer forma, as cadeias de ponteiros precisam ser atualizadas.
+\end{enumerate}
+O uso de blocos de estouro demanda a reorganização do arquivo de tempo em tempo
+para restaurar a ordem sequencial.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Clusterização multitable}
+
+Os registros de cada tabela podem ser armazenados em arquivos separados.
+Em uma \textbf{clusterização multitable}, registros de tabelas são armazenados no mesmo 
+arquivo.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices densos e esparsos}
