@@ -305,6 +305,19 @@ deparamento e seus professores.
 Porém, ela é ruim para consultas somente de departamentos.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Sistemas de arquivos}
+
+Em organizações de arquivos sequencias, cada tabela é armazenada em um arquivo.
+O armazenamento poderia ser feito por meio do sistema de arquivos do sistema
+operacional (SO).
+A clusterização multitable pode trazer ganhos significativos em eficiência, mas 
+essa organização não é compatível com o sistema de arquivos de sistemas operacionais.
+
+Muitos dos sistemas de bancos de dados (SGBDs) de grande escala não utilizam diretamente o SO.
+As tabelas são armazenadas em um único arquivo, e o SGBD gerencia o arquivos por conta própria.
+Isso exige a implementação de um sistema de arquivos dentro do SGBD.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices densos e esparsos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
