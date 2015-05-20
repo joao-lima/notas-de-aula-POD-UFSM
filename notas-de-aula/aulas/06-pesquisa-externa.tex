@@ -448,6 +448,15 @@ A chave de busca de um índice primário é quase sempre a chave primária.
 O \textbf{índice secundário} é um índice cuja chave de busca não está armazenada
 de acordo com a ordem sequencial do arquivo.
 Também chamado de \textbf{índice não clusterizado} (\emph{non-clustering index}).
+A figura~\ref{aula06:fig:secundario} mostra um exemplo de índice secundário.
+Note que índices secundários tem de ser densos.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-secundario1}
+\caption{Exemplo de índice secundário sobre o campo \emph{salary}.}
+\label{aula06:fig:secundario}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Índices densos e esparsos}
@@ -471,8 +480,45 @@ de chave de busca do arquivo.
 Índices primários podem ser densos ou esparsos, mas índices secundários
 precisam ser densos.
 
+A figura~\ref{aula06:fig:denso:esparso} ilustra um exemplo entre índices denso e esparso.
+%
+\begin{figure}[!htb]
+\centering
+  \begin{minipage}{0.45\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{aula06-denso1}
+  \end{minipage}
+  %
+  \begin{minipage}{0.45\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{aula06-esparso1}
+  \end{minipage}
+\caption{Exemplo de um índice denso (esquerda) e esparso (direita).}
+\label{aula06:fig:denso:esparso}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Índices multinível}
+
+Para casos em que o índice primário não cabe em memória, o acesso torna-se caro.
+Uma solução é tratar o índice primário em disco como um arquivo sequencial e
+construir um índice esparso sobre ele.
+O \textbf{índice externo} é um índice esparso do índice primário, e 
+o \textbf{índice interno} é o arquivo do índice primário.
+
+Se mesmo o índice externo for muito grande para caber na memória, outro nível
+pode ser criado, e assim por diante.
+Note que índices em todos os níveis devem ser atualizados quando ocorrer
+atualizações no arquivo.
+A figura~\ref{aula06:fig:multinivel} mostra um simples exemplo de índice esparso
+construído de um índice primário.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.3\textwidth]{aula06-multinivel1}
+\caption{Índice esparso externo construído de um índice primário.}
+\label{aula06:fig:multinivel}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Atualização de índice}
