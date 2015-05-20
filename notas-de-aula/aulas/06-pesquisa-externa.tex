@@ -383,8 +383,105 @@ recuperação.
 \end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Índices densos e esparsos}
+\section{Mecanismos de indexação}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Muitas buscas referenciam apenas uma pequena porção dos registros de um arquivo.
+Seria ineficiente ler todos os registros para encontrar apenas uma tupla.
+Usa-se estruturas adicionais a fim de permitir esse tipo de acesso.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Introdução}
+
+Um índice de um arquivo funciona como o índice de um livro.
+Mecanismos de indexação são utilizados para acelerar o acesso
+aos dados.
+Uma \textbf{chave de busca} (\emph{search key}) é/são o(s) atributo(s) usado(s)
+para localizar registros em um arquivo.
+Um \textbf{arquivo de índice} consiste em registros na forma \emph{chave -
+pointeiro}.
+Arquivos de índice são muito menores que o arquivo original
+
+Há dois tipos básicos de índices:
+\begin{description}
+\item[Índices ordenados] chaves de busca são armazenadas (encadeadas) em ordem.
+\item[Índices hash]  chaves de busca são distribuídas uniformemente
+em buckets usando uma função de hash.
+\end{description}
+
+As duas técnicas são estudadas. 
+Nenhuma delas é considerada a melhor. 
+Cada técnica é avaliada de acordo com os seguintes fatores:
+\begin{description}
+\item[Tipo de acesso eficiente]  como registros de um valor específico em um atributo. Esse fator
+exerce bastante influência na escolha do tipo de índice.
+\item[Tempo de acesso]
+\item[Tempo de inserção]
+\item[Tempo de remoção]
+\item[Sobrecarga de espaço] sendo o espaço adicional para o índice.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Índices ordenados}
+
+Em um \textbf{índice ordenado}, as entradas são ordenadas ordenadas de acordo
+com o valor da chave de busca, como por exemplo pelo nome do autor em um catálogo.
+Podem ser classificados quanto:
+\begin{itemize}
+\item A chave de busca indexada.
+	\begin{itemize}
+	\item índices primários.
+	\item índices secundários.
+	\end{itemize}
+\item Aos registros indexados.
+	\begin{itemize}
+	\item índices densos.
+	\item índices esparsos.
+	\end{itemize}
+\end{itemize}
+
+O \textbf{índice primário}, em um arquivo sequencialmente ordenado, é o índice
+cuja chave de busca é usada para ordenar o arquivo.
+É também chamado de \textbf{índice clusterizado} (\emph{clustering index}).
+A chave de busca de um índice primário é quase sempre a chave primária.
+
+O \textbf{índice secundário} é um índice cuja chave de busca não está armazenada
+de acordo com a ordem sequencial do arquivo.
+Também chamado de \textbf{índice não clusterizado} (\emph{non-clustering index}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Índices densos e esparsos}
+
+Uma entrada no índice consiste em uma chave de busca e pointeiros para um ou mais registros.
+O ponteiro para um registro consiste no identificador de um bloco do disco e um deslocamento
+dentro do bloco para identificar o registro.
+Há dois tipos de índices: denso e esparso.
+
+\textbf{Índices esparsos} contém entradas no índice para apenas alguns valores de chave de busca.
+Para localizar um registro com uma chave de busca $k$, deve-se:
+\begin{enumerate}
+\item encontrar a entrada com o maior valor de chave de busca $< k$.
+\item varrer o arquivo sequencialmente a partir do resgistro apontado por essa entrada.
+\end{enumerate}
+Índices esparsos são somente aplicáveis quando os registros estão ordenados pela chave
+de busca do índice.
+
+Em \textbf{índices densos} registros do índice aparecem para todos os valores
+de chave de busca do arquivo.
+Índices primários podem ser densos ou esparsos, mas índices secundários
+precisam ser densos.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Índices multinível}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Atualização de índice}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Índices secundários}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{conceitos basicos}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Árvores de pesquisa}
