@@ -34,7 +34,7 @@ do processador.
 \item[Memória principal] acesso rápido da ordem de 10 a 100 nanosegundos (1 nanosegundo = $10^{-9}$).
 Em geral muito pequena (ou muito cara) para armazenar todos os dados de um banco de dados.
 Hoje  em dia, em alguns casos, armazena todo o banco de dados (\emph{memcached}).
-Ela é volátil, sendo que os dados são pedidos na falta de energia ou falha do sistema.
+Ela é volátil, sendo que os dados são perdidos na falta de energia ou falha do sistema.
 
 \item[Flash] dados sobrevivem em falhas de energia. Dados podem ser escritos em um local
 uma única vez, porém podem ser escritos novamente.
@@ -53,7 +53,7 @@ O acesso direto é possível em qualquer ordem, ao contrário de mídias de fita
 
 \item[Ótica] não volátil e os dados são lidos óticamente de um disco 
 giratório através de um laser.
-Os mais populares são CDROM (640 MB), DVD (4.7GB), e Blu-ray (27 GB a 54 GB).
+Os mais populares são CD-ROM (640 MB), DVD (4.7GB), e Blu-ray (27 GB a 54 GB).
 As leituras e escritas são mais lentas comparadas a discos magnéticos.
 
 \item[Fita magnética]
@@ -83,7 +83,7 @@ Nessa hierarquia, podemos agrupar as mídias em:
 acesso moderadamente rápido. Ex: memória flash, discos magnéticos.
 
 \item[Armazenamento terciário] nível mais baixo, não volátil, tempo de acesso
-lento. Também chamado armazenamento off-line. Ex: fita magnética, armazenamento ótico.
+lento. Também chamado armazenamento \emph{off-line}. Ex: fita magnética, armazenamento ótico.
 \end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -240,7 +240,7 @@ para o ponteiro de entrada do registro no cabeçalho.
 
 Registros de tamanho variável aparecem em bancos de dados de diversas formas:
 armazenameto de múltiplos tipos de conteúdo em um mesmo arquivo;
-armazenamento de atributos que possem tamanho variável.
+armazenamento de atributos que possuem tamanho variável.
 
 Se as slotted-pages são do tamanho de um bloco, o problema dos registros que cruzam é eliminado.
 Isso limita o tamanho dos registros em um banco de dados, o que é o caso padrão.
@@ -357,7 +357,7 @@ Porém, bancos de dados tem requisitos diferentes.
 A maioria dos sistemas operacionais usam a política de substituição do bloco menos recentemente usado
 ou \emph{least recently used} (LRU).
 A ideia por trás do LRU é usar um padrão passado de referência a blocos como uma previsão de 
-futuras referências, ja que usualmente nada mais se conhece.
+futuras referências, já que usualmente nada mais se conhece.
 Consultas possuem um padrão de acesso bem definido, com varreduras sequenciais.
 O sistema do BD pode usar informação contida na consulta para prever referências futuras.
 
