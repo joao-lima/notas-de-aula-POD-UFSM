@@ -575,6 +575,44 @@ Uma transferência de bloco requer cerca de 5 a 10 milisegundos, contra
 \section{Índices em árvores B+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+A principal desvantagem de índices sequenciais é a perda de desempenho
+a medida que o arquivo de índice cresce, tanto buscas e varreduras sequenciais.
+Reorganizações periódicas são necessárias, mas reorganizações frequentes
+são indesejadas.
+\textbf{Índices em árvores B+} é um tipo de árvore balanceada que mantem a eficiência
+mesmo com inserções e remoções.
+Cada nó não-folha de uma árvore B+ tem entre $\lceil n/2 \rceil$ e $n$ filhos,
+sendo $n$ fixo para uma árvore particular.
+
+Árvores B+ tem a vantagem de se auto-organizar com modificações pequenas e
+locais em inserções e remoções, além de não requerer a reorganização de todo o
+arquivo para manter o desempenho.
+Uma desvantagem menor é o sobrecusto de inserção e remoção para manter o 
+balanceamento, além do sobrecusto em espaço.
+
+A figura~\ref{aula06:fig:btree1} mostra um exemplo de árvore B+.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.7\textwidth]{aula06-btree1}
+\caption{Exemplo de uma árvore B+.}
+\label{aula06:fig:btree1}
+\end{figure}
+
+Uma árvore B+ é uma árvore com raiz única que segue as seguintes propriedades:
+\begin{itemize}
+\item Todos os caminhos da raiz até as folhas tem o mesmo tamanho.
+\item Cada nó que não seja raiz nem folha possui de $\lceil n/2 \rceil$
+até $n$ filhos.
+\item Um nó folha tem de $\lceil (n-1)/2 \rceil$ até $n-1$ valores.
+\item Casos especiais:
+	\begin{itemize}
+	\item Se a raiz não é uma folha, ela possui pelo menos dois filhos.
+	\item Se a raiz é uma folha (ou seja, é o único nó da árvore), ela
+	pode ter de $0$ a $(n-1)$ valores.
+	\end{itemize}
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Estrutura}
 
