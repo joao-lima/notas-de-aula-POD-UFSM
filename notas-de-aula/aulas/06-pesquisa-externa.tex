@@ -448,15 +448,6 @@ A chave de busca de um índice primário é quase sempre a chave primária.
 O \textbf{índice secundário} é um índice cuja chave de busca não está armazenada
 de acordo com a ordem sequencial do arquivo.
 Também chamado de \textbf{índice não clusterizado} (\emph{non-clustering index}).
-A figura~\ref{aula06:fig:secundario} mostra um exemplo de índice secundário.
-Note que índices secundários tem de ser densos.
-%
-\begin{figure}[!htb]
-\centering
-\includegraphics[width=0.6\textwidth]{aula06-secundario1}
-\caption{Exemplo de índice secundário sobre o campo \emph{salary}.}
-\label{aula06:fig:secundario}
-\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Índices densos e esparsos}
@@ -515,7 +506,7 @@ construído de um índice primário.
 %
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.3\textwidth]{aula06-multinivel1}
+\includegraphics[width=0.4\textwidth]{aula06-multinivel1}
 \caption{Índice esparso externo construído de um índice primário.}
 \label{aula06:fig:multinivel}
 \end{figure}
@@ -523,8 +514,59 @@ construído de um índice primário.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Atualização de índice}
 
+Em qualquer das formas de índice, cada índice precisa ser atualizado quando um
+registro é inserido ou removido.
+
+{\bf Remoção} - se o registro removido é o único registro no arquivo
+com uma chave de busca, a chave de busca também é removida do índice.
+Em índices densos, remoção de uma chave de busca é similar a remoção
+de um registro de arquivo.
+Em índices esparsos, se uma chave de busca existe no índice, ela é removida 
+e substituída pela próxima chave de busca do arquivo.
+Se a próxima chave de busca já for indexada, a entrada no índice é simplesmente 
+removida.
+
+{\bf Inserção} - em índíces densos, realiza uma busca no índice usando a chave de
+busca do registro a ser inserido.
+Se a chave não existe, ela é inserida no índice.
+Em índices esparsos, se o índice mantem uma entrada para cada bloco do arquivo,
+nenhuma mudança é necessária, a não ser que um novo bloco seja criado (ou sofra
+disbuição).
+Se um novo bloco for criado (ou sofrer distribuição), 
+a primeira chave da busca nova do bloco é inserida no índice.
+
+Em índices multinível, as inserções e remoções são simples extensões dos
+algoritmos usados em índices de um nível só.
+As inserções e remoções são propagadas dos níveis internos para os externos.
+
+As atualizações dos índices significam atualizações nos blocos físicos
+onde os índices estão armazenados.
+A organização física e lógica desses blocos é feita de forma similar
+aos blocos de um arquivo de dados.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Índices secundários}
+
+Em índices secundários, registros do índice apontam para o bucket que contem pointeiros
+para todos os registros com uma chave de busca.
+A figura~\ref{aula06:fig:secundario} mostra um exemplo de índice secundário.
+Note que índices secundários tem de ser densos.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-secundario1}
+\caption{Exemplo de índice secundário sobre o campo \emph{salary}.}
+\label{aula06:fig:secundario}
+\end{figure}
+
+Índices oferecem benefícios substanciais na busca por registros.
+Porém, atualizações de índices impõem sobrecustos em atualizações.
+
+A varredura sequencial de um índice primário é eficiente, mas a 
+varredura sequencial em índices secundários é cara pois é preciso
+uma transferência de bloco do disco para cada acesso ao registro.
+Uma transferência de bloco requer cerca de 5 a 10 milisegundos, contra
+100 nanosegundos de um acesso à memória.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{conceitos basicos}
