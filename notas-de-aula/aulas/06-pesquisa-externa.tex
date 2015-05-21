@@ -533,7 +533,7 @@ Em índices esparsos, se o índice mantem uma entrada para cada bloco do arquivo
 nenhuma mudança é necessária, a não ser que um novo bloco seja criado (ou sofra
 disbuição).
 Se um novo bloco for criado (ou sofrer distribuição), 
-a primeira chave da busca nova do bloco é inserida no índice.
+a primeira chave de busca nova do bloco é inserida no índice.
 
 Em índices multinível, as inserções e remoções são simples extensões dos
 algoritmos usados em índices de um nível só.
@@ -616,8 +616,100 @@ até $n$ filhos.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Estrutura}
 
+Um nó típico de árvore B+, como na figura~\ref{aula06:fig:btree2}, possui:
+\begin{itemize}
+\item $K_i$ são valores de chaves de busca.
+\item $P_i$ são pointeiros para filhos (nós não folha), ou para
+registros ou buckets de registros (para nós folha).
+\end{itemize}
+As chaves de busca de um nó são ordenadas com $K_1 < K_2 < K_3 < ... < K_{n-1}$.
+Normalmente o nó tem o tamanho de um bloco.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.4\textwidth]{aula06-btree2}
+\caption{Um nó em uma árvore B+.}
+\label{aula06:fig:btree2}
+\end{figure}
+
+As propriedades de um nó folha, como na figura~\ref{aula06:fig:btree3}, são:
+\begin{itemize}
+\item Para $i = 1, 2, ..., n-1$, o ponteiro $P_i$ aponta
+para o registro com chave de busca $K_i$, ou para um bucket de apontadores para registros.
+Buckets só são necessários se a chave de busca não for chave primária.
+\item Se $L_i$, $L_j$ são nós folha e $i < j$, as chaves de busca de $L_i$
+são menores que as chaves de busca de $L_j$.
+\item $P_n$ aponta para o próximo nó folha na ordem da chave de busca.
+\end{itemize}
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-btree3}
+\caption{Exemplo de um nó folha ($n = 4$) de uma árvore B+.}
+\label{aula06:fig:btree3}
+\end{figure}
+
+Ao passo que nós não folha formam um índice esparso multinível sobre os nós folha.
+Para um nó não folha, como na figura~\ref{aula06:fig:btree2}, com $m$ ponteiros:
+\begin{itemize}
+\item Todas as chaves de busca da subárvore apontada por $P_1$ são 
+menores do que $K_1$.
+\item Para $2 \leq i \leq n-1$, todas as chaves de busca da sub-árvore apontada
+por $P_i$ são maiores ou iguais a $K_{i-1}$ e menores que $K_i$.
+\item Todas as chaves de busca da sub-árvore apontada por $P_n$ são maiores
+ou iguais a $K_{n-1}$.
+\end{itemize}
+
+A figura~\ref{aula06:fig:btree4} ilustra um exemplo de árvore B+ com $n = 6$.
+Baseado nessa figura, podemos afirmar que:
+\begin{itemize}
+\item Nós folha tem de 3 a 5 valores ($\lceil (n-1)/2 \rceil$ e $n-1$, com $n=6$).
+\item Nós não folha (que não a raiz) tem de 3 a 6 filhos ($\lceil n/2 \rceil$ e
+$n$ com $n=6$).
+\item A raiz precisa ter pelo menos $2$ filhos.
+\end{itemize}
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{aula06-btree4}
+\caption{Árvore B+ com $n = 6$.}
+\label{aula06:fig:btree4}
+\end{figure}
+
+Algums observações sobre árvores B+:
+\begin{itemize}
+\item Visto que as conexões entre nós são feitas por ponteiros, 
+blocos ``logicamente'' próximos não precisam estar ``fisicamente'' 
+próximos.
+
+\item Os níveis não folha de uma árvore B+ formam uma hierarquia 
+multinível de índices esparsos.
+
+\item A árvore possui um número relativamente pequeno de níveis:
+	\begin{itemize}
+	\item O nível abaixo da raiz possui pelo menos $2 * \lceil n/2 \rceil$ valores.
+	\item O próximo nível possui pelo menos $2 * \lceil n/2 \rceil * \lceil n/2 \rceil$ valores.
+	\item ... etc.
+	\item Se existem $K$ chaves de busca, a altura não é maior do que $\lceil \log_{n/2} K \rceil$.
+	\item Por isso as buscas são eficientes.
+	\end{itemize}
+\item Inserções e remoções são eficientes, já que o índice é reestruturado em tempo 
+logarítimico, como será visto adiante.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Busca}
+
+%Os passos na busca em árvores B+ para uma chave de busca de valor $k$:
+%\begin{enumerate}
+%\item C = raiz.
+%\item Repetir enquanto $C$ não é um nó folha:
+%	\begin{enumerate}
+%	\item Examinar $C$ para o menor valor de chave $> k$.
+%	\item Se existir, assuma que seja $K_i$, então atribua $C = P_i$.
+%	\item Senão 
+%	\end{enumerate}
+%\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Atualização}
