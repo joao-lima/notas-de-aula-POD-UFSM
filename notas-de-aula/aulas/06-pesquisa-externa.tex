@@ -757,6 +757,16 @@ A divisão do nó folha envolve os seguintes passos:
 Inserir $(k,p)$ no pai do nó sendo dividido.
 \item Se o pai estiver cheio, divida-o e propague a divisão para cima. A divisão prossegue até que se encontre um nó não cheio.
 \end{enumerate}
+%
+Um exemplo de inserção é mostrado na figura~\ref{aula06:fig:btree6}.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{aula06-btree6}
+\includegraphics[width=0.8\textwidth]{aula06-btree7}
+\caption{Árvore B+ antes e depois da inserção de ``Adams''.}
+\label{aula06:fig:btree6}
+\end{figure}
 
 No pior caso, a raiz será dividida, aumentando a altura da árvore em uma
 unidade.
@@ -784,6 +794,63 @@ não-folha cheio e inserção do no pai $N$.
 \end{figure}
 
 \subsubsection{Remoção}
+
+Os passos da remoção são:
+\begin{enumerate}
+\item Encontrar os registros a serem removidos, removê-los do
+arquivo e do bucket (se necessário).
+\item Remover (chave, pointeiro) do nó folha se não tiver bucket ou se 
+o bucket estiver vazio.
+\item Se o nó possuir poucas entradas devido a remoção, e as entradas 
+do nó e seu vizinho couberem no mesmo nó, então \textbf{mesclar vizinhos}:
+	\begin{enumerate}
+	\item Inserir todas as chaves dos dois nós em um só (o da esquerda) e 
+	remover o outro.
+	\item Remover o pai do par $(K_{i-1}, P_i)$, onde $P_i$ é o ponteiro
+	para o nó removido.
+	\item Repetir o procedimento se o pai ficar com poucas entradas.
+	\end{enumerate}
+\item Senão, se o nó possuir poucas entradas, mas as entradas no nó
+e no vizinho não couberem em um só, então \textbf{redistribuir ponteiros}:
+	\begin{enumerate}
+	\item Redistribuir os ponteiros entre o nó e o vizinho de modo
+	que ambos tenham mais do que o número mínimo de entradas.
+	\item Atualizar as chaves correspondentes do nó pai.
+	\end{enumerate}
+\end{enumerate}
+
+As remoções podem se propagar para cima até que se encontre um nó com pelo 
+menos $\lceil n/2 \rceil$ pointeiros.
+Se o nó raiz possuir apenas um ponteiro após a remoção, ele é removido e seu filho
+se torna a raiz.
+A figure~\ref{aula06:fig:btree8} mostram o exemplo de remoção.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{aula06-btree8}
+\includegraphics[width=0.8\textwidth]{aula06-btree9}
+\caption{Árvore B+ antes e depois da remoção de ``Srinivasan''.}
+\label{aula06:fig:btree8}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Organização de arquivos}
+
+Árvores B+ podem ser usadas diretamente para organizar arquivos
+em vez de simplesmente para indexação. 
+Nesse caso, os nós folhas armazenam registros em vez de ponteiros.
+O problema da degradação de arquivo é resolvida usando essa solução.
+A inserção e remoção são tratadas da mesma forma.
+
+As folhas ainda precisam estar preenchidas até a metade visto
+registros são mais longos do que pointeiros, 
+o máximo de registros em um nó folha é menor do que o número de ponteiros
+dos nós não-folha.
+
+Para melhorar a utilização de espaço, pode-ser envolver mais vizinhos na 
+redistribuição durante as divisões e mesclas.
+Por exemplo, usar 2 vizinhos na redistribuição (para evitar divisões/mesclas)
+resulta em cada nó tendo pelo menos $\lfloor 2n/3 \rfloor$ entradas.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices Hash}
