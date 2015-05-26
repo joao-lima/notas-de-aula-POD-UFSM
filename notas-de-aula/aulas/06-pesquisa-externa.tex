@@ -700,21 +700,88 @@ logarítimico, como será visto adiante.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Busca}
 
-%Os passos na busca em árvores B+ para uma chave de busca de valor $k$:
-%\begin{enumerate}
-%\item C = raiz.
-%\item Repetir enquanto $C$ não é um nó folha:
-%	\begin{enumerate}
-%	\item Examinar $C$ para o menor valor de chave $> k$.
-%	\item Se existir, assuma que seja $K_i$, então atribua $C = P_i$.
-%	\item Senão 
-%	\end{enumerate}
-%\end{enumerate}
+Os passos na busca em árvores B+ para uma chave de busca de valor $V$
+onde retorna $C$ e o índice $i$ tal que $C.P_i$ aponta para o primeiro registro
+com chave de busca $V$:
+\begin{enumerate}
+\item C = raiz.
+\item \textbf{Repete} enquanto $C$ não é um nó folha:
+	\begin{enumerate}
+	\item Seja $i= $ o menor número tal que $V \leq C.K_i$.
+	\item \textbf{Se} não existir um $i$, então $C = C.P_m$ onde $P_m$ é o último ponteiro não-nulo do nó.
+	\item \textbf{Senão} (existe um $i$):
+		\begin{enumerate}
+		\item \textbf{Se} $V = C.K_i$, então $C = C.P_{i+1}$.
+		\item \textbf{Senão} $C = C.P_i$ ($V < C.K_i$).
+		\end{enumerate}
+	\end{enumerate}
+\item Seja $i$ o valor mínimo tal que $K_i = V$.
+\item \textbf{Se} existe um $i$, retorna $(C, i)$, \textbf{senão} retorna $null$.
+\end{enumerate}
+
+Se o arquivo de índice possui $K$ chaves de busca, a altura da árvore não
+ultrapassa $\lceil \log_{\lceil n/2 \rceil} K \rceil$
+Um nó é geralmente do mesmo tamanho de um bloco, tipicamente $4$ Kbytes, e 
+$n$ é tipicamente cerca de 100 (40 bytes por entrada no índice).
+Com 1 milhão de chaves de busca e $n= 100$, no máximo $\log_{50}(1,000,000) = 4$
+nós são acessados em uma busca, ou seja, no máximo 4 acessos a blocos.
+Compare isso com uma árvore binária balanceada com 1 milhão de chaves de busca,
+que acessa cerca de 20 nós em uma busca.
+A diferença é significativa já que cada acesso a nó requer um acesso a disco.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Atualização}
 
 \subsubsection{Inserção}
+
+Os passos para inserção em uma árvore B+ são:
+\begin{enumerate}
+\item Encontre o nó folha onde a chave de busca deveria aparecer.
+\item Se a chave existir no nó folha:
+	\begin{enumerate}
+	\item Adicionar registro no arquivo.
+	\item Adicionar o ponteiro no bucket.
+	\end{enumerate}
+\item Se a chave de busca não estiver presente:
+	\begin{enumerate}
+	\item Adicionar o registro no arquivo e criar o bucket.
+	\item Se tiver espaço no nó folha, inserir par (chave, pointeiro).
+	\item Senão, dividir o nó folha, junto com o novo par (chave-valor).
+	\end{enumerate}
+\end{enumerate}
+
+A divisão do nó folha envolve os seguintes passos:
+\begin{enumerate}
+\item Pegar os $n$ pares (chave, apontador) (incluindo o novo) em ordem. Colocar os primeiros $\lceil n/2 \rceil$ no nó original e o restante no novo nó.
+\item Considere que o novo nó é $p$, e $k$ é a menor chave em $p$. 
+Inserir $(k,p)$ no pai do nó sendo dividido.
+\item Se o pai estiver cheio, divida-o e propague a divisão para cima. A divisão prossegue até que se encontre um nó não cheio.
+\end{enumerate}
+
+No pior caso, a raiz será dividida, aumentando a altura da árvore em uma
+unidade.
+
+Os passos na divisão de um nó não folha, quando ao inserir $(k,p)$
+em um nó interno $N$ já cheio, são:
+\begin{enumerate}
+\item Copiar $N$ para uma área temporária $M$ com espaço para $n+1$ pointeiros
+e $n$ chaves.
+\item Inserir $(k,p)$ em $M$.
+\item Copiar $P_1,K_1, ..., K_{\lceil n/2 \rceil -1}, P_{\lceil n/2 \rceil}$ de
+$M$ para o nó $N$. 
+\item Copiar $P_{\lceil n/2 \rceil + 1}, K_{\lceil n/2 \rceil+1}, ..., K_n,
+P_{n+1}$ de $M$ para o novo nó $N'$.
+\item Inserir $(K_{\lceil n/2 \rceil},N')$ no pai $N$.
+\end{enumerate}
+A figura~\ref{aula06:fig:btree5} mostra um exemplo da divisão de um nó
+não-folha cheio e inserção do no pai $N$.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.7\textwidth]{aula06-btree5}
+\caption{Exemplo de uma divisão de nó não-folha cheio.}
+\label{aula06:fig:btree5}
+\end{figure}
 
 \subsubsection{Remoção}
 
