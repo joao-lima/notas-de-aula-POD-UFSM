@@ -1147,8 +1147,54 @@ ocupe 64 bits.
 Essa técnica combina vantagens dos bitmaps e das árvores B+.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Índices compostos}
+\section{Índices multidimensionais}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Os atributos usados em uma busca podem ser considerados como dimensões.
+Consultas que envolvem buscas em mais de um atributo ou dimensão podem
+usar dois tipo de índices.
+\begin{itemize}
+\item Índices unidimensionais.
+\item Índices multidimensionais.
+\end{itemize}
+
+Em índices unidimensionais a chave de pesquisa é única. Também é possível
+recuperar registros que correspondem a um dado valor (ou intervalo)
+da chave de busca. Os tipos de índices podem ser:
+\begin{itemize}
+\item Índices ordenados - arquivos sequenciais e árvores B+.
+\item Tabelas hash.
+\end{itemize}
+
+\textbf{Índices multidimensionais} são usados para consultas em mais do que um atributo
+(ou dimensão).
+A estruturas de índices multidimensionais podem ser baseadas em:
+\begin{description}
+\item[Tabelas hash] a resposta da consulta pode não estar em um único bucket. Contudo,
+pode estar em um número baixo de buckets.
+
+\item[Árvores] não há correspondência entre os nós da árvore e blocos do disco.
+Todavia, árvores podem ficar desbalanceadas e a eficiência nas atualizações pode ser menor.
+
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Arquivos de grade}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Funções de hash particionado}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Índices de várias chaves}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Árvores kd}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Árvores de quadrante}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Árvores R}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Exercícios}
