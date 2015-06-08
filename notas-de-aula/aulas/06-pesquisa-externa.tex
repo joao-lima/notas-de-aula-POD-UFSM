@@ -857,11 +857,132 @@ resulta em cada nó tendo pelo menos $\lfloor 2n/3 \rfloor$ entradas.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Índices compostos}
+\subsection{Hashing estático}
+
+Por definição, um \textbf{bucket} é uma unidade de armazenamento com um ou mais
+registros. Tipicamente, um bucket pode ser um bloco de disco.
+Em uma organização de arquivo com hash, o bucket de um registro é obtido diretamente
+de sua chave de busca por meio da \textbf{função hash}.
+
+Uma função hash mapeia todas as chaves de busca para buckets, e é usada
+para localizar registros para acesso, inserção e remoção.
+Registros com valores de chave de busca diferentes podem ser mapeados para o mesmo
+bucket.
+Para localizar um registro, todo o bucket deve ser varrido sequencialmente.
+
+\subsubsection{Funções hash}
+
+A pior função mapeia todas as chaves de busca para o mesmo bucket, o que 
+o tempo de acesso proporcional ao número de registros do arquivo.
+
+Uma função ideal é \textbf{uniforme}: cada bucket recebe o mesmo número de chaves
+de busca, a partir do conjunto de todos os valores possíveis.
+Além disso, uma função ideal é \textbf{aleatória}: cada bucket recebe o mesmo número de 
+chaves de busca, qualquer que seja a distribuição de chaves de busca real no
+arquivo.
+
+Funções típicas realizam o cálculo a partir da representação binária das chaves
+de busca. 
+Por exemplo, somando a representação binária dos caracteres e dividindo pelo número
+de buckets.
+O resto da divisão seria o bucket designado.
+
+\subsubsection{Tratamento dos estouros de buckets}
+
+Em caso de colisão, os registros que colidem ocupam o mesmo bucket e pode
+ocorrer estouro do bucket (\emph{bucket overflow}).
+O estouro pode ocorrer devido:
+\begin{itemize}
+\item buckets insuficientes.
+\item Desequilíbrio na distribuição dos registros.
+Os motivos são:
+	\begin{itemize}
+	\item muitos registros com a mesma chave de busca.
+	\item a função de hash não é uniforme.
+	\end{itemize}
+\end{itemize}
+
+Embora a probabilidade de estouro possa ser reduzida, ela não pode
+ser eliminada.
+Ela pode ser tratata através de \textbf{buckets de estouro}.
+No \textbf{encadeamento de estouro}, os buckets de estouro são ligados
+por uma lista encadeada.
+
+O esquema acima é chamado \textbf{closed hashing}. Uma outra alternativa,
+chamada \textbf{open hashing}, não usa buckets de estouro.
+Porém, não é adequada para aplicações de banco de dados.
+
+\subsubsection{Índices hash}
+
+Hashing também pode ser usado como índices. 
+Um \textbf{índice hash} organiza as chaves de busca com seus ponteiros para registros.
+
+\subsubsection{Deficiências do hashing estático}
+
+No hashing estático, a função $h$ mapeia chaves de busca para um número fixo de buckets.
+Com o crescimento ou encolhimento do banco de dados:
+\begin{itemize}
+\item Se o número de buckets for baixo, e o arquivo crescer, o desempenho
+irá cair devido aos estouros.
+\item Se o número de buckets for alto, uma grande quantidade de espaço
+será desperdiçada inicialmente.
+\item Se o arquivo encolher, novamente o espaço será desperdiçado.
+\end{itemize}
+
+Uma solução seria reorganização periódica do arquivo com uma nova função de hash.
+Porém, essa solução custa caro e interrompe operações sobre o arquivo.
+Uma solução melhor é permitir que o número de buckets seja modificado
+dinamicamente.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hashing dinâmico}
+
+Usado para bancos cujo tamanho costuma mudar, e permite que a função
+de hash mude dinamicamente.
+O \textbf{Hashing extensível} é uma das formas de hashing dinâmico.
+A função de hash gera valores a partir de um intervalo elevado, tipicamente
+inteiros com b-bits, onde $b = 32$.
+
+Apenas um prefixo da função de hash é usado para indexar uma tabela de buckets.
+Considere que a largura do prefixo seja de $i$ bits, $0 \leq i \leq 32$.
+O tamanho da tabela de buckets é $2^i$, sendo inicialmente $i= 0$.
+O valor $i$ cresce ou diminui junto com o banco de dados.
+
+Múltiplas entradas da tabela de buckets podem apontar para o mesmo bucket. 
+Assim, o número real de buckets é $< 2^i$. 
+O número de buckets também muda dinamicamente pela sua mescla ou divisão.
+
+Em uma hash extensível, cada bucket $j$ guarda o valor $i_j$. Todas as entradas
+que apontam para o mesmo bucket tem o mesmo valor para os primeiros $i_j$ bits.
+Para localizar o bucket contendo a chave de busca $k_j$:
+\begin{enumerate}
+\item Computar $h(K_j) = X$.
+\item Usar os bits de maior ordem $i$ de $X$ como um deslocador na tabela
+de buckets, e seguir o ponteiro para o bucket apropriado.
+\end{enumerate}
+
+\subsubsection{Inserção em estruturas de hash extensível}
+
+Para inserir um registro com chave de busca $K_j$:
+\begin{enumerate}
+\item localizar o bucket apropriado $j$.
+\item se tiver espaço no bucket $j$, inserir o registro no bucket.
+\item senão, o bucket deve ser dividido e a inserção tentada de novo. 
+Em alguns casos, são necessários buckets de estouro.
+\end{enumerate}
+
+Para dividir o bucket $j$ quando inserindo registro com a chave de busca $K_j$:
+\begin{enumerate}
+\item
+\end{enumerate}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices de bitmap}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Índices compostos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
