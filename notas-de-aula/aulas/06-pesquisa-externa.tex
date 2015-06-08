@@ -823,7 +823,7 @@ As remoções podem se propagar para cima até que se encontre um nó com pelo
 menos $\lceil n/2 \rceil$ pointeiros.
 Se o nó raiz possuir apenas um ponteiro após a remoção, ele é removido e seu filho
 se torna a raiz.
-A figure~\ref{aula06:fig:btree8} mostram o exemplo de remoção.
+A figura~\ref{aula06:fig:btree8} mostram o exemplo de remoção.
 %
 \begin{figure}[!htb]
 \centering
@@ -870,6 +870,16 @@ Registros com valores de chave de busca diferentes podem ser mapeados para o mes
 bucket.
 Para localizar um registro, todo o bucket deve ser varrido sequencialmente.
 
+A figura~\ref{aula06:fig:hash1} mostram o exemplo de arquivo hash com hashing estático.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-hash1}
+\caption{Organização de arquivo hash para \emph{instructor}, com
+\emph{dept\_name} como chave de busca.}
+\label{aula06:fig:hash1}
+\end{figure}
+
 \subsubsection{Funções hash}
 
 A pior função mapeia todas as chaves de busca para o mesmo bucket, o que 
@@ -906,7 +916,14 @@ Embora a probabilidade de estouro possa ser reduzida, ela não pode
 ser eliminada.
 Ela pode ser tratata através de \textbf{buckets de estouro}.
 No \textbf{encadeamento de estouro}, os buckets de estouro são ligados
-por uma lista encadeada.
+por uma lista encadeada (ver figura~\ref{aula06:fig:hash2}).
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{aula06-hash2}
+\caption{Exemplo de encadeamento de estouro.}
+\label{aula06:fig:hash2}
+\end{figure}
 
 O esquema acima é chamado \textbf{closed hashing}. Uma outra alternativa,
 chamada \textbf{open hashing}, não usa buckets de estouro.
@@ -1000,6 +1017,25 @@ Para dividir o bucket $j$ quando inserindo registro com a chave de busca $K_j$:
 
 \end{enumerate}
 
+A figura~\ref{aula06:fig:hash3} demostra a representação binária gerada pela função 
+hash $h$ em uma chave de busca exemplo, enquanto que na figura~\ref{aula06:fig:hash4} ilustra
+a estrutura do arquivo hash depois de 11 inserções.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-hash3}
+\caption{Função de hash extensível para o exemplo a seguir de inserção.}
+\label{aula06:fig:hash3}
+\end{figure}
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.7\textwidth]{aula06-hash4}
+\caption{Estrutura do arquivo hash depois de 11 inserções.}
+\label{aula06:fig:hash4}
+\end{figure}
+
+
 \subsubsection{Remoção em estruturas de hash extensível}
 
 Para remover uma chave:
@@ -1039,8 +1075,76 @@ disponível na memória).
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Índices de bitmap}
+\section{Índices compostos e bitmap}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{Chaves de busca compostas} são chaves de busca que possuem
+mais de um atributo como em \emph{(branch\_name, balance)}.
+
+\textbf{Índices de mapa de bits} (bitmap) foram projetados para responder com
+eficiência consultas sobre mútiplas chaves.
+Registros em uma relação devem possuir uma numeração sequencial. 
+Dado um número $n$ deve ser fácil recuperar o registro $n$.
+
+Um índice de bitmap é aplicável para atributos que assumem uma quantidade pequena de valores.
+Exemplos são: sexo, país, estado, nível salarial (salário categorizado em níveis como 
+0-9999, 10000-19999, 20000,50000, 50000-infinito).
+Um mapa de bits é simplesmente um vetor de bits.
+
+Um índice de bitmap sobre um atributo tem o um bitmap para cada valor possível
+para esse atributo.
+O bitmap tem tantos bits quantos forem os registros. 
+Em um bitmap para o valor $v$, o bit para um registro é 1 se o 
+registro possui o valor $v$, e 0 caso constrário.
+
+Índices de bitmap são úteis para consultas por múltiplos atributos, e não muito úteis
+para consultas por um único atributo.
+Consultas são respondidas usando os seguintes operadores de bitmap:
+\begin{itemize}
+\item Interseção (\textbf{AND}).
+\item União (\textbf{OR}).
+\item Complementação (\textbf{NOT}).
+\end{itemize}
+Cada operação usa dois bitmaps de mesmo tamanho e aplica a operação nos bits
+correspondentes para gerar o bitmap de resultado. Exemplos dessas operações são:
+\begin{itemize}
+\item Interseção -- 100110 \textbf{AND} 110011 = 100010
+\item União --      100110 \textbf{OR} 110011 = 110111
+\item Complementação -- \textbf{NOT} 100110 = 011001
+\end{itemize}
+Índices de bitmap geralmente são muito pequenos se comparados com o tamanho da tabela.
+
+A figura~\ref{aula06:fig:bitmap1} mostra um exemplo de índice bitmap com a relação
+de dois campos \emph{gender} e \emph{income\_level}. 
+Por exemplo, em uma busca $gender = f(01101)$ e $income\_level = L2(01000)$ aplica-se a 
+operação de interserção (AND) e resulta no bitmap $01000$.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.6\textwidth]{aula06-bitmap1}
+\caption{Índices bitmap para uma relação.}
+\label{aula06:fig:bitmap1}
+\end{figure}
+%A operação de remoção precisa ser tratada de forma adequada.
+%O \textbf{bitmap de existência} é necessário para operações de complementação,
+%usada para averiguar se os registros ainda são válidos.
+
+Quanto a implementação, bitmaps são empacotados em palavras, uma única palavra 
+em uma instrução de CPU computa AND de 32 ou 64 bits de cada vez.
+Por exemplo, um mapa com milhão de bits pode ser computado com apenas
+31.250 instruções.
+
+A contagem do número de 1s pode ser otimizada ao usar cada byte para indexar
+um array de 256 posições.
+Cada posição guarda a contagem de 1s na sua respectiva representação binária. 
+Pode-se usar pares de bytes para agilizar o cálculo, com um custo
+de memória adicional.
+Em seguida, basta somar as contagens recuperadas.
+Bitmaps podem ser usados nos nós folhas das árvores B+ em vez de listas 
+de ponteiros de registros.
+É vantajoso se $> 1/64$ dos registros tiver esse valor, supondo que o ponteiro
+ocupe 64 bits.
+Essa técnica combina vantagens dos bitmaps e das árvores B+.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\section{Índices compostos}
