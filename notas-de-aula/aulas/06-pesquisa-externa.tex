@@ -973,9 +973,70 @@ Em alguns casos, são necessários buckets de estouro.
 
 Para dividir o bucket $j$ quando inserindo registro com a chave de busca $K_j$:
 \begin{enumerate}
-\item
+\item Se $i > i_j$ (mais de um apontador para o bucket $j$):
+	\begin{enumerate}
+	\item alocar um novo bucket $z$ e atribuir $i_j = i_z = (i_j+1)$.
+	\item atualizar a segunda metade das entradas da tabela de 
+	buckets que apontavam para $j$, fazendo-as apontar para $z$.
+	\item remover os registros do bucket $j$ e reinseri-los 
+	(em $j$ ou $z$).
+	\item localizar o bucket para $K_j$ e inserir registro no bucket apropriado
+	(realizar divisões sucessivas enquanto o bucket continuar cheio).
+	\end{enumerate}
+
+\item Se $i = i_j$ (apenas um ponteiro para o bucket $j$):
+	\begin{enumerate}
+	\item se $i$ atingir o limite $b$, ou se muitas divisões ocorrerem, criar um bucket
+	de estouro.
+	\item senão
+		\begin{enumerate}
+		\item incrementar $i$ e dobrar o tamanho da tabela de buckets.
+		\item substituir cada entrada da tabela por duas entradas que
+			apontam para o mesmo bucket.
+		\item localizar a entrada na tabela de endereçamento para $K_j$.
+		Agora $i > i_j$ estão no primeiro caso acima.
+		\end{enumerate}
+	\end{enumerate}
+
 \end{enumerate}
 
+\subsubsection{Remoção em estruturas de hash extensível}
+
+Para remover uma chave:
+\begin{enumerate}
+\item localizá-la no bucket e removê-la.
+\item o bucket pode ser removido se ficar vazio (com as devidas
+atualizações na tabela de buckets).
+\item a mescla de buckets pode ser feita (pode mesclar apenas com
+um bucket que tenha o mesmo valor $i_j$ e o mesmo prefixo $i_j-1$, se existir).
+\end{enumerate}
+A redução da tabela de buckets também é possível. Porém, a redução é cara
+e deve ser feita apenas se o número de buckets for muito menor do que o tamanho
+da tabela.
+
+\subsubsection{Comparação com outros esquemas}
+
+As vantagens do hash extensível são:
+\begin{itemize}
+\item O desempenho não degrada com o aumento do arquivo, sendo $C(n)=1$ se a 
+função for uniforme e aleatória.
+\item Sobrecarga de espaço é mínima.
+\end{itemize}
+
+As desvantagens são:
+\begin{itemize}
+\item Nível de indireção extra para localizar registros.
+\item A tabela de buckets pode se tornar muito grande (maior que o espaço
+disponível na memória).
+	\begin{itemize}
+	\item Não se pode alocar espaços contíguos em disco.
+	\item Solução: usar uma árvore B+ para representar os registros em 
+		uma tabela de buckets.
+	\end{itemize}
+\item Mudar o tamanho da tabela de endereço também é uma operação custosa.
+\item Custo para recuperar os registros em ordem é alto.
+\item Pior caso é $C(n) = n$.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Índices de bitmap}
