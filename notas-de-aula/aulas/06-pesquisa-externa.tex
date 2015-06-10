@@ -1128,12 +1128,15 @@ A estruturas de índices multidimensionais podem ser baseadas em:
 \item[Índices bitmap] código sucintos (bits) par responder com eficiência 
 consultas sobre múltiplas chaves.
 
-\item[Tabelas hash] a resposta da consulta pode não estar em um único bucket.
-Contudo, pode estar em um número baixo de buckets.
+\item[Estruturas baseadas em hash] a resposta da consulta pode não estar em um único bucket.
+Contudo, pode estar em um número baixo de buckets. As estruturas são: arquivos
+de grade e funções de hash particionado.
 
-\item[Árvores] não há correspondência entre os nós da árvore e blocos do disco.
+\item[Estruturas baseadas em árvores] não há correspondência entre os nós da árvore e blocos do disco.
 Todavia, árvores podem ficar desbalanceadas e a eficiência nas atualizações
 pode ser menor.
+As estruturas são: índices de várias chaves, árvores \emph{kd}, árvore de quadrante,
+e árvores R.
 \end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
