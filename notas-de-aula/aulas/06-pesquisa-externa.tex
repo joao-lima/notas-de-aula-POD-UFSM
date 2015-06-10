@@ -1092,14 +1092,37 @@ usar dois tipo de índices.
 
 Em índices unidimensionais a chave de pesquisa é única. Também é possível
 recuperar registros que correspondem a um dado valor (ou intervalo)
-da chave de busca. Os tipos de índices podem ser:
+da chave de busca. Os tipos de índices que vimos anteriormente 
+são por exemplo árvores B+ e tabelas hash.
+
+\textbf{Índices multidimensionais} são usados para consultas em mais do que um
+atributo (ou dimensão).
+Como exemplo, um sistema de informações geográficas armazena objetos 
+em um espaço bidimensional. As consultas que poderiam ser feitas são:
 \begin{itemize}
-\item Índices ordenados - arquivos sequenciais e árvores B+.
-\item Tabelas hash.
+\item Consultas de correspondência parcial.
+\item Consultas de intervalo.
+\item Consultas de vizinho mais próximo.
+\item Consultas do tipo onde estou.
+\end{itemize}
+Outro exemplo utilizado em sistemas de decisão são cubos de dados que, em geral, 
+utiliza a dimensão tempo nas consultas. Por exemplo, pode-se fazer consultas
+de vendas de um produto para cada loja em um determinado período de tempo.
+
+Nesses exemplos, índices unidimensionais apresentam limitações:
+\begin{itemize}
+\item Em consultas por intervalos, o número de blocos acessados pode ser excessivo. Imagine
+que os passos envolvidos caso a consulta fosse realizada em uma árvore B+ são:
+	\begin{enumerate}
+	\item Usar um índice para cada uma das dimensões x, y.
+	\item Obter os ponteiros da árvore B+ para os registros no intervalo de x.
+	\item Obter os ponteiros da árvore B+ para os registros no intervalo de y.
+	\item Fazer a interseção dos ponteiros.
+	\item Examinar blocos da interseção.
+	\end{enumerate}
+\item Em consultas de vizinho mais próximo, não se sabe qual intervalo buscar.
 \end{itemize}
 
-\textbf{Índices multidimensionais} são usados para consultas em mais do que um atributo
-(ou dimensão).
 A estruturas de índices multidimensionais podem ser baseadas em:
 \begin{description}
 \item[Índices bitmap] código sucintos (bits) par responder com eficiência 
