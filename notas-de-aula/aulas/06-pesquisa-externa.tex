@@ -862,15 +862,15 @@ resulta em cada nó tendo pelo menos $\lfloor 2n/3 \rfloor$ entradas.
 Por definição, um \textbf{bucket} é uma unidade de armazenamento com um ou mais
 registros. Tipicamente, um bucket pode ser um bloco de disco.
 Em uma organização de arquivo com hash, o bucket de um registro é obtido diretamente
-de sua chave de busca por meio da \textbf{função hash}.
+de sua chave de busca por meio da função hash.
 
-Uma função hash mapeia todas as chaves de busca para buckets, e é usada
+Uma \textbf{função hash} mapeia todas as chaves de busca para buckets, e é usada
 para localizar registros para acesso, inserção e remoção.
 Registros com valores de chave de busca diferentes podem ser mapeados para o mesmo
 bucket.
 Para localizar um registro, todo o bucket deve ser varrido sequencialmente.
 
-A figura~\ref{aula06:fig:hash1} mostram o exemplo de arquivo hash com hashing estático.
+A figura~\ref{aula06:fig:hash1} mostra um exemplo de arquivo hash com hashing estático.
 %
 \begin{figure}[!htb]
 \centering
@@ -885,11 +885,14 @@ A figura~\ref{aula06:fig:hash1} mostram o exemplo de arquivo hash com hashing es
 A pior função mapeia todas as chaves de busca para o mesmo bucket, o que 
 o tempo de acesso proporcional ao número de registros do arquivo.
 
-Uma função ideal é \textbf{uniforme}: cada bucket recebe o mesmo número de chaves
+Uma função hash ideal é:
+\begin{itemize}
+\item \textbf{Uniforme} - cada bucket recebe o mesmo número de chaves
 de busca, a partir do conjunto de todos os valores possíveis.
-Além disso, uma função ideal é \textbf{aleatória}: cada bucket recebe o mesmo número de 
+\item \textbf{Aleatória} - cada bucket recebe o mesmo número de 
 chaves de busca, qualquer que seja a distribuição de chaves de busca real no
 arquivo.
+\end{itemize}
 
 Funções típicas realizam o cálculo a partir da representação binária das chaves
 de busca. 
@@ -903,7 +906,7 @@ Em caso de colisão, os registros que colidem ocupam o mesmo bucket e pode
 ocorrer estouro do bucket (\emph{bucket overflow}).
 O estouro pode ocorrer devido:
 \begin{itemize}
-\item buckets insuficientes.
+\item Buckets insuficientes.
 \item Desequilíbrio na distribuição dos registros.
 Os motivos são:
 	\begin{itemize}
@@ -925,8 +928,9 @@ por uma lista encadeada (ver figura~\ref{aula06:fig:hash2}).
 \label{aula06:fig:hash2}
 \end{figure}
 
-O esquema acima é chamado \textbf{closed hashing}. Uma outra alternativa,
-chamada \textbf{open hashing}, não usa buckets de estouro.
+O esquema acima é chamado \textbf{endereçamento fechado} (\emph{closed hashing}).
+Uma outra alternativa,
+chamada \textbf{endereçamento aberto} (\emph{open hashing}), não usa buckets de estouro.
 Porém, não é adequada para aplicações de banco de dados.
 
 \subsubsection{Índices hash}
@@ -954,13 +958,13 @@ dinamicamente.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hashing dinâmico}
 
-Usado para bancos cujo tamanho costuma mudar, e permite que a função
+Usado para banco de dados cujo tamanho costuma mudar, e permite que a função
 de hash mude dinamicamente.
 O \textbf{Hashing extensível} é uma das formas de hashing dinâmico.
 A função de hash gera valores a partir de um intervalo elevado, tipicamente
 inteiros com b-bits, onde $b = 32$.
 
-Apenas um prefixo da função de hash é usado para indexar uma tabela de buckets.
+Apenas um prefixo da função de hash é usado para indexar uma \textbf{tabela de buckets}.
 Considere que a largura do prefixo seja de $i$ bits, $0 \leq i \leq 32$.
 O tamanho da tabela de buckets é $2^i$, sendo inicialmente $i= 0$.
 O valor $i$ cresce ou diminui junto com o banco de dados.
@@ -1075,8 +1079,42 @@ disponível na memória).
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Índices compostos e bitmap}
+\section{Índices multidimensionais}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Os atributos usados em uma busca podem ser considerados como dimensões.
+Consultas que envolvem buscas em mais de um atributo ou dimensão podem
+usar dois tipo de índices.
+\begin{itemize}
+\item Índices unidimensionais.
+\item Índices multidimensionais.
+\end{itemize}
+
+Em índices unidimensionais a chave de pesquisa é única. Também é possível
+recuperar registros que correspondem a um dado valor (ou intervalo)
+da chave de busca. Os tipos de índices podem ser:
+\begin{itemize}
+\item Índices ordenados - arquivos sequenciais e árvores B+.
+\item Tabelas hash.
+\end{itemize}
+
+\textbf{Índices multidimensionais} são usados para consultas em mais do que um atributo
+(ou dimensão).
+A estruturas de índices multidimensionais podem ser baseadas em:
+\begin{description}
+\item[Índices bitmap] código sucintos (bits) par responder com eficiência 
+consultas sobre múltiplas chaves.
+
+\item[Tabelas hash] a resposta da consulta pode não estar em um único bucket.
+Contudo, pode estar em um número baixo de buckets.
+
+\item[Árvores] não há correspondência entre os nós da árvore e blocos do disco.
+Todavia, árvores podem ficar desbalanceadas e a eficiência nas atualizações
+pode ser menor.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Índices de bitmap}
 
 \textbf{Chaves de busca compostas} são chaves de busca que possuem
 mais de um atributo como em \emph{(branch\_name, balance)}.
@@ -1145,38 +1183,6 @@ de ponteiros de registros.
 É vantajoso se $> 1/64$ dos registros tiver esse valor, supondo que o ponteiro
 ocupe 64 bits.
 Essa técnica combina vantagens dos bitmaps e das árvores B+.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Índices multidimensionais}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Os atributos usados em uma busca podem ser considerados como dimensões.
-Consultas que envolvem buscas em mais de um atributo ou dimensão podem
-usar dois tipo de índices.
-\begin{itemize}
-\item Índices unidimensionais.
-\item Índices multidimensionais.
-\end{itemize}
-
-Em índices unidimensionais a chave de pesquisa é única. Também é possível
-recuperar registros que correspondem a um dado valor (ou intervalo)
-da chave de busca. Os tipos de índices podem ser:
-\begin{itemize}
-\item Índices ordenados - arquivos sequenciais e árvores B+.
-\item Tabelas hash.
-\end{itemize}
-
-\textbf{Índices multidimensionais} são usados para consultas em mais do que um atributo
-(ou dimensão).
-A estruturas de índices multidimensionais podem ser baseadas em:
-\begin{description}
-\item[Tabelas hash] a resposta da consulta pode não estar em um único bucket. Contudo,
-pode estar em um número baixo de buckets.
-
-\item[Árvores] não há correspondência entre os nós da árvore e blocos do disco.
-Todavia, árvores podem ficar desbalanceadas e a eficiência nas atualizações pode ser menor.
-
-\end{description}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Arquivos de grade}
