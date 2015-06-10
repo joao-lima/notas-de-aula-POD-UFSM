@@ -1210,6 +1210,67 @@ Essa técnica combina vantagens dos bitmaps e das árvores B+.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Arquivos de grade}
 
+Em arquivos de grade, há um espaço de pontos dispostos em uma grade.
+Imagine que cada dimensão possue linhas de grade 
+que particionam o espaço entre faixas.
+Os pontos que caírem em uma linha de grade serão considerados pertencentes
+à faixa da qual essa linha de grade é o limite inferior.
+O número de linhas de grade em cada dimensão, assim como o espaçamento entre elas,
+pode variar.
+
+Cada região em que um espaço é particionado pode ser imaginada como um bucket
+de uma tabela hash, e os pontos dentro dessa região são inseridos em um bucket
+que pertence a essa região. Quando necessário, pode-se usar buckets de estouro.
+A figura~\ref{aula06:fig:grade2} demonstra um exemplo de arquivo de grade
+com buckets para cada região.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{aula06-grade2}
+\caption{Arquivo de grade com buckets.}
+\label{aula06:fig:grade2}
+\end{figure}
+
+\subsection{Pesquisa}
+
+Ao invés de usar uma tabela unidimensional de buckets, como em tabelas hash, 
+o arquivo de grade usa tabelas auxiliares, ou \textbf{array de buckets}, cujo
+número de dimensões é igual ao do arquivo de dados. 
+Para realizar uma pesquisa, é preciso saber quais faixas delimitam os buckets
+em cada dimensão.
+A partir do array de buckets podemos determinar a região em que um ponto está.
+
+A figura~\ref{aula06:fig:grade1} mostra um exemplo de arquivo de grade
+com duas dimensões: salário (y) e departamento (x). 
+As tabelas auxiliares indicam o valor de cada linha da grade.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{aula06-grade1}
+\caption{Arquivo de grade com duas dimensões.}
+\label{aula06:fig:grade1}
+\end{figure}
+
+\subsection{Inserção}
+
+Segue a mesma lógica da pesquisa. Se houver espaço no bucket para o registro novo,
+não haverá nada mais a fazer.
+Se não houver espaço, existem duas abordagens:
+\begin{enumerate}
+\item Adiciona-se buckets de estouro.
+\item Reorganiza-se a estrutura, adicionando-se ou movendo as linhas da grade.
+\end{enumerate}
+
+\subsection{Desempenho}
+
+Um problema importante no caso de altos números de dimensões é que o número de buckets
+cresce exponencialmente com a dimensão. Por exemplo, 3 dimensões com 10 faixas em cada dimensão
+resulta em $10^3 = 1000$ blocos.
+
+O ideal é usar poucos buckets, e distribuir bem os pontos para evitar estouro
+de buckets.  Importante notar que esse ideal é dificil alcançar se os pontos
+não tem uma distribuição uniforme.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Funções de hash particionado}
 
