@@ -1272,7 +1272,30 @@ de buckets.  Importante notar que esse ideal é dificil alcançar se os pontos
 não tem uma distribuição uniforme.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Funções de hash particionado}
+\subsection{Hash particionado}
+
+Funções de \textbf{hash particionado} aplicam uma função hash sobre uma lista
+de atributos.
+Cada valor de atributo contribui para formar parte da chave hash gerada.
+A figura~\ref{aula06:fig:particionado1} mostra o uso de 4 $bits$ para um atributo A
+e  6 $bits$ para um atributo B, formando assim um identificador de 10 $bits$.
+Essa tabela hash contém 1024 buckets ($2^{10}$).
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{aula06-particionado1}
+\caption{Chave hash para uma tabela com 1024 buckets e 10 bits.}
+\label{aula06:fig:particionado1}
+\end{figure}
+
+Comparado com arquivos de grade, o hash particionado tem pouca utilidade em
+consultas por intervalos e consultas de vizinho mais próximo.
+Nessa caso a distância física entre os pontos não reflete na proximidade dos números
+de buckets.
+
+Os arquivos de grade são mais adequados para consultas de vizinho mais próximo e consultas
+em intervalos. Porém, o número alto de dimensões pode levar a muitos buckets vazios ou
+quase vazios.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Índices de várias chaves}
