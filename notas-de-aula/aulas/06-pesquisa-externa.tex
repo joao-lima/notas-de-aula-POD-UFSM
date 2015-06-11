@@ -1341,7 +1341,80 @@ Todavia, o desafio é encontrar o valor $d$.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Árvores kd}
+\subsection{Árvores \emph{kd}}
+
+Uma árvore \emph{kd} (árvore de pesquisa \emph{k-}dimensional) é uma estrutura
+de dados da memória principal que generaliza a árvore de pesquisa binária 
+para dados multidimensionais.
+Os nós tem um atributo que divide os filhos da esquerda e direta, e as folhas
+são blocos (buckets) com espaço para tantos registros quantos um bloco pode
+conter.
+Os atributos em diferentes níveis da árvore são diferentes, com os níveis se 
+revezando entre os atributos de todas as dimensões.
+
+A figura~\ref{aula06:fig:kd1} mostra uma árvore \emph{kd} de salário e idade,
+onde as folhas possuem buckets de até dois registros.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{aula06-kd1}
+\caption{Uma árvore \emph{kd} de salário e idade.}
+\label{aula06:fig:kd1}
+\end{figure}
+
+A figura~\ref{aula06:fig:kd2} sugere como os nós da
+figura~\ref{aula06:fig:kd1} dividem o espaço de pontos em blocos de folhas.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.3\textwidth]{aula06-kd2}
+\caption{As partições resultantes da árvore \emph{kd} anterior.}
+\label{aula06:fig:kd2}
+\end{figure}
+
+\subsubsection{Operações em árvores \emph{kd}}
+
+A \textbf{inserção} ocorre de uma forma semelhante a uma árvore binária. Procura-se
+atingir um único nó folha. Se houver espaço, adiciona-se o registro. 
+Caso contrário, o nó existente terá que ser dividido.
+
+A \textbf{pesquisa} é feita como em uma árvore binária até atingir um nó folha.
+Os tipos de consultas podem ser:
+\begin{itemize}
+\item Correspondência parcial que pode precisar seguir as duas sub-árvores de um nó.
+\item Intervalos em que a divisão pode não satisfazer inteiramente o intervalo da consulta.
+\item Vizinhos mais próximos que novamente demanda um parâmetro $d$.
+\end{itemize}
+
+\subsubsection{Adaptação para armazenamento secundário}
+
+Caso a árvore \emph{kd} não couber na memória, uma solução trivial seria 
+armazenar os nós em memória secundária onde cada um ocupa um bloco.
+Todavia, em árvores \emph{kd} pode haver muitos espaços vazios no bloco e caminhos longos
+até as folhas.
+
+Duas abordagens que mellhoram o desempenhos são:
+\begin{description}
+\item[Solução 1] - \textbf{Ramificações de várias vias em nós interiores, como nas árvores B+} - 
+Nessa solução a altura da árvore diminui e os blocos se tornam cheios. Porém, aumenta
+dificuldade de mesclar e distribuir nós.
+
+\item[Solução 2] - \textbf{Nós interiores agrupados em blocos} - 
+Nós de um mesmo bloco tendem a ser acessados juntos. 
+Mas aumenta a dificuldade de gerenciar a organização dos blocos.
+\end{description}
+
+\subsubsection{Análise}
+
+Árvores \emph{kd} possui várias semelhanças com arquivos de grade:
+\begin{itemize}
+\item Responde ao mesmo tipo de consulta.
+\item Se os dados não estão bem distribuídos, a árvore não ficará balanceada, e consultas
+e atualizações ficarão custosas.
+\item Desempenho cai com muitas dimensões. Em consultas por intervalo ou
+correspondência parcial, muitos nós teriam que ser acessados, o que pode
+ser pior do que uma varredura completa.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvores de quadrante}
