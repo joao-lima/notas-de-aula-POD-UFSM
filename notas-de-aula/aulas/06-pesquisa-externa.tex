@@ -1234,7 +1234,7 @@ com buckets para cada região.
 \label{aula06:fig:grade2}
 \end{figure}
 
-\subsection{Pesquisa}
+\subsubsection{Pesquisa}
 
 Ao invés de usar uma tabela unidimensional de buckets, como em tabelas hash, 
 o arquivo de grade usa tabelas auxiliares, ou \textbf{array de buckets}, cujo
@@ -1254,7 +1254,7 @@ As tabelas auxiliares indicam o valor de cada linha da grade.
 \label{aula06:fig:grade1}
 \end{figure}
 
-\subsection{Inserção}
+\subsubsection{Inserção}
 
 Segue a mesma lógica da pesquisa. Se houver espaço no bucket para o registro novo,
 não haverá nada mais a fazer.
@@ -1264,7 +1264,7 @@ Se não houver espaço, existem duas abordagens:
 \item Reorganiza-se a estrutura, adicionando-se ou movendo as linhas da grade.
 \end{enumerate}
 
-\subsection{Desempenho}
+\subsubsection{Desempenho}
 
 Um problema importante no caso de altos números de dimensões é que o número de buckets
 cresce exponencialmente com a dimensão. Por exemplo, 3 dimensões com 10 faixas em cada dimensão
@@ -1302,6 +1302,43 @@ quase vazios.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Índices de várias chaves}
+
+\textbf{Índices de várias chaves} nada mais são do que um índice de índices, ou seja,
+uma árvore que o índice sobre um atributo A conduz a índices sobre outro atributo B
+para cada valor possível de A.
+Os nós de cada nível dessa árvore são índices para um único atributo.
+
+O índice sobre primeiro atributo é a raiz da árvore. Além disso, cada índice 
+ou nível pode estar em qualquer formato como em tabelas hash ou árvores B+.
+A figura~\ref{aula06:fig:nchaves1} demonstra um índice de várias chaves onde o
+primeiro nível é o atributo ``idade'', enquanto que o segundo nível é do
+atributo ``salário''.
+%
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.4\textwidth]{aula06-nchaves1}
+\caption{Índice de várias chaves com atributo idade (nível 1) e salário (nível 2).}
+\label{aula06:fig:nchaves1}
+\end{figure}
+Note que os índices internos são menores do que os externos.
+
+Sobre o desempenho, o que deve ser considerado:
+\begin{itemize}
+\item Em consultas de correspondência parcial, se o 1$^o$ atributo é especificado,
+então o acesso será eficiente. Caso contrário, todo o sub-índice (nível 2) terá de 
+ser pesquisado.
+
+\item Para consultas de intervalo, pode ser eficiente quando os índices individuais forem
+implementados com estruturas que permitem consultas de intervalos, como por exemplo
+árvores B+. Além disso, será mais eficiente se todos os atributos do índice são
+especificados (como no caso anterior).
+
+\item Uma consulta de vizinho mais próximo é semelhante a consulta de intervalo onde
+deve-se informar o intervalo da pesquisa. 
+No caso de pontos, deve-se encontrar pontos entre $-d \leq x \leq x_0$ e 
+$-d \leq y \leq y_0$. 
+Todavia, o desafio é encontrar o valor $d$.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Árvores kd}
