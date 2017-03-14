@@ -39,11 +39,12 @@ O critério de avaliação, sendo $n$ o número de registros, pode ser por:
 \end{itemize}
 Em grande parte dos casos, nos concentramos no número de comparações.
 
-Os métodos de ordenação podem ser {\bf interno} (em memória primária) ou {\bf externo} (em memória secundária).
-Na {\bf interna} o arquivo de entrada cabe todo na memória principal, enquanto
-que na {\bf externa} o arquivo não cabe na memória principal. 
+Os métodos de ordenação podem ser \emph{interno} (em memória primária) ou
+\emph{externo} (em memória secundária).  Na \emph{interna} o arquivo de entrada
+cabe todo na memória principal, enquanto que na \emph{externa} o arquivo não
+cabe na memória principal. 
 
-A maioria dos métodos é baseada em {\bf comparações} de chaves.
+A maioria dos métodos é baseada em \emph{comparações} de chaves.
 Porém, existem outros métodos que utilizam o principio da {\bf distribuição}. 
 Um exemplo é ordenar um baralho com 52 cartas na ordem numérica e ordem de naipes.
 O algoritmo seria:
@@ -53,7 +54,7 @@ O algoritmo seria:
 \item Distribuir novamente as cartas em quatro montes: paus, ouros, copas e espadas.
 \item Coletar os montes na ordem especificada.
 \end{enumerate}
-Alguns desses métodos são o {\bf radixsort} e o {\bf bucketsort}.
+Alguns desses métodos são o \emph{radixsort} e o \emph{bucketsort}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Classificação em memória primária}
@@ -75,7 +76,7 @@ Ex.: quicksort, mergesort, heapsort.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Bolha (\emph{bubble sort})}
 
-O bubblesort ordena os elementos ao colocar o maior sempre no fim do vetor.
+A ordenação por bolha ordena os elementos ao colocar o maior sempre no fim do vetor.
 O algoritmo é ilustrado na figura~\ref{aula03:algo:bubblesort}.
 \begin{figure}[!htb]
 \centering
@@ -116,7 +117,7 @@ As principais vantagens:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Seleção (\emph{selection sort})}
 
-O selectionsort coloca o menor elemento sempre no começo do vetor.
+A ordenação por seleção coloca o menor elemento sempre no começo do vetor.
 O algoritmo é ilustrado na figura~\ref{aula03:algo:selection}.
 \begin{figure}[!htb]
 \centering
@@ -188,8 +189,8 @@ Desvantagens:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Shellsort}
 
-Proposto por Shell em 1959, o algoritmo é uma extensão do insertion sort.
-Ele é eficiente quando a entrada está parcialmente ordenado.
+Proposto por Shell em 1959, o algoritmo é uma extensão do algoritmo por inserção.
+Ele é eficiente quando a entrada está parcialmente ordenada.
 Porém, ele é  ineficiente no caso geral pois troca os valores apenas uma posição por vez.
 
 A proposta geral do shellsort é trocar elementos de posições distantes para vetores muito
