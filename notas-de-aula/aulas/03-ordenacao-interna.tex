@@ -74,47 +74,6 @@ Ex.: quicksort, mergesort, heapsort.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Bolha (\emph{bubble sort})}
-
-A ordenação por bolha ordena os elementos ao colocar o maior sempre no fim do vetor.
-O algoritmo é ilustrado na figura~\ref{aula03:algo:bubblesort}.
-\begin{figure}[!htb]
-\centering
-\begin{framed}
-\begin{lstlisting}
-void Bubblesort( int *A, int n ){
-	int i;
-	bool trocado;
-	do{
-		trocado = false;
-		for( i = 1; i < n; i++){
-			if( A[i-1] > A[i] ){
-				troca( A[i-1], A[i] );
-				trocado = true;
-			}
-		}
-	} while(trocado);
-}
-\end{lstlisting}
-\end{framed}
-\caption{Algoritmo do bubblesort.}
-\label{aula03:algo:bubblesort}
-\end{figure}
-
-%\todo[inline]{Exemplo com $4, 9, 2, 1, 5$.}
-
-O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (para pior caso)
-\begin{equation*}
-C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
-\end{equation*}
-
-As principais vantagens:
-\begin{itemize}
-\item Algoritmo simples.
-\item Algoritmo estável.
-\end{itemize}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Seleção (\emph{selection sort})}
 
 A ordenação por seleção coloca o menor elemento sempre no começo do vetor.
@@ -155,6 +114,47 @@ Desvantagens:
 \begin{itemize}
 \item vetor ordenado não ajuda, pois o custo continua quadrático.
 \item algoritmo {\bf não é estável}.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bolha (\emph{bubble sort})}
+
+A ordenação por bolha ordena os elementos ao colocar o maior sempre no fim do vetor.
+O algoritmo é ilustrado na figura~\ref{aula03:algo:bubblesort}.
+\begin{figure}[!htb]
+\centering
+\begin{framed}
+\begin{lstlisting}
+void Bolha( int *A, int n ){
+	int i;
+	bool trocado;
+	do{
+		trocado = false;
+		for( i = 1; i < n; i++){
+			if( A[i-1] > A[i] ){
+				troca( A[i-1], A[i] );
+				trocado = true;
+			}
+		}
+	} while(trocado);
+}
+\end{lstlisting}
+\end{framed}
+\caption{Algoritmo do bubblesort.}
+\label{aula03:algo:bubblesort}
+\end{figure}
+
+%\todo[inline]{Exemplo com $4, 9, 2, 1, 5$.}
+
+O número de comparações é $(n-1)+(n-2)+....+2+1$ com complexidade (para pior caso)
+\begin{equation*}
+C(n) = \sum_{k=1}^{n-1} i = \frac{n(n-1)}{2} = O(n^2).
+\end{equation*}
+
+As principais vantagens:
+\begin{itemize}
+\item Algoritmo simples.
+\item Algoritmo estável.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
