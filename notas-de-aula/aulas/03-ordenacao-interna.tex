@@ -459,7 +459,7 @@ com uma estrutura de dados {\bf heap}.
 \subsubsection*{Definição de heap}
 
 O heap é uma árvore binária balanceada e justificada a esquerda onde todos os
-nós satisfazem a {\bf propriedade do heap}: seu valor é menor ou igual ao valor
+nós satisfazem a \emph{propriedade do heap}: seu valor é menor ou igual ao valor
 do nó pai.
 Uma árvore balanceada significa que todos os níveis estão completos com exceção
 do nível folha.
@@ -478,8 +478,9 @@ do nó pai pelo nó filho de maior valor.
 Heaps podem ser mapeados para vetores com operações sobre vetores.
 No caso de um nó de indice $i$:
 \begin{itemize}
-\item o filho à {\bf esquerda} está em $2*i+1$.
-\item o filho à {\bf direita} está em $2*i+2$.
+\item o pai está em $\lceil i/2 \rceil - 1$ ($\lfloor i/2 \rfloor$).
+\item o filho à \emph{esquerda} está em $2*i+1$ ($2i$).
+\item o filho à \emph{direita} está em $2*i+2$ ($2i + 1$).
 \end{itemize}
 A {\bf raiz} é o primeiro elemento do vetor e o nó mais à direita é o último
 elemento do vetor.
@@ -487,7 +488,7 @@ A figura~\ref{aula03:fig:heap} ilustra um exemplo de vetor e seu heap correspond
 %
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.8\textwidth]{heap}
+\includegraphics[width=0.8\textwidth]{heap2}
 \caption{Exemplo de vetor e representação como um heap.}
 \label{aula03:fig:heap}
 \end{figure}
@@ -521,6 +522,19 @@ void Refaz( int *A, int i, int n ){
 \label{aula03:algo:heap:refaz}
 \end{figure}
 
+A figura~\ref{aula03:fig:heap:refaz} ilustra os passos do algoritmo
+\texttt{Refaz} em um heap inválido devido ao elemento \emph{4}.
+%
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{heap-refaz}
+\caption{Passos do algoritmo \texttt{Refaz(A, 2, 10)} na reconstrução de um
+heap.  O elemento da posição 2 faz o heap inválido e é trocado pelo filho de
+maior valor, no caso A[2] e A[4].  A chamada recursiva com \texttt{Refaz(A, 4,
+10)} detecta um heap inválido e leva a troca entre os elementos A[4] e A[9].}
+\label{aula03:fig:heap:refaz}
+\end{figure}
+
 O segundo algoritmo (figura~\ref{aula03:algo:heap:constroi}) constroi
 um heap a partir de um vetor. 
 Para cada posição do vetor, ele usa a função \lstinline{Refaz()} e transforma
@@ -540,6 +554,18 @@ void Constroi( int *A, int n ){
 \end{framed}
 \caption{Algoritmo que constroi o heap de um vetor $n$.}
 \label{aula03:algo:heap:constroi}
+\end{figure}
+
+A figura~\ref{aula03:fig:heap:constroi} ilustra os passos do algoritmo
+\texttt{Constroi} em um vetor.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.8\textwidth]{heap-constroi}
+\caption{Passos do algoritmo \texttt{Constroi(A, 10)} na construção de um heap.
+Note que a função \texttt{Refaz} é usada para todos os nós da árvore que não são
+folhas.}
+\label{aula03:fig:heap:constroi}
 \end{figure}
 
 O algoritmo Heapsort (figura~\ref{aula03:algo:heapsort}) inicia com a construção
