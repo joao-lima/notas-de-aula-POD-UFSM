@@ -723,14 +723,14 @@ void Bucketsort( float *A, int n, int r ){
 	for( j = 0; j < r; j++ )    B[i] = lista_cria();
 	for( i = 0; i < n; i++ ){
 		int j = (int)floor(A[i]*10);
-		lista_insere( B[j], A[j] );
+		lista_insere( B[j], A[i] );
 	}
 	for( j = 0; j < r; j++)    OrdenaLista(B[j]);
 
 	i = 0;
 	for( j = 0; j < r; j++){
 		while(!lista_vazia(B[j]))
-			A[i++] = lista_remove(B[i]);
+			A[i++] = lista_remove(B[j]);
 	}
 }
 \end{lstlisting}
