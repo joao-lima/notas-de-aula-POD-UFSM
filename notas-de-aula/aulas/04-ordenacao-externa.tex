@@ -221,38 +221,38 @@ torna-se o conjunto de entrada.
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Intercalação ótima}
-
-A {\bf intercalação ótima} usa $n$ arquivos para entrada e $1$ para saída
-sendo $F = n + 1$.
-
-O particionamento inicial pode usar qualquer estratégia de particionamento.
-Ao contrário do particionamento na intercalação balanceada, {\bf o particionamento
-inicial cria um novo arquivo por partição}.
-
-Os passos envolvidos são:
-\begin{enumerate}
-\item primeiro passo: determinar o número de arquivos ($F$) que o algoritmo irá
-manipular, sendo $F-1$ para entrada enquanto $1$ será de saída.
-
-\item passo dois: abrir $F-1$ arquivos, cada um com uma partição. 
-
-\item {\bf passo de intercalação}: intercalar as partições dos arquivos de entrada,
-gravando o resultado em ordem no arquivo de saída.
-
-\item o arquivo de saída é novo no primeiro passo, e é um dos arquivos já
-inteiramente lidos nos próximos passos.
-
-\item quando todas as partições ficarem vazias, os arquivos usados podem ser descartados.
-O arquivo de saída vira um novo arquivo de entrada e é adicionado aos demais arquivos
-de entrada não processados.
-
-\item a intercalação termina quando restar apenas $1$ arquivo de entrada.
-\end{enumerate}
-
-O problema da intercalação ótima é que cada partição usa um arquivo próprio.
-Esse número de arquivos pode ser grande.
-
+%\subsection{Intercalação ótima}
+%
+%A {\bf intercalação ótima} usa $n$ arquivos para entrada e $1$ para saída
+%sendo $F = n + 1$.
+%
+%O particionamento inicial pode usar qualquer estratégia de particionamento.
+%Ao contrário do particionamento na intercalação balanceada, {\bf o particionamento
+%inicial cria um novo arquivo por partição}.
+%
+%Os passos envolvidos são:
+%\begin{enumerate}
+%\item primeiro passo: determinar o número de arquivos ($F$) que o algoritmo irá
+%manipular, sendo $F-1$ para entrada enquanto $1$ será de saída.
+%
+%\item passo dois: abrir $F-1$ arquivos, cada um com uma partição. 
+%
+%\item {\bf passo de intercalação}: intercalar as partições dos arquivos de entrada,
+%gravando o resultado em ordem no arquivo de saída.
+%
+%\item o arquivo de saída é novo no primeiro passo, e é um dos arquivos já
+%inteiramente lidos nos próximos passos.
+%
+%\item quando todas as partições ficarem vazias, os arquivos usados podem ser descartados.
+%O arquivo de saída vira um novo arquivo de entrada e é adicionado aos demais arquivos
+%de entrada não processados.
+%
+%\item a intercalação termina quando restar apenas $1$ arquivo de entrada.
+%\end{enumerate}
+%
+%O problema da intercalação ótima é que cada partição usa um arquivo próprio.
+%Esse número de arquivos pode ser grande.
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Intercalação polifásica}
 
@@ -296,7 +296,7 @@ conforme exemplos.
 \hline
 Estratégia & n. de operações & n. de passos & n. de arquivos usados \\ \hline
 Intercalação balanceada & $72$ & $72/12 = 6$ & $4$ \\ \hline
-Intercalação ótima      & $48$ & $48/12 = 4$ & $7$ \\ \hline
+%Intercalação ótima      & $48$ & $48/12 = 4$ & $7$ \\ \hline
 Intercalação polifásica & $60$ & $60/12 = 4$ & $4$ \\ \hline
 %
 \end{tabular}
