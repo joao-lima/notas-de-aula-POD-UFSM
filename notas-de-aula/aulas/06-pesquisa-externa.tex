@@ -582,7 +582,7 @@ são indesejadas.
 \textbf{Índices em árvores B+} é um tipo de árvore balanceada que mantem a eficiência
 mesmo com inserções e remoções.
 Cada nó não-folha de uma árvore B+ tem entre $\lceil n/2 \rceil$ e $n$ filhos,
-sendo $n$ fixo para uma árvore particular.
+sendo $n$ fixo para uma árvore particular e $N$ o número de registros.
 
 Árvores B+ tem a vantagem de se auto-organizar com modificações pequenas e
 locais em inserções e remoções, além de não requerer a reorganização de todo o
@@ -595,7 +595,7 @@ A figura~\ref{aula06:fig:btree1} mostra um exemplo de árvore B+.
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.7\textwidth]{aula06-btree1}
-\caption{Exemplo de uma árvore B+.}
+\caption{Exemplo de uma árvore B+ com $n = 4$.}
 \label{aula06:fig:btree1}
 \end{figure}
 
@@ -627,7 +627,7 @@ Normalmente o nó tem o tamanho de um bloco.
 %
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.4\textwidth]{aula06-btree2}
+\includegraphics[width=0.8\textwidth]{aula6-btree2v2}
 \caption{Um nó em uma árvore B+.}
 \label{aula06:fig:btree2}
 \end{figure}
@@ -723,7 +723,7 @@ Se o arquivo de índice possui $K$ chaves de busca, a altura da árvore não
 ultrapassa $\lceil \log_{\lceil n/2 \rceil} K \rceil$
 Um nó é geralmente do mesmo tamanho de um bloco, tipicamente $4$ Kbytes, e 
 $n$ é tipicamente cerca de 100 (40 bytes por entrada no índice).
-Com 1 milhão de chaves de busca e $n= 100$, no máximo $\log_{50}(1,000,000) = 4$
+Com 1 milhão de chaves de busca e $n= 100$, no máximo $\log_{50}(1.000.000) = 4$
 nós são acessados em uma busca, ou seja, no máximo 4 acessos a blocos.
 Compare isso com uma árvore binária balanceada com 1 milhão de chaves de busca,
 que acessa cerca de 20 nós em uma busca.
@@ -731,6 +731,23 @@ A diferença é significativa já que cada acesso a nó requer um acesso a disco
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Atualização}
+
+Quando um registro é inserido ou removido, os índices relacionados preisam ser
+atualizados.
+Inserções e remoções são mais complicadas porque pode ser necessário
+\emph{dividir} um no muito largo depois da inserção, ou \emph{combinar} nós
+pequenos (com menos de $\lceil n/2 \rceil$ ponteiros).
+
+\begin{itemize}
+\item \textbf{Inserção} - usando a mesma técnica de busca, primeiro procura
+o nó folha em que a chave de busca pode ser encontrada.  Em seguida insere a
+entrada (o par chave de busca e ponteiro ao registro) de forma a manter a ordem
+das chaves de busca.
+
+\item \textbf{Remoção} - usando a mesma técnica de busca, procura o nó folha contendo 
+a entrada a ser removida. 
+Então, remove a entrada do nó folha. 
+\end{itemize}
 
 \subsubsection{Inserção}
 
