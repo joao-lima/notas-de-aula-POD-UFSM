@@ -279,9 +279,9 @@ a altura da sub-árvore da esquerda e a altura da sub-árvore da direita.
 Se não existir uma sub-árvore, a altura é zero.
 Os resultados de um FB são:
 \begin{itemize}
-\item $> 0$ - sub-árvore da direita é menor.
-\item $< 0$ - sub-árvore da esquerda é menor.
-\item $= 0$ - sub-árvores tem a mesma altura.
+\item maior que zero ($> 0$) - sub-árvore da direita é menor.
+\item menor que zero ($< 0$) - sub-árvore da esquerda é menor.
+\item igual a zero ($= 0$) - sub-árvores tem a mesma altura.
 \end{itemize}
 Os valores válidos de FB são $-1$ (sub-árvore da esquerda é menor), $0$, $1$
 (sub-árvore da direita é menor).
@@ -975,7 +975,7 @@ Os métodos estudados são Trie e Patricia.
 O nome \textbf{Trie} vem de \emph{Retrieval} (recuperação).
 Uma trie é uma árvore de busca $n-$ária, o grau equivale ao tamanho do
 alfabeto, e ordenada, cujos nós irmãos são ordenados.
-Usada para indexar chaves de busca, em geral caracteres, os arcos
+Usada para indexar chaves de busca, em geral caracteres, 
 os arcos são caracteres da chave.
 
 Considerando as chaves como sequência de bits (quando $n = 2$), o algoritmo
